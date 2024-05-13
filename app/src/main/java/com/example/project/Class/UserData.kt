@@ -1,6 +1,3 @@
 package com.example.project.Class
 
-class UserData {
-    val studentID = 0
-
-}
+data class UserData (val studentID:Int)

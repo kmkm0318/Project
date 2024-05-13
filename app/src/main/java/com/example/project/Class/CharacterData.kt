@@ -1,5 +1,3 @@
 package com.example.project.Class
 
-class CharacterData {
-
-}
+data class CharacterData(val name:String)
