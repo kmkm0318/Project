@@ -20,13 +20,13 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.project.Class.AuthManager
 import com.example.project.Class.NavViewModel
 import com.example.project.Class.Routes
 import com.example.project.Navigation.LocalNavGraphViewModelStoreOwner
 
 @Composable
-fun LoginScreen(navController: NavHostController) {
-
+fun LoginScreen(navController: NavHostController, authManager: AuthManager) {
     val navViewModel: NavViewModel = viewModel(viewModelStoreOwner = LocalNavGraphViewModelStoreOwner.current)
 
     var userID by remember {
@@ -36,8 +36,6 @@ fun LoginScreen(navController: NavHostController) {
     var userPasswd by remember {
         mutableStateOf("")
     }
-
-    var loginresult = navViewModel.checkInfo(userID, userPasswd)
 
     Column(modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -60,18 +58,27 @@ fun LoginScreen(navController: NavHostController) {
         )
 
         Button(onClick = {
-
-            navViewModel.setUserInfo(userID, userPasswd)
-
-            if(loginresult) {
+            authManager.signInWithEmail(userID, userPasswd, onSuccess = {
                 navController.navigate(Routes.Welcome.route)
-            }
-            else {
-                navController.navigate(Routes.Register.route)
-            }
+            },
+                onFailure = {
+
+                })
 
         }){
             Text(text = "로그인")
+        }
+
+        Button(onClick = {
+            authManager.signUpWithEmail(userID, userPasswd, onSuccess = {
+                navController.navigate(Routes.Login.route)
+            },
+                onFailure = {
+
+                })
+
+        }){
+            Text(text = "가입")
         }
     }
 }

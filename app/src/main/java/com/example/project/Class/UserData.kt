@@ -1,3 +1,3 @@
 package com.example.project.Class
 
-data class UserData (val studentID:String, val characterList : List<CharacterData>)
+data class UserData (var studentID:String = "", var characterList : List<CharacterData>? = null)

@@ -19,6 +19,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.project.Class.AuthManager
 import com.example.project.Class.NavViewModel
 import com.example.project.Class.Routes
 import com.example.project.Compose.BottomNavigationBar
@@ -40,15 +41,15 @@ val LocalNavGraphViewModelStoreOwner =
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(navController: NavHostController) {
+fun MainScreen(navController: NavHostController, authManager : AuthManager) {
     val navStoreOwner = rememberViewModelStoreOwner()
-
     CompositionLocalProvider(
         LocalNavGraphViewModelStoreOwner provides navStoreOwner
     ) {
 
         val navViewModel: NavViewModel =
             viewModel(viewModelStoreOwner = LocalNavGraphViewModelStoreOwner.current)
+
 
         Scaffold(
             topBar = {
@@ -68,7 +69,7 @@ fun MainScreen(navController: NavHostController) {
                     startDestination = Routes.Login.route
                 ) {
                     composable(Routes.Login.route) {
-                        LoginScreen(navController)
+                        LoginScreen(navController, authManager)
                     }
 
                     composable(Routes.Welcome.route) {
@@ -76,7 +77,7 @@ fun MainScreen(navController: NavHostController) {
                     }
 
                     composable(Routes.Register.route) {
-                        Register(navController)
+                        Register(navController, authManager)
                     }
 
                     MainNavGraph(navController)

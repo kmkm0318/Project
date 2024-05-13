@@ -20,11 +20,12 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.project.Class.AuthManager
 import com.example.project.Class.NavViewModel
 import com.example.project.Navigation.LocalNavGraphViewModelStoreOwner
 
 @Composable
-fun Register(navController: NavHostController) {
+fun Register(navController: NavHostController, authManager : AuthManager) {
     val navViewModel: NavViewModel = viewModel(viewModelStoreOwner = LocalNavGraphViewModelStoreOwner.current)
 
     var userID by remember{
