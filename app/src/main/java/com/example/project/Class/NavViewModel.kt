@@ -25,6 +25,6 @@ class NavViewModel : ViewModel(){
 
     fun SaveUserData(userData: UserData){
         val database = Firebase.database
-        val myRef = database.getReference(userData.studentID.toString())
+        val myRef = database.getReference(userData.studentID)
     }
 }
