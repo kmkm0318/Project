@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Project</string>
     <string name="title">Title</string>
+    <string name="emailID">Email ID</string>
+    <string name="password">PassWord</string>
+    <string name="studentID">StudentID</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="notfilled">Not all TextFields are Filled</string>
 </resources>

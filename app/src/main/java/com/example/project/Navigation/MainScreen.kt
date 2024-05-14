@@ -1,5 +1,6 @@
 package com.example.project.Navigation
 
+import android.app.Activity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -41,7 +42,7 @@ val LocalNavGraphViewModelStoreOwner =
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(navController: NavHostController, authManager : AuthManager) {
+fun MainScreen(navController: NavHostController, authManager: AuthManager, activity: Activity) {
     val navStoreOwner = rememberViewModelStoreOwner()
     CompositionLocalProvider(
         LocalNavGraphViewModelStoreOwner provides navStoreOwner
@@ -69,18 +70,18 @@ fun MainScreen(navController: NavHostController, authManager : AuthManager) {
                     startDestination = Routes.Login.route
                 ) {
                     composable(Routes.Login.route) {
-                        LoginScreen(navController, authManager)
+                        LoginScreen(navController, authManager, activity)
                     }
 
                     composable(Routes.Welcome.route) {
-                        WelcomeScreen(navController)
+                        WelcomeScreen(navController, authManager, activity)
                     }
 
                     composable(Routes.Register.route) {
-                        Register(navController, authManager)
+                        Register(navController, authManager, activity)
                     }
 
-                    MainNavGraph(navController)
+                    MainNavGraph(navController, authManager, activity)
 
                 }
             }

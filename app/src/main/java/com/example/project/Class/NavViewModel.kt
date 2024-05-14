@@ -6,8 +6,9 @@ import androidx.lifecycle.ViewModel
 class NavViewModel() : ViewModel(){
     val userData = UserData("202011317")
 
-    var userID:String? = null
-    var userPasswd:String? = null
+    var userID:String? = ""
+    var userPasswd:String? = ""
+    var studentID:String? = ""
 
     var loginStatus = mutableStateOf( false )
 

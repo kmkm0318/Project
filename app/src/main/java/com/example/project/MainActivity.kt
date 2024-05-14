@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val navController = rememberNavController()
                     val authManager = AuthManager(this)
-                    MainScreen(navController = navController, authManager)
+                    MainScreen(navController, authManager, this)
                 }
             }
         }
