@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 
 class NavViewModel() : ViewModel(){
-    val userData = UserData("202011317")
+    var userData = UserData("202011317")
 
     var userID:String? = ""
     var userPasswd:String? = ""

@@ -1,6 +1,7 @@
 package com.example.project.Screen
 
 import android.app.Activity
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -101,12 +102,20 @@ fun LoginScreen(navController: NavHostController, authManager: AuthManager, acti
                 }
                 else{
                     authManager.signInWithEmail(userID, userPasswd, onSuccess = {
+                        authManager.readFromDatabase({
+                            navViewModel.userData = it
+                            Log.i("Login : ", navViewModel.userData.studentID)
+                        }, {
+
+                        })
                         navViewModel.loginStatus.value = true
+
                         navController.navigate(Routes.Main.route) {
                             popUpTo(navController.graph.startDestinationId) {
                                 inclusive = true
                             }
                         }
+
                     },
                         onFailure = {
                             navController.navigate(Routes.Register.route)
@@ -125,6 +134,10 @@ fun LoginScreen(navController: NavHostController, authManager: AuthManager, acti
             }
         }
 
+
+    }
+
+    fun loginSuccess(){
 
     }
 
