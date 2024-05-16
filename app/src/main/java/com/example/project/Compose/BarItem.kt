@@ -22,22 +22,22 @@ object NavBarItems{
             route = "Menu"
         ),
         BarItem(
-            title = "Home",
+            title = "Map",
             selectIcon = Icons.Default.Home,
             onSelectedIcon = Icons.Outlined.Home,
-            route = "Home"
+            route = "Map"
         ),
         BarItem(
-            title = "Contacts",
-            selectIcon = Icons.Default.Person,
-            onSelectedIcon = Icons.Outlined.Person,
-            route = "Contacts"
-        ),
-        BarItem(
-            title = "Favorites",
+            title = "Kupet",
             selectIcon = Icons.Default.Favorite,
             onSelectedIcon = Icons.Outlined.Favorite,
-            route = "Favorites"
+            route = "Kupet"
+        ),
+        BarItem(
+            title = "Friend",
+            selectIcon = Icons.Default.Person,
+            onSelectedIcon = Icons.Outlined.Person,
+            route = "Friend"
         )
 
     )

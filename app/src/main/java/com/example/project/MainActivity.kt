@@ -8,7 +8,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.example.project.Class.AuthManager
 import com.example.project.Navigation.MainScreen
 import com.example.project.ui.theme.ProjectTheme
 
@@ -23,8 +22,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
-                    val authManager = AuthManager(this)
-                    MainScreen(navController, authManager, this)
+                    MainScreen(navController)
                 }
             }
         }

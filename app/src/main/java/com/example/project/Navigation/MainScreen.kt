@@ -1,33 +1,28 @@
 package com.example.project.Navigation
 
-import android.app.Activity
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.project.Class.AuthManager
 import com.example.project.Class.NavViewModel
 import com.example.project.Class.Routes
 import com.example.project.Compose.BottomNavigationBar
-import com.example.project.R
 import com.example.project.Screen.LoginScreen
 import com.example.project.Screen.Register
-import com.example.project.Screen.WelcomeScreen
 
 @Composable
 fun rememberViewModelStoreOwner(): ViewModelStoreOwner {
@@ -42,8 +37,9 @@ val LocalNavGraphViewModelStoreOwner =
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(navController: NavHostController, authManager: AuthManager, activity: Activity) {
+fun MainScreen(navController: NavHostController) {
     val navStoreOwner = rememberViewModelStoreOwner()
+
     CompositionLocalProvider(
         LocalNavGraphViewModelStoreOwner provides navStoreOwner
     ) {
@@ -53,35 +49,31 @@ fun MainScreen(navController: NavHostController, authManager: AuthManager, activ
 
 
         Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = { Text(text = stringResource(id = R.string.title)) }
-                )
-            },
+//            topBar = {
+//                TopAppBar(
+//                    title = { Text(text = stringResource(id = R.string.title)) }
+//                )
+//            },
             bottomBar = {
                 if (navViewModel.loginStatus.value)
                     BottomNavigationBar(navController)
             }
         ) { contentPadding ->
 
-            Column(modifier = Modifier.padding(contentPadding)) {
+            Column(modifier = Modifier.padding(contentPadding).background(color = Color(235, 255, 235))) {
                 NavHost(
                     navController = navController,
                     startDestination = Routes.Login.route
                 ) {
                     composable(Routes.Login.route) {
-                        LoginScreen(navController, authManager, activity)
-                    }
-
-                    composable(Routes.Welcome.route) {
-                        WelcomeScreen(navController, authManager, activity)
+                        LoginScreen(navController)
                     }
 
                     composable(Routes.Register.route) {
-                        Register(navController, authManager, activity)
+                        Register(navController)
                     }
 
-                    MainNavGraph(navController, authManager, activity)
+                    MainNavGraph(navController)
 
                 }
             }

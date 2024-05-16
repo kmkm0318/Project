@@ -1,41 +1,34 @@
 package com.example.project.Navigation
 
-import android.app.Activity
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.project.Class.AuthManager
 import com.example.project.Class.Routes
-import com.example.project.Screen.Contacts
-import com.example.project.Screen.Favorites
-import com.example.project.Screen.Home
-import com.example.project.Screen.Menu
+import com.example.project.Screen.FriendScreen
+import com.example.project.Screen.KupetScreen
+import com.example.project.Screen.MapScreen
+import com.example.project.Screen.MenuScreen
 
 
 fun NavGraphBuilder.MainNavGraph(
     navController: NavHostController,
-    authManager: AuthManager,
-    activity: Activity
 ) {
-    navigation(startDestination = "Home", route = "Main") {
-
-        composable(route = Routes.Menu.route) {
-            Menu()
+    navigation(startDestination = "Map", route = "Main") {
+        composable(route = Routes.Menu.route) { it ->
+            MenuScreen()
         }
 
-        composable(route = Routes.Home.route) {
-            Home()
+        composable(route = Routes.Map.route) {
+            MapScreen()
         }
 
-        composable(
-            route = Routes.Favorites.route
-        ) {
-            Favorites()
+        composable(route = Routes.Kupet.route) {
+            KupetScreen()
         }
 
-        composable(route = Routes.Contacts.route) { it ->
-            Contacts()
+        composable(route = Routes.Friend.route) {
+            FriendScreen()
         }
     }
 }

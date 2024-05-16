@@ -1,8 +1,6 @@
 package com.example.project.Class
 
 import android.app.Activity
-import android.content.ContentValues.TAG
-import android.util.Log
 import android.widget.Toast
 import com.example.project.Function.showNotification
 import com.google.firebase.Firebase
@@ -87,12 +85,10 @@ class AuthManager(private val activity: Activity) {
         val database = Firebase.database
         val reference = database.getReference("users").child(userId ?: "default")
 
-        Log.i(TAG, "studentID" + userData.studentID)
         // userData를 Map으로 변환
         val userDataMap = mapOf("studentID" to userData.studentID,
             "steps_current" to userData.steps_current,
             "steps_total" to userData.steps_total,
-            "language" to userData.language,
             "characterIndex" to userData.characterIndex,
             "characterList" to userData.characterList?.map { characterData ->
                 mapOf(
@@ -126,7 +122,6 @@ class AuthManager(private val activity: Activity) {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // 데이터 가져오기 성공
                 val studentID = dataSnapshot.child("studentID").getValue(String::class.java)
-                val language = dataSnapshot.child("language").getValue(String::class.java)
                 val steps_current = dataSnapshot.child("steps_current").getValue(Int::class.java)
                 val steps_total = dataSnapshot.child("steps_total").getValue(Int::class.java)
                 val characterIndex = dataSnapshot.child("characterIndex").getValue(Int::class.java)
@@ -151,7 +146,6 @@ class AuthManager(private val activity: Activity) {
 
                 val res = UserData(
                     studentID ?: "default",
-                    language = language ?: "kr",
                     steps_current = steps_current ?: 0,
                     steps_total = steps_total ?: 0,
                     characterIndex = characterIndex ?: 0,
