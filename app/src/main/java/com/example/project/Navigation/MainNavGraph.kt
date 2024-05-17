@@ -8,9 +8,11 @@ import androidx.navigation.navigation
 import com.example.project.Class.AuthManager
 import com.example.project.Class.Routes
 import com.example.project.Screen.Contacts
+import com.example.project.Screen.CorrectAns
 import com.example.project.Screen.Favorites
 import com.example.project.Screen.Home
 import com.example.project.Screen.Menu
+import com.example.project.Screen.WrongAns
 
 
 fun NavGraphBuilder.MainNavGraph(
@@ -31,7 +33,15 @@ fun NavGraphBuilder.MainNavGraph(
         composable(
             route = Routes.Favorites.route
         ) {
-            Favorites()
+            Favorites(navController)
+        }
+
+        composable(route = Routes.CorrectAns.route) {
+            CorrectAns(navController)
+        }
+
+        composable(route = Routes.WrongAns.route) {
+            WrongAns(navController)
         }
 
         composable(route = Routes.Contacts.route) { it ->
