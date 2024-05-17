@@ -13,4 +13,5 @@ sealed class Routes (val route: String) {
     object Map : Routes("Map")
     object Kupet : Routes("Kupet")
     object Friend : Routes("Friend")
+    object Quiz : Routes("Quiz")
 }
