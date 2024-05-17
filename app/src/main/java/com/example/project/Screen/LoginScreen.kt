@@ -110,7 +110,7 @@ fun LoginScreen(navController: NavHostController) {
     LaunchedEffect(Unit) {
         if (FirebaseAuth.getInstance().currentUser != null) {
             Log.i("Login", "already Logined")
-            loginSuccess()
+//            loginSuccess()
         }
     }
 
