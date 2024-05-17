@@ -25,7 +25,7 @@ fun NavGraphBuilder.MainNavGraph(
         }
 
         composable(route = Routes.Home.route) {
-            Home()
+            Home(navController)
         }
 
         composable(
