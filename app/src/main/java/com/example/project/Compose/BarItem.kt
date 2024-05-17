@@ -1,12 +1,12 @@
 package com.example.project.Compose
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -21,17 +21,23 @@ object NavBarItems{
             onSelectedIcon = Icons.Outlined.Menu,
             route = "Menu"
         ),
-        BarItem(
-            title = "Map",
-            selectIcon = Icons.Default.Home,
-            onSelectedIcon = Icons.Outlined.Home,
-            route = "Map"
-        ),
+//        BarItem(
+//            title = "Map",
+//            selectIcon = Icons.Default.Home,
+//            onSelectedIcon = Icons.Outlined.Home,
+//            route = "Map"
+//        ),
         BarItem(
             title = "Kupet",
             selectIcon = Icons.Default.Favorite,
             onSelectedIcon = Icons.Outlined.Favorite,
             route = "Kupet"
+        ),
+        BarItem(
+            title = "Quiz",
+            selectIcon = Icons.Default.Check,
+            onSelectedIcon = Icons.Outlined.Check,
+            route = "Quiz"
         ),
         BarItem(
             title = "Friend",

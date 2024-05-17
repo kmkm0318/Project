@@ -9,6 +9,7 @@ import com.example.project.Screen.FriendScreen
 import com.example.project.Screen.KupetScreen
 import com.example.project.Screen.MapScreen
 import com.example.project.Screen.MenuScreen
+import com.example.project.Screen.QuizScreen
 
 
 fun NavGraphBuilder.MainNavGraph(
@@ -29,6 +30,10 @@ fun NavGraphBuilder.MainNavGraph(
 
         composable(route = Routes.Friend.route) {
             FriendScreen()
+        }
+
+        composable(route = Routes.Quiz.route) {
+            QuizScreen()
         }
     }
 }
