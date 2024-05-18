@@ -17,10 +17,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.example.project.Class.Routes
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
-fun MenuScreen() {
-    val menuList = listOf("항목 1", "항목 2", "항목 3", "항목 4")
+fun MenuScreen(navController: NavHostController) {
+    val menuList = listOf("항목 1", "항목 2", "항목 3", "로그아웃")
 
     LazyColumn(
         modifier = Modifier
@@ -33,7 +36,11 @@ fun MenuScreen() {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable(onClick = {})
+                    .clickable(onClick = {
+                        if (idx == 3) {
+                            logout(navController)
+                        }
+                    })
                     .padding(8.dp)
             ) {
                 Text(
@@ -44,9 +51,11 @@ fun MenuScreen() {
                 )
             }
 
-            Canvas(modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 10.dp)) {
+            Canvas(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 10.dp)
+            ) {
                 drawLine(
                     color = Color(0, 0, 0),
                     start = androidx.compose.ui.geometry.Offset(0f, 0f),
@@ -55,6 +64,17 @@ fun MenuScreen() {
                     pathEffect = PathEffect.dashPathEffect(floatArrayOf(4.dp.toPx(), 4.dp.toPx()))
                 )
             }
+        }
+    }
+}
+
+fun logout(navController: NavHostController) {
+    val auth = FirebaseAuth.getInstance()
+    auth.signOut()
+
+    navController.navigate(Routes.Login.route) {
+        popUpTo(0) {
+            inclusive = true
         }
     }
 }
