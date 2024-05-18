@@ -73,10 +73,7 @@ class AuthManager(private val activity: Activity) {
                 showNotification(activity, "데이터베이스에서 오류가 발생했습니다: ${databaseError.message}")
             }
         })
-
-
     }
-
 
     fun writeToDatabase(userData: UserData, onSuccess: () -> Unit, onFailure: () -> Unit) {
         // 데이터베이스 참조 가져오기
@@ -140,7 +137,15 @@ class AuthManager(private val activity: Activity) {
                             steps_current = steps_current ?: 0,
                             level = level ?: 0
                         )
-
+                    }
+                val friendList =
+                    dataSnapshot.child("friendList").children.map { friendSnapshot ->
+                        val studentID = friendSnapshot.child("studentID").getValue(String::class.java)
+                        val characterData = friendSnapshot.child("characterData").getValue(Int::class.java)
+                        FriendData(
+                            studentID = studentID?:"0",
+                            characterData = characterData?:CharacterData()
+                        )
                     }
 
 
@@ -149,7 +154,8 @@ class AuthManager(private val activity: Activity) {
                     steps_current = steps_current ?: 0,
                     steps_total = steps_total ?: 0,
                     characterIndex = characterIndex ?: 0,
-                    characterList = characterList
+                    characterList = characterList,
+                    friendList = friendList
                 )
                 onSuccess(res)
             }
