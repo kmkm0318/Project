@@ -34,7 +34,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.project.Class.AuthManager
-import com.example.project.Class.CharacterData
 import com.example.project.Class.NavViewModel
 import com.example.project.Class.Routes
 import com.example.project.Class.UserData
@@ -156,8 +155,8 @@ fun Register(navController: NavHostController) {
                     studentID!!,
                     onSuccess = {
                         val userData = UserData(studentID!!)
-                        val characterData = CharacterData()
-                        userData.characterList = listOf(characterData)
+                        userData.characterList = listOf()
+                        userData.friendList = listOf()
                         authManager.writeToDatabase(
                             userData,
                             { navController.navigate(Routes.Login.route) },
