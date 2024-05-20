@@ -5,11 +5,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.project.Class.Routes
+import com.example.project.Screen.CorrectAns
 import com.example.project.Screen.FriendScreen
 import com.example.project.Screen.KupetScreen
 import com.example.project.Screen.MapScreen
 import com.example.project.Screen.MenuScreen
 import com.example.project.Screen.QuizScreen
+import com.example.project.Screen.WrongAns
 
 
 fun NavGraphBuilder.MainNavGraph(
@@ -33,7 +35,14 @@ fun NavGraphBuilder.MainNavGraph(
         }
 
         composable(route = Routes.Quiz.route) {
-            QuizScreen()
+            QuizScreen(navController)
+        }
+        composable(route = Routes.CorrectAns.route) {
+            CorrectAns(navController)
+        }
+
+        composable(route = Routes.WrongAns.route) {
+            WrongAns(navController)
         }
     }
 }
