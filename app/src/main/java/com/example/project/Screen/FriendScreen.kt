@@ -2,6 +2,7 @@ package com.example.project.Screen
 
 import android.app.Activity
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -32,10 +33,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.project.Class.AuthManager
+import com.example.project.Class.FriendData
 import com.example.project.Class.NavViewModel
 import com.example.project.Function.AddFriend
 import com.example.project.Function.showNotification
 import com.example.project.Navigation.LocalNavGraphViewModelStoreOwner
+import com.example.project.R
 
 @Composable
 fun FriendScreen() {
@@ -104,15 +107,17 @@ fun FriendScreen() {
                                 val list = navViewModel.userData.friendList?.toMutableList()
                                 list?.add(friendData)
                                 navViewModel.userData.friendList = list?.toList()
-                                authManager.writeToDatabase(navViewModel.userData)
+                                authManager.writeToDatabase(navViewModel.userData,
+                                    onSuccess = {
+                                        studentID.value = ""
+                                    })
                             },
                             {
-
                             }
                         )
                     }
 
-                    studentID.value = ""
+
                 },
                 modifier = Modifier
                     .padding(end = 25.dp)
@@ -125,7 +130,9 @@ fun FriendScreen() {
                     contentAlignment = Alignment.Center
                 ) {
                     Text(text = "추가", fontSize = 20.sp,
-                        modifier = Modifier.fillMaxWidth().align(Alignment.Center))
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .align(Alignment.Center))
                 }
             }
         }
@@ -196,4 +203,23 @@ fun FriendScreen() {
         }
     }
 
+}
+
+@Composable
+fun friendRow(friendData: FriendData,
+              onClick : ()->Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = { onClick() })
+            .padding(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = friendData.studentID,
+            fontSize = 25.sp,
+            modifier = Modifier
+                .align(Alignment.CenterVertically)
+        )
+    }
 }
