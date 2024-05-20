@@ -4,6 +4,7 @@ import android.app.Activity
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,6 +20,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -87,7 +89,7 @@ fun FriendScreen() {
                     Text(text = "학번", color = textColor)
                 },
                 modifier = Modifier
-                    .size(width = 300.dp, height = 60.dp)
+                    .size(width = 275.dp, height = 60.dp)
                     .padding(start = 20.dp, end = 10.dp)
             )
             Button(
@@ -115,10 +117,16 @@ fun FriendScreen() {
                 modifier = Modifier
                     .padding(end = 25.dp)
                     .fillMaxWidth()
-                    .size(width = 100.dp, height = 50.dp),
+                    .size(width = 125.dp, height = 50.dp),
                 colors = buttonColor
             ) {
-                Text(text = "추가", fontSize = 20.sp)
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = "추가", fontSize = 20.sp,
+                        modifier = Modifier.fillMaxWidth().align(Alignment.Center))
+                }
             }
         }
 
