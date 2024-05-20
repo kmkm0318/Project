@@ -19,7 +19,7 @@ fun NavGraphBuilder.MainNavGraph(
 ) {
     navigation(startDestination = "Map", route = "Main") {
         composable(route = Routes.Menu.route) { it ->
-            MenuScreen()
+            MenuScreen(navController)
         }
 
         composable(route = Routes.Map.route) {

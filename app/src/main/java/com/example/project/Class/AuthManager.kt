@@ -73,12 +73,9 @@ class AuthManager(private val activity: Activity) {
                 showNotification(activity, "데이터베이스에서 오류가 발생했습니다: ${databaseError.message}")
             }
         })
-
-
     }
 
-
-    fun writeToDatabase(userData: UserData, onSuccess: () -> Unit, onFailure: () -> Unit) {
+    fun writeToDatabase(userData: UserData, onSuccess: () -> Unit = {}, onFailure: () -> Unit = {}) {
         // 데이터베이스 참조 가져오기
         val user = FirebaseAuth.getInstance().currentUser
         val userId = user?.uid
@@ -86,7 +83,8 @@ class AuthManager(private val activity: Activity) {
         val reference = database.getReference("users").child(userId ?: "default")
 
         // userData를 Map으로 변환
-        val userDataMap = mapOf("studentID" to userData.studentID,
+        val userDataMap = mapOf(
+            "studentID" to userData.studentID,
             "steps_current" to userData.steps_current,
             "steps_total" to userData.steps_total,
             "characterIndex" to userData.characterIndex,
@@ -96,6 +94,13 @@ class AuthManager(private val activity: Activity) {
                     "level" to characterData.level,
                     "steps_current" to characterData.steps_current,
                     "steps_total" to characterData.steps_total
+                )
+            },
+            "friendList" to userData.friendList?.map { friendData ->
+                mapOf(
+                    "name" to friendData.name,
+                    "studentID" to friendData.studentID,
+                    "characterData" to friendData.characterData
                 )
             }
 
@@ -135,12 +140,25 @@ class AuthManager(private val activity: Activity) {
                         val level = characterSnapshot.child("level").getValue(Int::class.java)
 
                         CharacterData(
-                            name ?: "default",
+                            name = name ?: "default",
                             steps_total = steps_total ?: 1000,
                             steps_current = steps_current ?: 0,
                             level = level ?: 0
                         )
-
+                    }
+                val friendList =
+                    dataSnapshot.child("friendList").children.map { friendSnapshot ->
+                        val name = friendSnapshot.child("name").getValue(String::class.java)
+                        val studentID =
+                            friendSnapshot.child("studentID").getValue(String::class.java)
+                        val characterData =
+                            friendSnapshot.child("characterData")
+                                .getValue(CharacterData::class.java)
+                        FriendData(
+                            name = name ?: "name",
+                            studentID = studentID ?: "0",
+                            characterData = characterData ?: CharacterData()
+                        )
                     }
 
 
@@ -149,7 +167,8 @@ class AuthManager(private val activity: Activity) {
                     steps_current = steps_current ?: 0,
                     steps_total = steps_total ?: 0,
                     characterIndex = characterIndex ?: 0,
-                    characterList = characterList
+                    characterList = characterList,
+                    friendList = friendList
                 )
                 onSuccess(res)
             }

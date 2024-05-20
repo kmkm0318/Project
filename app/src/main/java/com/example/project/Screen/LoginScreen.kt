@@ -61,9 +61,6 @@ fun LoginScreen(navController: NavHostController) {
     navViewModel.language = loadLanguage(context)
     Log.i("language : ", navViewModel.language)
 
-
-
-
     var userID by remember {
         mutableStateOf("")
     }
@@ -110,7 +107,7 @@ fun LoginScreen(navController: NavHostController) {
     LaunchedEffect(Unit) {
         if (FirebaseAuth.getInstance().currentUser != null) {
             Log.i("Login", "already Logined")
-//            loginSuccess()
+            loginSuccess()
         }
     }
 
@@ -198,6 +195,4 @@ fun LoginScreen(navController: NavHostController) {
 
 
     }
-
-
 }
