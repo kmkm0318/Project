@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.project.Class.Routes
 import com.example.project.Screen.CorrectAns
+import com.example.project.Screen.FriendDetailScreen
 import com.example.project.Screen.FriendScreen
 import com.example.project.Screen.KupetScreen
 import com.example.project.Screen.MapScreen
@@ -31,7 +32,11 @@ fun NavGraphBuilder.MainNavGraph(
         }
 
         composable(route = Routes.Friend.route) {
-            FriendScreen()
+            FriendScreen(navController)
+        }
+
+        composable(route = Routes.FriendDetail.route) {
+            FriendDetailScreen(navController)
         }
 
         composable(route = Routes.Quiz.route) {

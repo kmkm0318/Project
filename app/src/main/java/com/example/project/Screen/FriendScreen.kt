@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.OutlinedTextField
@@ -29,20 +30,26 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.project.Class.AuthManager
 import com.example.project.Class.CharacterData
 import com.example.project.Class.FriendData
 import com.example.project.Class.NavViewModel
+import com.example.project.Class.Routes
 import com.example.project.Function.AddFriend
 import com.example.project.Function.showNotification
 import com.example.project.Navigation.LocalNavGraphViewModelStoreOwner
 import com.example.project.R
 
 @Composable
-fun FriendScreen() {
+fun FriendScreen(navController: NavController) {
     val navViewModel: NavViewModel =
         viewModel(viewModelStoreOwner = LocalNavGraphViewModelStoreOwner.current)
 
@@ -51,6 +58,14 @@ fun FriendScreen() {
     val authManager = AuthManager(activity)
 
     val friendList = navViewModel.userData.friendList
+
+    val fontFamily = FontFamily(
+        fonts = listOf(
+            Font(R.font.gmarket_sans_ttf_medium, FontWeight.Medium),
+            Font(R.font.gmarket_sans_ttf_bold, FontWeight.Bold),
+            Font(R.font.gmarket_sans_ttf_light, FontWeight.Light)
+        )
+    )
 
     val textColor = Color(25, 200, 25)
 
@@ -130,10 +145,12 @@ fun FriendScreen() {
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = "추가", fontSize = 20.sp,
+                    Text(
+                        text = "추가", fontSize = 20.sp,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .align(Alignment.Center))
+                            .align(Alignment.Center)
+                    )
                 }
             }
         }
@@ -167,7 +184,8 @@ fun FriendScreen() {
             friendList?.let { list ->
                 itemsIndexed(list) { idx, it ->
                     friendRow(friendData = it) {
-
+                        navViewModel.friendData = it
+                        navController.navigate(Routes.FriendDetail.route)
                     }
 
                     Canvas(
@@ -197,8 +215,10 @@ fun FriendScreen() {
 }
 
 @Composable
-fun friendRow(friendData: FriendData,
-              onClick : ()->Unit) {
+fun friendRow(
+    friendData: FriendData,
+    onClick: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -215,9 +235,9 @@ fun friendRow(friendData: FriendData,
     }
 }
 
-fun getCharacterImage(characterData: CharacterData){
-    val imageName = when{
-        characterData.name == "asd"-> "asd"
+fun getCharacterImage(characterData: CharacterData) {
+    val imageName = when {
+        characterData.name == "asd" -> "asd"
         else -> "default"
     }
 }

@@ -75,7 +75,7 @@ fun Register(navController: NavHostController) {
     )
 
     val buttonColor = ButtonColors(
-        containerColor = Color(25, 225, 25),
+        containerColor = Color(25, 200, 25),
         contentColor = Color.White,
         disabledContainerColor = Color.Green,
         disabledContentColor = Color.Green
