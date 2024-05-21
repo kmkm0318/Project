@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.project.Class.AuthManager
+import com.example.project.Class.CharacterData
 import com.example.project.Class.FriendData
 import com.example.project.Class.NavViewModel
 import com.example.project.Function.AddFriend
@@ -165,18 +166,8 @@ fun FriendScreen() {
             }
             friendList?.let { list ->
                 itemsIndexed(list) { idx, it ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable(onClick = {})
-                            .padding(8.dp)
-                    ) {
-                        Text(
-                            text = it.studentID,
-                            fontSize = 25.sp,
-                            modifier = Modifier
-                                .align(Alignment.CenterVertically)
-                        )
+                    friendRow(friendData = it) {
+
                     }
 
                     Canvas(
@@ -221,5 +212,12 @@ fun friendRow(friendData: FriendData,
             modifier = Modifier
                 .align(Alignment.CenterVertically)
         )
+    }
+}
+
+fun getCharacterImage(characterData: CharacterData){
+    val imageName = when{
+        characterData.name == "asd"-> "asd"
+        else -> "default"
     }
 }
