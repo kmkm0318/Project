@@ -11,12 +11,10 @@ import com.example.project.Class.CharacterData
 @Composable
 fun getCharacterImage(characterData: CharacterData) {
     val characterName = when {
-        characterData.name == "코코" -> "c"
-        characterData.name == "둘리" -> "d"
-        characterData.name == "프로리" -> "f"
-        characterData.name == "루나" -> "l"
-        characterData.name == "모모" -> "m"
-        else -> "d"
+        characterData.name == "둘리" -> "duri"
+        characterData.name == "프로리" -> "frole"
+        characterData.name == "모모" -> "momo"
+        else -> "duri"
     }
     val characterLevel = characterData.level.toString()
 
