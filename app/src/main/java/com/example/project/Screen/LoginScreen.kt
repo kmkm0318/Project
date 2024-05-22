@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -32,6 +33,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -72,6 +75,14 @@ fun LoginScreen(navController: NavHostController) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
 
+    val fontFamily = FontFamily(
+        fonts = listOf(
+            Font(R.font.gmarket_sans_ttf_medium, FontWeight.Medium),
+            Font(R.font.gmarket_sans_ttf_bold, FontWeight.Bold),
+            Font(R.font.gmarket_sans_ttf_light, FontWeight.Light)
+        )
+    )
+
     val textColor = Color(25, 200, 25)
 
     val textFieldColors = OutlinedTextFieldDefaults.colors(
@@ -83,7 +94,7 @@ fun LoginScreen(navController: NavHostController) {
     )
 
     val buttonColor = ButtonColors(
-        containerColor = Color(25, 225, 25),
+        containerColor = Color(25, 200, 25),
         contentColor = Color.White,
         disabledContainerColor = Color.Green,
         disabledContentColor = Color.Green
@@ -122,7 +133,8 @@ fun LoginScreen(navController: NavHostController) {
             fontSize = 40.sp,
             fontWeight = FontWeight.ExtraBold,
             modifier = Modifier.padding(top = 100.dp, bottom = 40.dp),
-            color = textColor
+            color = textColor,
+            fontFamily = fontFamily
         )
 
         OutlinedTextField(
@@ -133,7 +145,9 @@ fun LoginScreen(navController: NavHostController) {
             onValueChange = { userID = it },
             label = {
                 Text(
-                    stringResource(id = R.string.emailID), color = textColor
+                    stringResource(id = R.string.emailID),
+                    color = textColor,
+                    fontFamily = fontFamily
                 )
             },
             // 다음 텍스트 필드로 이동할 수 있도록 설정
@@ -153,7 +167,8 @@ fun LoginScreen(navController: NavHostController) {
             label = {
                 Text(
                     stringResource(id = R.string.password),
-                    color = textColor
+                    color = textColor,
+                    fontFamily = fontFamily
                 )
             },
             visualTransformation = PasswordVisualTransformation(),
@@ -177,19 +192,28 @@ fun LoginScreen(navController: NavHostController) {
                 } else {
                     authManager.signInWithEmail(userID, userPasswd, onSuccess = {
                         loginSuccess()
-                    }, onFailure = {
-                    })
+                    }, onFailure = {})
                 }
 
 
             }) {
-                Text(text = stringResource(id = R.string.login))
+                Text(
+                    text = stringResource(id = R.string.login),
+                    fontFamily = fontFamily,
+                    modifier = Modifier
+                        .wrapContentSize(Alignment.Center)
+                )
             }
-            Spacer(modifier = Modifier.size(width = 90.dp, height = 0.dp))
+            Spacer(modifier = Modifier.size(width = 75.dp, height = 0.dp))
             Button(
                 colors = buttonColor,
                 onClick = { navController.navigate(Routes.Register.route) }) {
-                Text(text = stringResource(id = R.string.register))
+                Text(
+                    text = stringResource(id = R.string.register),
+                    fontFamily = fontFamily,
+                    modifier = Modifier
+                        .wrapContentSize(Alignment.Center)
+                )
             }
         }
 

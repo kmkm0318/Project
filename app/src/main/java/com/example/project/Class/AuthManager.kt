@@ -75,7 +75,11 @@ class AuthManager(private val activity: Activity) {
         })
     }
 
-    fun writeToDatabase(userData: UserData, onSuccess: () -> Unit = {}, onFailure: () -> Unit = {}) {
+    fun writeToDatabase(
+        userData: UserData,
+        onSuccess: () -> Unit = {},
+        onFailure: () -> Unit = {}
+    ) {
         // 데이터베이스 참조 가져오기
         val user = FirebaseAuth.getInstance().currentUser
         val userId = user?.uid
