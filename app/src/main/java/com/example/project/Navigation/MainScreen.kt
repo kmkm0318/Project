@@ -8,6 +8,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
@@ -21,8 +22,12 @@ import androidx.navigation.compose.composable
 import com.example.project.Class.NavViewModel
 import com.example.project.Class.Routes
 import com.example.project.Compose.BottomNavigationBar
+import com.example.project.Function.RequestLocationPermission
 import com.example.project.Screen.LoginScreen
 import com.example.project.Screen.Register
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
+import com.google.android.gms.maps.model.LatLng
 
 @Composable
 fun rememberViewModelStoreOwner(): ViewModelStoreOwner {
