@@ -2,19 +2,17 @@ package com.example.project.Screen
 
 import android.app.Activity
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.OutlinedTextField
@@ -22,7 +20,6 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,7 +27,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -105,7 +101,7 @@ fun FriendScreen(navController: NavController) {
                 onValueChange = { studentID.value = it },
                 colors = textFieldColors,
                 label = {
-                    Text(text = "학번", color = textColor)
+                    Text(text = "학번", color = textColor, fontFamily = fontFamily)
                 },
                 modifier = Modifier
                     .size(width = 275.dp, height = 60.dp)
@@ -118,19 +114,14 @@ fun FriendScreen(navController: NavController) {
                         showNotification(activity, "학번을 입력해주세요")
                     }
                     studentID.value?.let {
-                        AddFriend(activity, navViewModel.userData, it,
-                            { friendData ->
-                                val list = navViewModel.userData.friendList?.toMutableList()
-                                list?.add(friendData)
-                                navViewModel.userData.friendList = list?.toList()
-                                authManager.writeToDatabase(navViewModel.userData,
-                                    onSuccess = {
-                                        studentID.value = ""
-                                    })
-                            },
-                            {
-                            }
-                        )
+                        AddFriend(activity, navViewModel.userData, it, { friendData ->
+                            val list = navViewModel.userData.friendList?.toMutableList()
+                            list?.add(friendData)
+                            navViewModel.userData.friendList = list?.toList()
+                            authManager.writeToDatabase(navViewModel.userData, onSuccess = {
+                                studentID.value = ""
+                            })
+                        }, {})
                     }
 
 
@@ -141,17 +132,14 @@ fun FriendScreen(navController: NavController) {
                     .size(width = 125.dp, height = 50.dp),
                 colors = buttonColor
             ) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "추가", fontSize = 20.sp,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .align(Alignment.Center)
-                    )
-                }
+                Text(
+                    text = "추가",
+                    fontSize = 20.sp,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentSize(Alignment.Center),
+                    fontFamily = fontFamily,
+                )
             }
         }
 
@@ -175,18 +163,24 @@ fun FriendScreen(navController: NavController) {
                             text = "친구가 없습니다",
                             color = textColor,
                             fontSize = 25.sp,
-                            modifier = Modifier
-                                .align(Alignment.CenterVertically)
+                            modifier = Modifier.align(Alignment.CenterVertically),
+                            fontFamily = fontFamily
                         )
                     }
                 }
             }
             friendList?.let { list ->
                 itemsIndexed(list) { idx, it ->
-                    friendRow(friendData = it) {
-                        navViewModel.friendData = it
-                        navController.navigate(Routes.FriendDetail.route)
-                    }
+                    friendRow(
+                        friendData = it,
+                        textColor = textColor,
+                        fontFamily = fontFamily,
+                        onClick = {
+                            {
+                                navViewModel.friendData = it
+                                navController.navigate(Routes.FriendDetail.route)
+                            }
+                        })
 
                     Canvas(
                         modifier = Modifier
@@ -194,14 +188,13 @@ fun FriendScreen(navController: NavController) {
                             .padding(bottom = 10.dp)
                     ) {
                         drawLine(
-                            color = Color(0, 0, 0),
+                            color = textColor,
                             start = Offset(0f, 0f),
                             end = Offset(size.width, 0f),
                             strokeWidth = 1.dp.toPx(),
                             pathEffect = PathEffect.dashPathEffect(
                                 floatArrayOf(
-                                    4.dp.toPx(),
-                                    4.dp.toPx()
+                                    4.dp.toPx(), 4.dp.toPx()
                                 )
                             )
                         )
@@ -216,8 +209,7 @@ fun FriendScreen(navController: NavController) {
 
 @Composable
 fun friendRow(
-    friendData: FriendData,
-    onClick: () -> Unit
+    friendData: FriendData, onClick: () -> Unit, textColor: Color, fontFamily: FontFamily
 ) {
     Row(
         modifier = Modifier
@@ -229,8 +221,9 @@ fun friendRow(
         Text(
             text = friendData.studentID,
             fontSize = 25.sp,
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
+            modifier = Modifier.align(Alignment.CenterVertically),
+            color = textColor,
+            fontFamily = fontFamily
         )
     }
 }

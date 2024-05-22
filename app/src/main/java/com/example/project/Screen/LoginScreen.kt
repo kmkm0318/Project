@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -196,13 +197,23 @@ fun LoginScreen(navController: NavHostController) {
 
 
             }) {
-                Text(text = stringResource(id = R.string.login), fontFamily = fontFamily)
+                Text(
+                    text = stringResource(id = R.string.login),
+                    fontFamily = fontFamily,
+                    modifier = Modifier
+                        .wrapContentSize(Alignment.Center)
+                )
             }
-            Spacer(modifier = Modifier.size(width = 90.dp, height = 0.dp))
+            Spacer(modifier = Modifier.size(width = 75.dp, height = 0.dp))
             Button(
                 colors = buttonColor,
                 onClick = { navController.navigate(Routes.Register.route) }) {
-                Text(text = stringResource(id = R.string.register), fontFamily = fontFamily)
+                Text(
+                    text = stringResource(id = R.string.register),
+                    fontFamily = fontFamily,
+                    modifier = Modifier
+                        .wrapContentSize(Alignment.Center)
+                )
             }
         }
 

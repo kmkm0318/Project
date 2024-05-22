@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -25,6 +26,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -64,6 +67,14 @@ fun Register(navController: NavHostController) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
 
+    val fontFamily = FontFamily(
+        fonts = listOf(
+            Font(R.font.gmarket_sans_ttf_medium, FontWeight.Medium),
+            Font(R.font.gmarket_sans_ttf_bold, FontWeight.Bold),
+            Font(R.font.gmarket_sans_ttf_light, FontWeight.Light)
+        )
+    )
+
     val textColor = Color(25, 200, 25)
 
     val textFieldColors = OutlinedTextFieldDefaults.colors(
@@ -91,7 +102,8 @@ fun Register(navController: NavHostController) {
             fontSize = 40.sp,
             fontWeight = FontWeight.ExtraBold,
             modifier = Modifier.padding(top = 100.dp, bottom = 40.dp),
-            color = textColor
+            color = textColor,
+            fontFamily = fontFamily
         )
 
 
@@ -101,7 +113,13 @@ fun Register(navController: NavHostController) {
             modifier = Modifier.padding(bottom = 10.dp),
             value = userID ?: "",
             onValueChange = { userID = it },
-            label = { Text(stringResource(id = R.string.emailID), color = textColor) },
+            label = {
+                Text(
+                    stringResource(id = R.string.emailID),
+                    color = textColor,
+                    fontFamily = fontFamily
+                )
+            },
             // 다음 텍스트 필드로 이동할 수 있도록 설정
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
             // Enter 키 이벤트 처리
@@ -115,11 +133,16 @@ fun Register(navController: NavHostController) {
             modifier = Modifier.padding(bottom = 10.dp),
             value = userPasswd ?: "",
             onValueChange = { userPasswd = it },
-            label = { Text(stringResource(id = R.string.password), color = textColor) },
+            label = {
+                Text(
+                    stringResource(id = R.string.password),
+                    color = textColor,
+                    fontFamily = fontFamily
+                )
+            },
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Password,
-                imeAction = ImeAction.Next
+                keyboardType = KeyboardType.Password, imeAction = ImeAction.Next
             ),
             // Enter 키 이벤트 처리
             keyboardActions = KeyboardActions(onNext = {
@@ -132,44 +155,46 @@ fun Register(navController: NavHostController) {
             modifier = Modifier.padding(bottom = 10.dp),
             value = studentID ?: "",
             onValueChange = { studentID = it },
-            label = { Text(stringResource(id = R.string.studentID), color = textColor) },
+            label = {
+                Text(
+                    stringResource(id = R.string.studentID),
+                    color = textColor,
+                    fontFamily = fontFamily
+                )
+            },
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Password,
-                imeAction = ImeAction.Done
+                keyboardType = KeyboardType.Password, imeAction = ImeAction.Done
             ),
             // Enter 키 이벤트 처리
             keyboardActions = KeyboardActions(onDone = {
                 keyboardController?.hide()
-            }
-            )
+            })
         )
 
-        Button(
-            colors = buttonColor,
-            onClick = {
+        Button(colors = buttonColor, onClick = {
             if (userID.isNullOrEmpty() || userPasswd.isNullOrEmpty() || studentID.isNullOrEmpty()) {
                 showNotification(activity, "Not all Text Fields are Filled")
             } else {
-                authManager.signUpWithEmail(userID!!,
-                    userPasswd!!,
-                    studentID!!,
-                    onSuccess = {
-                        val userData = UserData(studentID!!)
-                        userData.characterList = listOf()
-                        userData.friendList = listOf()
-                        authManager.writeToDatabase(
-                            userData,
-                            { navController.navigate(Routes.Login.route) },
-                            {})
-                    },
-                    onFailure = {
+                authManager.signUpWithEmail(userID!!, userPasswd!!, studentID!!, onSuccess = {
+                    val userData = UserData(studentID!!)
+                    userData.characterList = listOf()
+                    userData.friendList = listOf()
+                    authManager.writeToDatabase(userData,
+                        { navController.navigate(Routes.Login.route) },
+                        {})
+                }, onFailure = {
 
-                    })
+                })
             }
 
 
         }) {
-            Text(text = stringResource(id = R.string.register))
+            Text(
+                text = stringResource(id = R.string.register),
+                fontFamily = fontFamily,
+                modifier = Modifier
+                    .wrapContentSize(Alignment.Center)
+            )
         }
     }
 }
