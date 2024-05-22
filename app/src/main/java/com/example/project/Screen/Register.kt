@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.project.Class.AuthManager
+import com.example.project.Class.CharacterData
 import com.example.project.Class.NavViewModel
 import com.example.project.Class.Routes
 import com.example.project.Class.UserData
@@ -177,7 +178,7 @@ fun Register(navController: NavHostController) {
             } else {
                 authManager.signUpWithEmail(userID!!, userPasswd!!, studentID!!, onSuccess = {
                     val userData = UserData(studentID!!)
-                    userData.characterList = listOf()
+                    userData.characterList = listOf(CharacterData("둘리"))
                     userData.friendList = listOf()
                     authManager.writeToDatabase(userData,
                         { navController.navigate(Routes.Login.route) },

@@ -3,8 +3,10 @@ package com.example.project.Screen
 import android.app.Activity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -21,8 +23,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.project.Class.AuthManager
-import com.example.project.Class.FriendData
 import com.example.project.Class.NavViewModel
+import com.example.project.Function.getCharacterImage
 import com.example.project.Navigation.LocalNavGraphViewModelStoreOwner
 import com.example.project.R
 
@@ -68,10 +70,20 @@ fun FriendDetailScreen(navController: NavController) {
         verticalArrangement = Arrangement.Top
     ) {
         Text(
-            text = navViewModel.friendData.studentID,
+            text = navViewModel.friendData.name,
             color = textColor,
             fontSize = 30.sp,
             fontFamily = fontFamily
         )
+        Spacer(modifier = Modifier.size(50.dp))
+        Text(
+            text = navViewModel.friendData.characterData.name,
+            color = textColor,
+            fontSize = 50.sp,
+            fontFamily = fontFamily
+        )
+        Spacer(modifier = Modifier.size(50.dp))
+        getCharacterImage(characterData = navViewModel.friendData.characterData)
+
     }
 }

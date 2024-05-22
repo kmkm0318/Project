@@ -1,7 +1,6 @@
 package com.example.project.Function
 
 import android.app.Activity
-import android.util.Log
 import com.example.project.Class.CharacterData
 import com.example.project.Class.FriendData
 import com.example.project.Class.UserData
@@ -35,18 +34,19 @@ fun AddFriend(
 
     reference.addListenerForSingleValueEvent(object : ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
-            Log.i("123123", "123123")
             var isStudentIdExists = false
             for (childSnapshot in dataSnapshot.children) {
                 val existingStudentID =
                     childSnapshot.child("studentID").getValue(String::class.java)
                 if (existingStudentID == studentID) {
                     isStudentIdExists = true
-                    val name = childSnapshot.child("name").getValue(String::class.java)
+                    val characterIndex =
+                        childSnapshot.child("characterIndex").getValue(Int::class.java)
                     val characterData =
-                        childSnapshot.child("characterData").getValue(CharacterData::class.java)
+                        childSnapshot.child("characterList").child(characterIndex.toString())
+                            .getValue(CharacterData::class.java)
                     val friendData =
-                        FriendData(name ?: "default", studentID, characterData ?: CharacterData())
+                        FriendData(studentID, studentID, characterData ?: CharacterData())
                     onSuccess(friendData)
                     break
                 }

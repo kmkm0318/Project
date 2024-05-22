@@ -35,11 +35,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.project.Class.AuthManager
-import com.example.project.Class.CharacterData
 import com.example.project.Class.FriendData
 import com.example.project.Class.NavViewModel
 import com.example.project.Class.Routes
 import com.example.project.Function.AddFriend
+import com.example.project.Function.UpdateFriendList
 import com.example.project.Function.showNotification
 import com.example.project.Navigation.LocalNavGraphViewModelStoreOwner
 import com.example.project.R
@@ -52,6 +52,14 @@ fun FriendScreen(navController: NavController) {
     val context = LocalContext.current
     val activity = context as Activity
     val authManager = AuthManager(activity)
+
+    UpdateFriendList(navViewModel.userData,
+        {
+            navViewModel.userData = it
+            authManager.writeToDatabase(navViewModel.userData)
+        }, {
+
+        })
 
     val friendList = navViewModel.userData.friendList
 
@@ -176,10 +184,8 @@ fun FriendScreen(navController: NavController) {
                         textColor = textColor,
                         fontFamily = fontFamily,
                         onClick = {
-                            {
-                                navViewModel.friendData = it
-                                navController.navigate(Routes.FriendDetail.route)
-                            }
+                            navViewModel.friendData = it
+                            navController.navigate(Routes.FriendDetail.route)
                         })
 
                     Canvas(
@@ -225,12 +231,5 @@ fun friendRow(
             color = textColor,
             fontFamily = fontFamily
         )
-    }
-}
-
-fun getCharacterImage(characterData: CharacterData) {
-    val imageName = when {
-        characterData.name == "asd" -> "asd"
-        else -> "default"
     }
 }
