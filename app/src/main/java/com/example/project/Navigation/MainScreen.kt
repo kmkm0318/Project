@@ -21,6 +21,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.project.Class.NavViewModel
 import com.example.project.Class.Routes
+import com.example.project.Class.StepCountViewModel
 import com.example.project.Compose.BottomNavigationBar
 import com.example.project.Function.RequestLocationPermission
 import com.example.project.Screen.LoginScreen
@@ -44,6 +45,11 @@ val LocalNavGraphViewModelStoreOwner =
 @Composable
 fun MainScreen(navController: NavHostController) {
     val navStoreOwner = rememberViewModelStoreOwner()
+
+    val context = LocalContext.current
+    val viewModel = remember{
+        StepCountViewModel(context)
+    }
 
     CompositionLocalProvider(
         LocalNavGraphViewModelStoreOwner provides navStoreOwner
@@ -78,7 +84,7 @@ fun MainScreen(navController: NavHostController) {
                         Register(navController)
                     }
 
-                    MainNavGraph(navController)
+                    MainNavGraph(navController, viewModel)
 
                 }
             }
