@@ -3,6 +3,7 @@ package com.example.project.Screen
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,16 +26,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.project.Class.Routes
+import com.example.project.Compose.TopBar
 import com.example.project.R
+import com.google.android.play.integrity.internal.c
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 
 
 data class Quiz(val question:String, val ans1:String, val ans2:String, val ans3:String, val ans4:String, val correctAns:String)
 
-
 @Composable
 fun QuizScreen(navController: NavController) {
+    Scaffold(topBar = { TopBar(navController = navController)}) { contentPadding ->
+        QuizScreenContent(navController, contentPadding)
+    }
+}
+@Composable
+fun QuizScreenContent(navController: NavController, contentPadding:PaddingValues) {
 
     var Quiz by remember {
         mutableStateOf<Quiz>(Quiz("", "", "", "", "", ""))
@@ -55,6 +64,7 @@ fun QuizScreen(navController: NavController) {
 
     Column(
         modifier = Modifier
+            .padding(contentPadding)
             .fillMaxSize()
     ) {
         Column(modifier = Modifier
@@ -121,4 +131,3 @@ fun checkAns(input:Int, ans:Int, navController: NavController){
         navController.navigate(Routes.WrongAns.route)
     }
 }
-

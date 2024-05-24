@@ -14,8 +14,8 @@ import com.example.project.Class.Routes
 @Composable
 fun TopBar(navController: NavController) {
     Row(horizontalArrangement = Arrangement.Start) {
-        IconButton(onClick={navController.navigate(Routes.Home.route){
-            popUpTo(navController.graph.findStartDestination().id) {
+        IconButton(onClick={navController.navigate(Routes.Map.route){
+            popUpTo(Routes.Map.route) {
                 saveState = true
             }
             launchSingleTop = true
