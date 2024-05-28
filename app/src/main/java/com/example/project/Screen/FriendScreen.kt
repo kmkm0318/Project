@@ -159,7 +159,7 @@ fun FriendScreen(navController: NavController) {
                 }
                 Text(
                     text = add,
-                    fontSize = 15.sp,
+                    fontSize = 25.sp,
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentSize(Alignment.Center),
@@ -323,7 +323,7 @@ fun friendRow(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Button(
-                        modifier = Modifier.size(150.dp, 50.dp),
+//                        modifier = Modifier.size(150.dp, 50.dp),
                         colors = buttonColor,
                         onClick = {
                             if (changeName.value) {
@@ -335,19 +335,20 @@ fun friendRow(
                         }) {
                         val changeName = when (navViewModel.language.value) {
                             "kr" -> "이름 바꾸기"
-                            else -> "Change Name"
+                            else -> "Change\nName"
                         }
                         Text(
                             text = changeName, fontFamily = fontFamily, fontSize = 20.sp
                         )
                     }
                     Spacer(modifier = Modifier.size(20.dp))
-                    Button(modifier = Modifier.size(150.dp, 50.dp),
+                    Button(
+//                        modifier = Modifier.size(150.dp, 50.dp),
                         colors = buttonColor,
                         onClick = { /*TODO*/ }) {
                         val sendLocation = when (navViewModel.language.value) {
                             "kr" -> "위치 보내기"
-                            else -> "Send Location"
+                            else -> "Send\nLocation"
                         }
                         Text(
                             text = sendLocation, fontFamily = fontFamily, fontSize = 20.sp

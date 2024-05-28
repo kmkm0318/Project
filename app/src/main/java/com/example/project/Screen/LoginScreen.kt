@@ -1,7 +1,6 @@
 package com.example.project.Screen
 
 import android.app.Activity
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -46,6 +45,7 @@ import androidx.navigation.NavHostController
 import com.example.project.Class.AuthManager
 import com.example.project.Class.NavViewModel
 import com.example.project.Class.Routes
+import com.example.project.Function.loadLanguage
 import com.example.project.Function.showNotification
 import com.example.project.Navigation.LocalNavGraphViewModelStoreOwner
 import com.example.project.R
@@ -96,6 +96,9 @@ fun LoginScreen(navController: NavHostController) {
         disabledContentColor = Color.Green
     )
 
+    navViewModel.language.value = loadLanguage(context)
+
+
     fun loginSuccess() {
         authManager.readFromDatabase({
             navViewModel.userData = it
@@ -113,7 +116,6 @@ fun LoginScreen(navController: NavHostController) {
 
     LaunchedEffect(Unit) {
         if (FirebaseAuth.getInstance().currentUser != null) {
-            Log.i("Login", "already Logined")
             loginSuccess()
         }
     }
@@ -123,7 +125,6 @@ fun LoginScreen(navController: NavHostController) {
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         Text(
             text = stringResource(id = R.string.title),
             fontSize = 40.sp,
@@ -132,7 +133,10 @@ fun LoginScreen(navController: NavHostController) {
             color = textColor,
             fontFamily = fontFamily
         )
-
+        val emailID = when (navViewModel.language.value) {
+            "kr" -> "이메일 아이디"
+            else -> "Email ID"
+        }
         OutlinedTextField(
             colors = textFieldColors,
             modifier = Modifier.padding(bottom = 10.dp),
@@ -141,7 +145,7 @@ fun LoginScreen(navController: NavHostController) {
             onValueChange = { userID = it },
             label = {
                 Text(
-                    stringResource(id = R.string.emailID),
+                    text = emailID,
                     color = textColor,
                     fontFamily = fontFamily
                 )
@@ -153,7 +157,10 @@ fun LoginScreen(navController: NavHostController) {
                 focusManager.moveFocus(FocusDirection.Down)
             })
         )
-
+        val passWord = when (navViewModel.language.value) {
+            "kr" -> "패스워드"
+            else -> "PassWord"
+        }
         OutlinedTextField(
             colors = textFieldColors,
             modifier = Modifier.padding(bottom = 10.dp),
@@ -162,7 +169,7 @@ fun LoginScreen(navController: NavHostController) {
             onValueChange = { userPasswd = it },
             label = {
                 Text(
-                    stringResource(id = R.string.password),
+                    text = passWord,
                     color = textColor,
                     fontFamily = fontFamily
                 )
@@ -193,8 +200,12 @@ fun LoginScreen(navController: NavHostController) {
 
 
             }) {
+                val login = when (navViewModel.language.value) {
+                    "kr" -> "로그인"
+                    else -> "Login"
+                }
                 Text(
-                    text = stringResource(id = R.string.login),
+                    text = login,
                     fontFamily = fontFamily,
                     modifier = Modifier
                         .wrapContentSize(Alignment.Center)
@@ -204,8 +215,12 @@ fun LoginScreen(navController: NavHostController) {
             Button(
                 colors = buttonColor,
                 onClick = { navController.navigate(Routes.Register.route) }) {
+                val register = when (navViewModel.language.value) {
+                    "kr" -> "가입"
+                    else -> "Register"
+                }
                 Text(
-                    text = stringResource(id = R.string.register),
+                    text = register,
                     fontFamily = fontFamily,
                     modifier = Modifier
                         .wrapContentSize(Alignment.Center)
