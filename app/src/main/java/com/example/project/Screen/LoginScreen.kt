@@ -46,7 +46,6 @@ import androidx.navigation.NavHostController
 import com.example.project.Class.AuthManager
 import com.example.project.Class.NavViewModel
 import com.example.project.Class.Routes
-import com.example.project.Function.loadLanguage
 import com.example.project.Function.showNotification
 import com.example.project.Navigation.LocalNavGraphViewModelStoreOwner
 import com.example.project.R
@@ -60,9 +59,6 @@ fun LoginScreen(navController: NavHostController) {
     val context = LocalContext.current
     val activity = context as Activity
     val authManager = AuthManager(activity)
-
-    navViewModel.language = loadLanguage(context)
-    Log.i("language : ", navViewModel.language)
 
     var userID by remember {
         mutableStateOf("")
