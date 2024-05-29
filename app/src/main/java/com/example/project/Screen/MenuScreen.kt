@@ -15,14 +15,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Divider
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.Font
@@ -35,12 +32,11 @@ import androidx.navigation.NavHostController
 import com.example.project.Class.AuthManager
 import com.example.project.Class.NavViewModel
 import com.example.project.Class.Routes
-import com.example.project.Function.saveLanguage
 import com.example.project.Compose.TopBar
+import com.example.project.Function.saveLanguage
 import com.example.project.Navigation.LocalNavGraphViewModelStoreOwner
 import com.example.project.R
 import com.google.firebase.auth.FirebaseAuth
-
 
 
 @Composable
@@ -69,21 +65,6 @@ fun MenuScreenContent(navController: NavHostController, contentPadding:PaddingVa
     )
 
     val textColor = colorResource(R.color.kudarkgreen)
-
-    val textFieldColors = OutlinedTextFieldDefaults.colors(
-        focusedBorderColor = Color.Green,
-        unfocusedBorderColor = Color(25, 200, 25),
-        cursorColor = Color(25, 200, 25),
-        focusedTextColor = textColor,
-        unfocusedTextColor = textColor
-    )
-
-    val buttonColor = ButtonColors(
-        containerColor = Color(25, 200, 25),
-        contentColor = Color.White,
-        disabledContainerColor = Color.Green,
-        disabledContentColor = Color.Green
-    )
 
     var menuList_en = listOf(
         "Searching Building",
