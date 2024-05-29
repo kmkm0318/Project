@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,12 +17,14 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Divider
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -33,12 +36,23 @@ import com.example.project.Class.AuthManager
 import com.example.project.Class.NavViewModel
 import com.example.project.Class.Routes
 import com.example.project.Function.saveLanguage
+import com.example.project.Compose.TopBar
 import com.example.project.Navigation.LocalNavGraphViewModelStoreOwner
 import com.example.project.R
 import com.google.firebase.auth.FirebaseAuth
 
+
+
 @Composable
-fun MenuScreen(navController: NavHostController) {
+fun MenuScreen(navController: NavHostController){
+    Scaffold (topBar = {
+        TopBar(navController = navController)
+    }){contentPadding->
+        MenuScreenContent(navController = navController, contentPadding)
+    }
+}
+@Composable
+fun MenuScreenContent(navController: NavHostController, contentPadding:PaddingValues) {
     val navViewModel: NavViewModel =
         viewModel(viewModelStoreOwner = LocalNavGraphViewModelStoreOwner.current)
 
@@ -54,7 +68,7 @@ fun MenuScreen(navController: NavHostController) {
         )
     )
 
-    val textColor = Color(25, 200, 25)
+    val textColor = colorResource(R.color.kudarkgreen)
 
     val textFieldColors = OutlinedTextFieldDefaults.colors(
         focusedBorderColor = Color.Green,
@@ -88,7 +102,8 @@ fun MenuScreen(navController: NavHostController) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(contentPadding)
+            .padding(start = 16.dp, end = 16.dp),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.Start
     ) {

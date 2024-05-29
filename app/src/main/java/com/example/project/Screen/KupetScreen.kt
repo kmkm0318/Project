@@ -10,6 +10,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -41,17 +42,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.project.Class.StepCountViewModel
+import com.example.project.Compose.TopBar
 import com.example.project.R
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 
-
+@Composable
+fun KupetScreen(navController: NavHostController,  viewModel: StepCountViewModel) {
+    Scaffold(
+        topBar = {TopBar(navController = navController)}
+    ) {contentPadding->
+        KupetScreenContent(viewModel, contentPadding = contentPadding)
+    }
+}
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun KupetScreen(viewModel: StepCountViewModel) {
+fun KupetScreenContent(viewModel: StepCountViewModel, contentPadding:PaddingValues) {
 
 
     val context = LocalContext.current
@@ -102,7 +112,9 @@ fun KupetScreen(viewModel: StepCountViewModel) {
     }
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(contentPadding),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceAround
     ) {
