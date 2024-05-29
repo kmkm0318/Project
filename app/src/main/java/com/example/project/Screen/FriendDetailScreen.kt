@@ -24,7 +24,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.project.Class.AuthManager
 import com.example.project.Class.NavViewModel
-import com.example.project.Function.getCharacterImage
 import com.example.project.Navigation.LocalNavGraphViewModelStoreOwner
 import com.example.project.R
 
@@ -83,7 +82,7 @@ fun FriendDetailScreen(navController: NavController) {
             fontFamily = fontFamily
         )
         Spacer(modifier = Modifier.size(50.dp))
-        getCharacterImage(characterData = navViewModel.friendData.characterData)
+        //getCharacterImage(characterData = navViewModel.friendData.characterData)
 
     }
 }

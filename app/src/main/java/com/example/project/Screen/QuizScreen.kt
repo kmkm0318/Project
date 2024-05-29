@@ -20,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -33,7 +34,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 
 
-data class Quiz(val question:String, val ans1:String, val ans2:String, val ans3:String, val ans4:String, val correctAns:String)
+data class Quiz(val question:String = "", val ans1:String= "", val ans2:String= "", val ans3:String= "", val ans4:String= "", val correctAns:String= "")
 
 @Composable
 fun QuizScreen(navController: NavController) {
@@ -45,8 +46,10 @@ fun QuizScreen(navController: NavController) {
 fun QuizScreenContent(navController: NavController, contentPadding:PaddingValues) {
 
     var Quiz by remember {
-        mutableStateOf<Quiz>(Quiz("", "", "", "", "", ""))
+        mutableStateOf<Quiz>(Quiz())
     }
+
+    val QuizList = mutableListOf<Quiz>()
 
     val db = Firebase.firestore
     db.collection("Quiz")
@@ -54,8 +57,10 @@ fun QuizScreenContent(navController: NavController, contentPadding:PaddingValues
         .addOnSuccessListener {result ->
             for (document in result){
                 val dataMap = document.data
-                //Log.d("db", "${document.id} => ${dataMap["question"].toString()}")
+                Log.d("db", "${document.id} => ${dataMap["question"].toString()}")
                 Quiz = Quiz(dataMap["question"].toString(), dataMap["ans1"].toString(), dataMap["ans2"].toString(), dataMap["ans3"].toString(), dataMap["ans4"].toString(), dataMap["correct_ans"].toString())
+                QuizList.add(Quiz)
+                Log.w("quizList", "$QuizList")
             }
         }
         .addOnFailureListener {exception ->
@@ -95,7 +100,7 @@ fun QuizScreenContent(navController: NavController, contentPadding:PaddingValues
             horizontalArrangement = Arrangement.Center
         ) {
             Button(modifier = Modifier.padding(20.dp), colors = ButtonDefaults.buttonColors(
-                colorResource(id = R.color.kumiddlegreen)), onClick = { checkAns(1, Quiz.correctAns.toInt(), navController) }) {
+                containerColor = colorResource(id = R.color.kumiddlegreen), contentColor = Color.White), onClick = { checkAns(1, Quiz.correctAns.toInt(), navController) }) {
                 Text(modifier = Modifier.padding(10.dp), fontSize = 20.sp, text = Quiz.ans1)
             }
             Button(modifier = Modifier.padding(20.dp), colors = ButtonDefaults.buttonColors(

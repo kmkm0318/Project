@@ -25,7 +25,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -98,8 +97,12 @@ fun Register(navController: NavHostController) {
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val register = when (navViewModel.language.value) {
+            "kr" -> "가입하기"
+            else -> "Register"
+        }
         Text(
-            text = stringResource(id = R.string.register),
+            text = register,
             fontSize = 40.sp,
             fontWeight = FontWeight.ExtraBold,
             modifier = Modifier.padding(top = 100.dp, bottom = 40.dp),
@@ -115,8 +118,12 @@ fun Register(navController: NavHostController) {
             value = userID ?: "",
             onValueChange = { userID = it },
             label = {
+                val emailID = when (navViewModel.language.value) {
+                    "kr" -> "이메일 아이디"
+                    else -> "Email ID"
+                }
                 Text(
-                    stringResource(id = R.string.emailID),
+                    text = emailID,
                     color = textColor,
                     fontFamily = fontFamily
                 )
@@ -135,8 +142,12 @@ fun Register(navController: NavHostController) {
             value = userPasswd ?: "",
             onValueChange = { userPasswd = it },
             label = {
+                val passWord = when (navViewModel.language.value) {
+                    "kr" -> "패스워드"
+                    else -> "PassWord"
+                }
                 Text(
-                    stringResource(id = R.string.password),
+                    text = passWord,
                     color = textColor,
                     fontFamily = fontFamily
                 )
@@ -157,8 +168,12 @@ fun Register(navController: NavHostController) {
             value = studentID ?: "",
             onValueChange = { studentID = it },
             label = {
+                val studentID = when (navViewModel.language.value) {
+                    "kr" -> "학번"
+                    else -> "Student ID"
+                }
                 Text(
-                    stringResource(id = R.string.studentID),
+                    text = studentID,
                     color = textColor,
                     fontFamily = fontFamily
                 )
@@ -190,8 +205,12 @@ fun Register(navController: NavHostController) {
 
 
         }) {
+            val register = when (navViewModel.language.value) {
+                "kr" -> "가입"
+                else -> "Register"
+            }
             Text(
-                text = stringResource(id = R.string.register),
+                text = register,
                 fontFamily = fontFamily,
                 modifier = Modifier
                     .wrapContentSize(Alignment.Center)

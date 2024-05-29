@@ -1,18 +1,15 @@
 package com.example.project.Navigation
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -23,12 +20,8 @@ import com.example.project.Class.NavViewModel
 import com.example.project.Class.Routes
 import com.example.project.Class.StepCountViewModel
 import com.example.project.Compose.BottomNavigationBar
-import com.example.project.Function.RequestLocationPermission
 import com.example.project.Screen.LoginScreen
 import com.example.project.Screen.Register
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.Priority
-import com.google.android.gms.maps.model.LatLng
 
 @Composable
 fun rememberViewModelStoreOwner(): ViewModelStoreOwner {
@@ -47,9 +40,10 @@ fun MainScreen(navController: NavHostController) {
     val navStoreOwner = rememberViewModelStoreOwner()
 
     val context = LocalContext.current
-    val viewModel = remember{
+    val viewModel = remember {
         StepCountViewModel(context)
     }
+
 
     CompositionLocalProvider(
         LocalNavGraphViewModelStoreOwner provides navStoreOwner
@@ -71,7 +65,11 @@ fun MainScreen(navController: NavHostController) {
             }
         ) { contentPadding ->
 
-            Column(modifier = Modifier.padding(contentPadding).background(color = Color(235, 255, 235))) {
+            Column(
+                modifier = Modifier
+                    .padding(contentPadding)
+                    //.background(color = Color(235, 255, 235))
+            ) {
                 NavHost(
                     navController = navController,
                     startDestination = Routes.Login.route
@@ -84,7 +82,7 @@ fun MainScreen(navController: NavHostController) {
                         Register(navController)
                     }
 
-                    MainNavGraph(navController, viewModel)
+                    MainNavGraph(navController, viewModel, navViewModel)
 
                 }
             }
