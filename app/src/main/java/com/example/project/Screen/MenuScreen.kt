@@ -40,15 +40,16 @@ import com.google.firebase.auth.FirebaseAuth
 
 
 @Composable
-fun MenuScreen(navController: NavHostController){
-    Scaffold (topBar = {
+fun MenuScreen(navController: NavHostController) {
+    Scaffold(topBar = {
         TopBar(navController = navController)
-    }){contentPadding->
+    }) { contentPadding ->
         MenuScreenContent(navController = navController, contentPadding)
     }
 }
+
 @Composable
-fun MenuScreenContent(navController: NavHostController, contentPadding:PaddingValues) {
+fun MenuScreenContent(navController: NavHostController, contentPadding: PaddingValues) {
     val navViewModel: NavViewModel =
         viewModel(viewModelStoreOwner = LocalNavGraphViewModelStoreOwner.current)
 
@@ -67,13 +68,12 @@ fun MenuScreenContent(navController: NavHostController, contentPadding:PaddingVa
     val textColor = colorResource(R.color.kudarkgreen)
 
     var menuList_en = listOf(
-        "Searching Building",
-        "Searching Lecture Room",
-        "Public Transportation Information",
+        "Documentation",
+        "Character Dictionary",
         "Change Language",
         "Log Out"
     )
-    var menuList_kr = listOf("건물 검색", "강의실 검색", "대중교통 정보 확인", "언어 변경", "로그아웃")
+    var menuList_kr = listOf("앱 설명서", "캐릭터 도감", "언어 변경", "로그아웃")
 
     var menuList = menuList_en
     if (navViewModel.language.value == "kr") {
@@ -161,21 +161,27 @@ fun MenuScreenContent(navController: NavHostController, contentPadding:PaddingVa
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(8.dp)
                     .clickable(onClick = {
-                        if (idx == 3) {
-                            if (navViewModel.language.value == "kr") {
-                                navViewModel.language.value = "en"
-                            } else {
-                                navViewModel.language.value = "kr"
+                        when (idx) {
+                            0 -> {}
+                            1 -> {}
+                            2 -> {
+                                if (navViewModel.language.value == "kr") {
+                                    navViewModel.language.value = "en"
+                                } else {
+                                    navViewModel.language.value = "kr"
+                                }
+                                saveLanguage(context, navViewModel.language.value)
                             }
-                            saveLanguage(context, navViewModel.language.value)
-                        } else if (idx == 4) {
-                            logout(navController) {
-                                navViewModel.loginStatus.value = false
+
+                            3 -> {
+                                logout(navController) {
+                                    navViewModel.loginStatus.value = false
+                                }
                             }
                         }
                     })
-                    .padding(8.dp)
             ) {
                 Text(
                     text = it,

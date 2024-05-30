@@ -1,7 +1,6 @@
 package com.example.project.Screen
 
 import android.app.Activity
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -102,17 +101,16 @@ fun LoginScreen(navController: NavHostController) {
     fun loginSuccess() {
         authManager.readFromDatabase(navViewModel.userData, {
             navViewModel.userData = it
-            Log.i("1234loginSuccess", navViewModel.studentID?:"null")
+            navViewModel.loginStatus.value = true
+            navController.navigate(Routes.Main.route) {
+                popUpTo(navController.graph.startDestinationId) {
+                    inclusive = true
+                }
+            }
         }, {
 
         })
-        navViewModel.loginStatus.value = true
 
-        navController.navigate(Routes.Main.route) {
-            popUpTo(navController.graph.startDestinationId) {
-                inclusive = true
-            }
-        }
     }
 
     Column(

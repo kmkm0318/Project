@@ -184,8 +184,7 @@ fun Register(navController: NavHostController) {
                 showNotification(activity, "Not all Text Fields are Filled")
             } else {
                 authManager.signUpWithEmail(userID!!, userPasswd!!, studentID!!, onSuccess = {
-                    navController.navigate(Routes.Map.route)
-                    navViewModel.loginStatus.value = true
+                    navController.navigate(Routes.Login.route)
                 }, onFailure = {
 
                 })
