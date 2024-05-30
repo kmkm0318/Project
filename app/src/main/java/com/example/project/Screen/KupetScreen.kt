@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -80,7 +79,7 @@ fun KupetScreenContent(
 ) {
     val activity = LocalContext.current as Activity
     val authManager = AuthManager(activity)
-    authManager.readFromDatabase({navViewModel.userData = it}, {})
+    authManager.readFromDatabase(navViewModel.userData,{navViewModel.userData = it}, {})
 
     var userData by remember {
         mutableStateOf(UserData())

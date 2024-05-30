@@ -36,10 +36,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.project.Class.AuthManager
-import com.example.project.Class.CharacterData
 import com.example.project.Class.NavViewModel
 import com.example.project.Class.Routes
-import com.example.project.Class.UserData
 import com.example.project.Function.showNotification
 import com.example.project.Navigation.LocalNavGraphViewModelStoreOwner
 import com.example.project.R
@@ -123,9 +121,7 @@ fun Register(navController: NavHostController) {
                     else -> "Email ID"
                 }
                 Text(
-                    text = emailID,
-                    color = textColor,
-                    fontFamily = fontFamily
+                    text = emailID, color = textColor, fontFamily = fontFamily
                 )
             },
             // 다음 텍스트 필드로 이동할 수 있도록 설정
@@ -147,9 +143,7 @@ fun Register(navController: NavHostController) {
                     else -> "PassWord"
                 }
                 Text(
-                    text = passWord,
-                    color = textColor,
-                    fontFamily = fontFamily
+                    text = passWord, color = textColor, fontFamily = fontFamily
                 )
             },
             visualTransformation = PasswordVisualTransformation(),
@@ -173,9 +167,7 @@ fun Register(navController: NavHostController) {
                     else -> "Student ID"
                 }
                 Text(
-                    text = studentID,
-                    color = textColor,
-                    fontFamily = fontFamily
+                    text = studentID, color = textColor, fontFamily = fontFamily
                 )
             },
             keyboardOptions = KeyboardOptions(
@@ -192,12 +184,8 @@ fun Register(navController: NavHostController) {
                 showNotification(activity, "Not all Text Fields are Filled")
             } else {
                 authManager.signUpWithEmail(userID!!, userPasswd!!, studentID!!, onSuccess = {
-                    val userData = UserData(studentID!!)
-                    userData.characterList = listOf(CharacterData("둘리"))
-                    userData.friendList = listOf()
-                    authManager.writeToDatabase(userData,
-                        { navController.navigate(Routes.Login.route) },
-                        {})
+                    navController.navigate(Routes.Map.route)
+                    navViewModel.loginStatus.value = true
                 }, onFailure = {
 
                 })
@@ -212,8 +200,7 @@ fun Register(navController: NavHostController) {
             Text(
                 text = register,
                 fontFamily = fontFamily,
-                modifier = Modifier
-                    .wrapContentSize(Alignment.Center)
+                modifier = Modifier.wrapContentSize(Alignment.Center)
             )
         }
     }

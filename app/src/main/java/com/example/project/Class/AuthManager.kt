@@ -1,6 +1,7 @@
 package com.example.project.Class
 
 import android.app.Activity
+import android.util.Log
 import android.widget.Toast
 import com.example.project.Function.showNotification
 import com.google.firebase.Firebase
@@ -38,10 +39,11 @@ class AuthManager(private val activity: Activity) {
     ) {
         val database = Firebase.database
         val reference = database.getReference("users")
+        var isStudentIdExists = false
 
         reference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                var isStudentIdExists = false
+
                 for (childSnapshot in dataSnapshot.children) {
                     val existingStudentID =
                         childSnapshot.child("studentID").getValue(String::class.java)
@@ -57,7 +59,16 @@ class AuthManager(private val activity: Activity) {
                     auth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(activity) { task ->
                             if (task.isSuccessful) {
-                                // 가입 성공
+                                val characterList = listOf(
+                                    CharacterData("duri", 0),
+                                    CharacterData("frole", 0),
+                                    CharacterData("momo", 0)
+                                )
+                                val userData = UserData(
+                                    studentID = studentID,
+                                    characterList = characterList
+                                )
+                                writeToDatabase(userData, onSuccess)
                                 onSuccess()
                             } else {
                                 // 가입 실패
@@ -84,106 +95,36 @@ class AuthManager(private val activity: Activity) {
         val user = FirebaseAuth.getInstance().currentUser
         val userId = user?.uid
         val database = Firebase.database
-        val reference = database.getReference("users").child(userId ?: "default")
 
-        // userData를 Map으로 변환
-        val userDataMap = mapOf(
-            "studentID" to userData.studentID,
-            "steps_current" to userData.steps_current,
-            "steps_total" to userData.steps_total,
-            "characterIndex" to userData.characterIndex,
-            "prev_steps_total" to userData.prev_steps_total,
-            "characterList" to userData.characterList?.map { characterData ->
-                mapOf(
-                    "name" to characterData.name,
-                    "level" to characterData.level,
-                    "steps_current" to characterData.steps_current,
-                    "steps_total" to characterData.steps_total
-                )
-            },
-            "friendList" to userData.friendList?.map { friendData ->
-                mapOf(
-                    "name" to friendData.name,
-                    "studentID" to friendData.studentID,
-                    "characterData" to friendData.characterData
-                )
-            }
+        val userRef = database.getReference("users")
+        val studentRef = userRef.child(userId.toString())
 
-        )
-
-        // 데이터 쓰기
-        reference.updateChildren(userDataMap).addOnSuccessListener {
+        studentRef.setValue(userData).addOnSuccessListener {
             onSuccess()
-        }.addOnFailureListener { e ->
-            Toast.makeText(activity, "쓰기 실패", Toast.LENGTH_SHORT).show()
-            onFailure()
         }
     }
 
-    fun readFromDatabase(onSuccess: (UserData) -> Unit, onFailure: () -> Unit) {
+    fun readFromDatabase(userData: UserData, onSuccess: (UserData) -> Unit, onFailure: () -> Unit) {
         // 데이터베이스 참조 가져오기
         val user = FirebaseAuth.getInstance().currentUser
         val userId = user?.uid
         val database = Firebase.database
-        val reference = database.getReference("users").child(userId ?: "default")
 
-        // 데이터 읽기
-        reference.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // 데이터 가져오기 성공
-                val studentID = dataSnapshot.child("studentID").getValue(String::class.java)
-                val steps_current = dataSnapshot.child("steps_current").getValue(Int::class.java)
-                val steps_total = dataSnapshot.child("steps_total").getValue(Int::class.java)
-                val prev_steps_total = dataSnapshot.child("prev_steps_total").getValue(Int::class.java)
-                val characterIndex = dataSnapshot.child("characterIndex").getValue(Int::class.java)
-                val characterList =
-                    dataSnapshot.child("characterList").children.map { characterSnapshot ->
-                        val name = characterSnapshot.child("name").getValue(String::class.java)
-                        val steps_current =
-                            characterSnapshot.child("steps_current").getValue(Int::class.java)
-                        val steps_total =
-                            characterSnapshot.child("steps_total").getValue(Int::class.java)
-                        val level = characterSnapshot.child("level").getValue(Int::class.java)
+        val userRef = database.getReference("users")
 
-                        CharacterData(
-                            name = name ?: "default",
-                            steps_total = steps_total ?: 1000,
-                            steps_current = steps_current ?: 0,
-                            level = level ?: 0
-                        )
-                    }
-                val friendList =
-                    dataSnapshot.child("friendList").children.map { friendSnapshot ->
-                        val name = friendSnapshot.child("name").getValue(String::class.java)
-                        val studentID =
-                            friendSnapshot.child("studentID").getValue(String::class.java)
-                        val characterData =
-                            friendSnapshot.child("characterData")
-                                .getValue(CharacterData::class.java)
-                        FriendData(
-                            name = name ?: "name",
-                            studentID = studentID ?: "0",
-                            characterData = characterData ?: CharacterData()
-                        )
-                    }
+        val studentRef = userRef.child(userId.toString())
 
-
-                val res = UserData(
-                    studentID ?: "default",
-                    steps_current = steps_current ?: 0,
-                    steps_total = steps_total ?: 0,
-                    prev_steps_total = prev_steps_total ?:0,
-                    characterIndex = characterIndex ?: 0,
-                    characterList = characterList,
-                    friendList = friendList
-                )
-                onSuccess(res)
+        studentRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val user = snapshot.getValue(userData::class.java)
+                user?.let {
+                    onSuccess(it)
+                    Log.i("1234read", it.studentID)
+                }
             }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                // 데이터 가져오기 실패
-                Toast.makeText(activity, "읽기 실패", Toast.LENGTH_SHORT).show()
-                onFailure()
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
             }
         })
     }
