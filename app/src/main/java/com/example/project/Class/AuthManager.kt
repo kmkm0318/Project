@@ -92,6 +92,7 @@ class AuthManager(private val activity: Activity) {
             "steps_current" to userData.steps_current,
             "steps_total" to userData.steps_total,
             "characterIndex" to userData.characterIndex,
+            "prev_steps_total" to userData.prev_steps_total,
             "characterList" to userData.characterList?.map { characterData ->
                 mapOf(
                     "name" to characterData.name,
@@ -133,6 +134,7 @@ class AuthManager(private val activity: Activity) {
                 val studentID = dataSnapshot.child("studentID").getValue(String::class.java)
                 val steps_current = dataSnapshot.child("steps_current").getValue(Int::class.java)
                 val steps_total = dataSnapshot.child("steps_total").getValue(Int::class.java)
+                val prev_steps_total = dataSnapshot.child("prev_steps_total").getValue(Int::class.java)
                 val characterIndex = dataSnapshot.child("characterIndex").getValue(Int::class.java)
                 val characterList =
                     dataSnapshot.child("characterList").children.map { characterSnapshot ->
@@ -170,6 +172,7 @@ class AuthManager(private val activity: Activity) {
                     studentID ?: "default",
                     steps_current = steps_current ?: 0,
                     steps_total = steps_total ?: 0,
+                    prev_steps_total = prev_steps_total ?:0,
                     characterIndex = characterIndex ?: 0,
                     characterList = characterList,
                     friendList = friendList

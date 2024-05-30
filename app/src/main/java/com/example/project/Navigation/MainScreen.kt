@@ -44,6 +44,7 @@ fun MainScreen(navController: NavHostController) {
         StepCountViewModel(context)
     }
 
+
     CompositionLocalProvider(
         LocalNavGraphViewModelStoreOwner provides navStoreOwner
     ) {
@@ -81,7 +82,7 @@ fun MainScreen(navController: NavHostController) {
                         Register(navController)
                     }
 
-                    MainNavGraph(navController, viewModel)
+                    MainNavGraph(navController, viewModel, navViewModel)
 
                 }
             }

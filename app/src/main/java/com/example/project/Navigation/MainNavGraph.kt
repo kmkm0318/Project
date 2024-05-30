@@ -1,10 +1,10 @@
 package com.example.project.Navigation
 
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.example.project.Class.NavViewModel
 import com.example.project.Class.Routes
 import com.example.project.Class.StepCountViewModel
 import com.example.project.Screen.CorrectAns
@@ -19,7 +19,8 @@ import com.example.project.Screen.WrongAns
 
 fun NavGraphBuilder.MainNavGraph(
     navController: NavHostController,
-    viewModel: StepCountViewModel
+    viewModel: StepCountViewModel,
+    navViewModel: NavViewModel
 ) {
 
     navigation(startDestination = "Map", route = "Main") {
@@ -32,7 +33,7 @@ fun NavGraphBuilder.MainNavGraph(
         }
 
         composable(route = Routes.Kupet.route) {
-            KupetScreen(navController, viewModel)
+            KupetScreen(navController, viewModel, navViewModel)
         }
 
         composable(route = Routes.Friend.route) {
