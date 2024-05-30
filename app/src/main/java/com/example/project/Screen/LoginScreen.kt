@@ -20,7 +20,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,7 +50,6 @@ import com.example.project.Function.loadLanguage
 import com.example.project.Function.showNotification
 import com.example.project.Navigation.LocalNavGraphViewModelStoreOwner
 import com.example.project.R
-import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun LoginScreen(navController: NavHostController) {
@@ -114,12 +112,6 @@ fun LoginScreen(navController: NavHostController) {
             popUpTo(navController.graph.startDestinationId) {
                 inclusive = true
             }
-        }
-    }
-
-    LaunchedEffect(Unit) {
-        if (FirebaseAuth.getInstance().currentUser != null) {
-            loginSuccess()
         }
     }
 
