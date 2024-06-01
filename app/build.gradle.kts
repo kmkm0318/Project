@@ -74,6 +74,8 @@ dependencies {
     implementation(libs.play.services.location)
     implementation(libs.accompanist.permissions)
     implementation(libs.material)
+    implementation(libs.jsoup)
+    implementation(libs.androidx.compose.material.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
