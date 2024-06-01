@@ -1,7 +1,7 @@
 package com.example.project.Function
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -10,12 +10,7 @@ import com.example.project.Class.CharacterData
 
 @Composable
 fun getCharacterImage(characterData: CharacterData) {
-    val characterName = when {
-        characterData.name == "둘리" -> "duri"
-        characterData.name == "프로리" -> "frole"
-        characterData.name == "모모" -> "momo"
-        else -> "duri"
-    }
+    val characterName = characterData.name
     val characterLevel = characterData.level.toString()
 
     val fileName = characterName + characterLevel
@@ -25,5 +20,5 @@ fun getCharacterImage(characterData: CharacterData) {
         LocalContext.current.packageName
     )
 
-    Image(painter = painterResource(id = fileID), contentDescription = "", Modifier.fillMaxSize())
+    Image(painter = painterResource(id = fileID), contentDescription = "", Modifier.fillMaxWidth())
 }

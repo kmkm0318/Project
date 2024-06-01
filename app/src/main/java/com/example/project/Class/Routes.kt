@@ -10,6 +10,8 @@ sealed class Routes (val route: String) {
     object Welcome : Routes("Welcome")
     object Main : Routes("Main")
     object Menu : Routes("Menu")
+    object Documentation : Routes("Documentation")
+    object CharacterDictionary : Routes("CharacterDictionary")
     object Map : Routes("Map")
     object Kupet : Routes("Kupet")
     object Friend : Routes("Friend")
