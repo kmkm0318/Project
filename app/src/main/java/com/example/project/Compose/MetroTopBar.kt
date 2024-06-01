@@ -12,14 +12,12 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.example.project.Class.Routes
 
 @Composable
-fun TopBar(navController: NavController) {
+fun MetroTopBar(navController: NavController) {
     Row(horizontalArrangement = Arrangement.Start) {
-        IconButton(onClick={navController.navigate(Routes.Map.route){
-            popUpTo(Routes.Map.route) {
+        IconButton(onClick={navController.navigate(Routes.Metro.route){
+            popUpTo(Routes.Metro.route) {
                 saveState = true
             }
-            launchSingleTop = true
-            restoreState = true
         } }){
             Icon(Icons.Default.ArrowBackIosNew,null)
         }

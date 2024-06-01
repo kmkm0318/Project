@@ -13,3 +13,11 @@
 .externalNativeBuild
 .cxx
 local.properties
+/caches
+/daemon
+/jdks
+/kotlin-profile
+/.tmp
+/wrapper/
+/native
+/android
