@@ -6,13 +6,18 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.project.Class.NavViewModel
 import com.example.project.Class.Routes
+import com.example.project.Class.StationViewModel
 import com.example.project.Class.StepCountViewModel
+import com.example.project.Screen.ChildrensGrandPark
 import com.example.project.Screen.CorrectAns
 import com.example.project.Screen.FriendDetailScreen
 import com.example.project.Screen.FriendScreen
+import com.example.project.Screen.KonkukUnivStation
+import com.example.project.Screen.KueuiStation
 import com.example.project.Screen.KupetScreen
 import com.example.project.Screen.MapScreen
 import com.example.project.Screen.MenuScreen
+import com.example.project.Screen.MetroArrivalScreen
 import com.example.project.Screen.QuizScreen
 import com.example.project.Screen.WrongAns
 
@@ -29,7 +34,7 @@ fun NavGraphBuilder.MainNavGraph(
         }
 
         composable(route = Routes.Map.route) {
-            MapScreen()
+            MapScreen(navController)
         }
 
         composable(route = Routes.Kupet.route) {
@@ -54,5 +59,22 @@ fun NavGraphBuilder.MainNavGraph(
         composable(route = Routes.WrongAns.route) {
             WrongAns(navController)
         }
+        
+        composable(route = Routes.Metro.route){
+            MetroArrivalScreen(navController, stationViewModel = StationViewModel())
+        }
+
+        composable(route = Routes.KonkukUnivStation.route){
+            KonkukUnivStation(navController, stationViewModel = StationViewModel())
+        }
+
+        composable(route = Routes.ChildrensGrandPark.route){
+            ChildrensGrandPark(navController, stationViewModel = StationViewModel())
+        }
+
+        composable(route = Routes.KueuiStation.route){
+            KueuiStation(navController, stationViewModel = StationViewModel())
+        }
+
     }
 }

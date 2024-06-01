@@ -1,5 +1,6 @@
 package com.example.project.Screen
 
+import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -34,9 +35,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusManager
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
@@ -46,8 +44,10 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.project.Class.Routes
+import com.example.project.Function.FindBuilding
 import com.example.project.Function.RequestLocationPermission
-import com.example.project.Function.buildingSearch
 import com.example.project.R
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -62,13 +62,14 @@ import kotlinx.coroutines.delay
 
 
 @Composable
-fun MapScreen() {
+fun MapScreen(navController: NavController) {
     var search by remember{ mutableStateOf("") }
     val context = LocalContext.current
     val locationClient = remember{ LocationServices.getFusedLocationProviderClient(context) }
     var locationNow = remember{ mutableStateOf<LatLng?>(null) }
     val focusManager = LocalFocusManager.current
     var followCurrentLocation by remember{ mutableStateOf(true) }
+    val findBuilding = remember { FindBuilding() }
 
     val cameraPositionState = rememberCameraPositionState{
         position = CameraPosition.fromLatLngZoom(locationNow.value?: LatLng(37.5424219288, 127.076761802), 18f)}
@@ -112,7 +113,6 @@ fun MapScreen() {
     Box(modifier = Modifier
         .fillMaxWidth(),
     ){
-
         LaunchedEffect(followCurrentLocation){
             while(followCurrentLocation){
                 getLastKnownLocation(locationClient) { latLng ->
@@ -151,7 +151,7 @@ fun MapScreen() {
             trailingIcon = {
                 IconButton(onClick = {
                     //검색기능
-                    buildingSearch(search, cameraPositionState)
+                    findBuilding.buildingSearch(search,cameraPositionState)
                     focusManager.clearFocus()
                     clearText()
                     followCurrentLocation = false
@@ -205,6 +205,14 @@ fun MapScreen() {
             elevation = FloatingActionButtonDefaults.elevation(0.dp),
             onClick = {
                 /*근처 대중교통 시간표 검색*/
+                navController.navigate(Routes.Metro.route) {
+                    popUpTo(Routes.Map.route) {
+                        saveState = true
+                        inclusive = false
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
             }) {
             Icon(imageVector = Icons.Default.DirectionsTransitFilled,
                 contentDescription = null,

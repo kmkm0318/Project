@@ -23,6 +23,8 @@ playServicesMaps = "18.2.0"
 playServicesLocation = "21.2.0"
 accompanistPermissions = "0.35.1-alpha"
 materialVersion = "1.7.0-beta01"
+jsoup = "1.17.2"
+androidxMaterial = "1.7.0-beta02"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -54,6 +56,8 @@ play-services-maps = { group = "com.google.android.gms", name = "play-services-m
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanistPermissions" }
 material = { group = "androidx.compose.material", name = "material", version.ref = "materialVersion" }
+jsoup = { group = "org.jsoup", name = "jsoup", version.ref = "jsoup" }
+androidx-compose-material-material = { group = "androidx.compose.material", name = "material", version.ref = "androidxMaterial" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
