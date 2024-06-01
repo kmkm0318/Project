@@ -18,3 +18,6 @@ local.properties
 /jdks
 /kotlin-profile
 /.tmp
+/wrapper
+/native
+/android

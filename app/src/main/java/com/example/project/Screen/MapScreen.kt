@@ -58,6 +58,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.rememberCameraPositionState
+import kotlinx.coroutines.delay
 
 
 @Composable
@@ -67,6 +68,7 @@ fun MapScreen() {
     val locationClient = remember{ LocationServices.getFusedLocationProviderClient(context) }
     var locationNow = remember{ mutableStateOf<LatLng?>(null) }
     val focusManager = LocalFocusManager.current
+    var followCurrentLocation by remember{ mutableStateOf(true) }
 
     val cameraPositionState = rememberCameraPositionState{
         position = CameraPosition.fromLatLngZoom(locationNow.value?: LatLng(37.5424219288, 127.076761802), 18f)}
@@ -103,13 +105,21 @@ fun MapScreen() {
         }
     )
 
+    fun clearText(){
+        search = ""
+    }
+
     Box(modifier = Modifier
         .fillMaxWidth(),
     ){
-        LaunchedEffect(Unit){
-            getLastKnownLocation(locationClient) { latLng ->
-                locationNow.value = latLng
-                cameraPositionState.move(CameraUpdateFactory.newLatLngZoom(latLng, 18f))
+
+        LaunchedEffect(followCurrentLocation){
+            while(followCurrentLocation){
+                getLastKnownLocation(locationClient) { latLng ->
+                    locationNow.value = latLng
+                    cameraPositionState.move(CameraUpdateFactory.newLatLngZoom(latLng, 18f))
+                }
+                delay(1000L)
             }
         }
         GoogleMap(modifier = Modifier.fillMaxSize(),
@@ -137,12 +147,14 @@ fun MapScreen() {
                 )
                 .fillMaxWidth(),
             colors = textFieldColors,
-            placeholder = { Text(text="건물/강의실 검색", fontFamily=fontFamily, fontSize = 20.sp) },
+            placeholder = { Text(text="찾고 싶은 강의실을 검색하세요!", fontFamily=fontFamily, fontSize = 20.sp) },
             trailingIcon = {
                 IconButton(onClick = {
                     //검색기능
                     buildingSearch(search, cameraPositionState)
                     focusManager.clearFocus()
+                    clearText()
+                    followCurrentLocation = false
                 }) {
                     Icon(
                         modifier = Modifier
@@ -156,20 +168,6 @@ fun MapScreen() {
             },
             singleLine = true
         )
-//        Box(modifier = Modifier.fillMaxSize(),
-//            contentAlignment = Alignment.Center){
-//            Canvas(
-//                modifier = Modifier
-//                    .size(16.dp)
-//                    .fillMaxSize(),
-//            ) {
-//                drawCircle(
-//                    color = Color.Green,
-//                    radius = size.minDimension / 2,
-//                    style = Fill
-//                )
-//            }
-//        }
 
     }
 
@@ -189,6 +187,7 @@ fun MapScreen() {
                 getLastKnownLocation(locationClient) { latLng ->
                     locationNow.value = latLng
                     cameraPositionState.move(CameraUpdateFactory.newLatLngZoom(latLng, 18f))
+                    followCurrentLocation = true
                 }
             }
         ) {
