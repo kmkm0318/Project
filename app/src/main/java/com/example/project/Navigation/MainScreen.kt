@@ -17,7 +17,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.project.Class.NavViewModel
-import com.example.project.Class.Routes
 import com.example.project.Class.StepCountViewModel
 import com.example.project.Compose.BottomNavigationBar
 import com.example.project.Screen.LoginScreen

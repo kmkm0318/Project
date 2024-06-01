@@ -7,7 +7,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.project.Class.Routes
 
 @Composable
 fun CorrectAns(navController: NavController) {

@@ -26,7 +26,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.project.Class.Routes
 import com.example.project.Compose.TopBar
 import com.example.project.R
 import com.google.android.play.integrity.internal.c

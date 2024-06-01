@@ -1,15 +1,17 @@
 package com.example.project.Navigation
 
+import Routes
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.project.Class.NavViewModel
-import com.example.project.Class.Routes
 import com.example.project.Class.StationViewModel
 import com.example.project.Class.StepCountViewModel
+import com.example.project.Screen.CharacterDictionaryScreen
 import com.example.project.Screen.ChildrensGrandPark
 import com.example.project.Screen.CorrectAns
+import com.example.project.Screen.DocumentationScreen
 import com.example.project.Screen.FriendDetailScreen
 import com.example.project.Screen.FriendScreen
 import com.example.project.Screen.KonkukUnivStation
