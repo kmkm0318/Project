@@ -31,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -76,18 +77,18 @@ fun FriendScreen(navController: NavController) {
         )
     )
 
-    val textColor = Color(25, 200, 25)
+    val textColor = colorResource(id = R.color.kudarkgreen)
 
     val textFieldColors = OutlinedTextFieldDefaults.colors(
-        focusedBorderColor = Color.Green,
-        unfocusedBorderColor = Color(25, 200, 25),
-        cursorColor = Color(25, 200, 25),
+        focusedBorderColor = colorResource(id = R.color.kudarkgreen),
+        unfocusedBorderColor = colorResource(id = R.color.kumiddlegreen),
+        cursorColor = colorResource(id = R.color.kudarkgreen),
         focusedTextColor = textColor,
         unfocusedTextColor = textColor
     )
 
     val buttonColor = ButtonColors(
-        containerColor = Color(25, 225, 25),
+        containerColor = colorResource(id = R.color.kumiddlegreen),
         contentColor = Color.White,
         disabledContainerColor = Color.Green,
         disabledContentColor = Color.Green
@@ -242,18 +243,18 @@ fun friendRow(
         )
     )
 
-    val textColor = Color(25, 200, 25)
+    val textColor = colorResource(id = R.color.kudarkgreen)
 
     val textFieldColors = OutlinedTextFieldDefaults.colors(
-        focusedBorderColor = Color.Green,
-        unfocusedBorderColor = Color(25, 200, 25),
-        cursorColor = Color(25, 200, 25),
+        focusedBorderColor = colorResource(id = R.color.kudarkgreen),
+        unfocusedBorderColor = colorResource(id = R.color.kumiddlegreen),
+        cursorColor = colorResource(id = R.color.kudarkgreen),
         focusedTextColor = textColor,
         unfocusedTextColor = textColor
     )
 
     val buttonColor = ButtonColors(
-        containerColor = Color(25, 225, 25),
+        containerColor = colorResource(id = R.color.kumiddlegreen),
         contentColor = Color.White,
         disabledContainerColor = Color.Green,
         disabledContentColor = Color.Green

@@ -32,6 +32,14 @@ fun NavGraphBuilder.MainNavGraph(
         composable(route = Routes.Menu.route) { it ->
             MenuScreen(navController)
         }
+        
+        composable(route = Routes.Documentation.route){
+            DocumentationScreen(navController = navController)
+        }
+
+        composable(route = Routes.CharacterDictionary.route){
+            CharacterDictionaryScreen(navController = navController)
+        }
 
         composable(route = Routes.Map.route) {
             MapScreen(navController)

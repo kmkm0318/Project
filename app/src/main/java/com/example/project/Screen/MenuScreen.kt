@@ -164,8 +164,12 @@ fun MenuScreenContent(navController: NavHostController, contentPadding: PaddingV
                     .padding(8.dp)
                     .clickable(onClick = {
                         when (idx) {
-                            0 -> {}
-                            1 -> {}
+                            0 -> {
+                                navController.navigate(Routes.Documentation.route)
+                            }
+                            1 -> {
+                                navController.navigate(Routes.CharacterDictionary.route)
+                            }
                             2 -> {
                                 if (navViewModel.language.value == "kr") {
                                     navViewModel.language.value = "en"
