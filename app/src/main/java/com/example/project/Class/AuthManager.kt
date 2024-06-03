@@ -15,6 +15,9 @@ import com.google.firebase.database.database
 class AuthManager(private val activity: Activity) {
     private val auth = Firebase.auth
 
+    var preLat = 0.0
+    var preLng = 0.0
+
     fun signInWithEmail(
         email: String, password: String, onSuccess: () -> Unit, onFailure: () -> Unit
     ) {
@@ -120,6 +123,37 @@ class AuthManager(private val activity: Activity) {
                 user?.let {
                     onSuccess(it)
                     Log.i("1234read", it.studentID)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
+    }
+
+    fun startValueChangeListener(onValueChange: (Double, Double) -> Unit){
+        // 데이터베이스 참조 가져오기
+        val user = FirebaseAuth.getInstance().currentUser
+        val userId = user?.uid
+        val database = Firebase.database
+
+        val userRef = database.getReference("users")
+
+        val studentRef = userRef.child(userId.toString())
+
+        studentRef.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val friendLat = snapshot.child("friendLocationLat").getValue(Double::class.java)
+                val friendLng = snapshot.child("friendLocationLng").getValue(Double::class.java)
+
+                if(friendLat!=null && friendLng!=null){
+                    if(preLat != friendLat || preLng == friendLng){
+                        preLat = friendLat
+                        preLng = friendLng
+
+                        onValueChange(friendLat, friendLng)
+                    }
                 }
             }
 

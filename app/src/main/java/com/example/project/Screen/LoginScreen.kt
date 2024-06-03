@@ -1,5 +1,6 @@
 package com.example.project.Screen
 
+import Routes
 import android.app.Activity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -44,6 +45,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.project.Class.AuthManager
 import com.example.project.Class.NavViewModel
+import com.example.project.Function.ShowFriendOnMap
 import com.example.project.Function.loadLanguage
 import com.example.project.Function.showNotification
 import com.example.project.Navigation.LocalNavGraphViewModelStoreOwner
@@ -96,11 +98,15 @@ fun LoginScreen(navController: NavHostController) {
 
     navViewModel.language.value = loadLanguage(context)
 
-
     fun loginSuccess() {
         authManager.readFromDatabase(navViewModel.userData, {
             navViewModel.userData = it
             navViewModel.loginStatus.value = true
+            authManager.startValueChangeListener({lat, lng->
+                navViewModel.userData.friendLocationLat = lat
+                navViewModel.userData.friendLocationLng = lng
+                ShowFriendOnMap()
+            })
             navController.navigate(Routes.Main.route) {
                 popUpTo(navController.graph.startDestinationId) {
                     inclusive = true

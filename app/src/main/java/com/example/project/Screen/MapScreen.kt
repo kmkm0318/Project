@@ -1,7 +1,6 @@
 package com.example.project.Screen
 
-import android.util.Log
-import androidx.compose.foundation.Canvas
+import Routes
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,8 +24,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldColors
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -44,9 +41,12 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.project.Class.NavViewModel
 import com.example.project.Function.FindBuilding
 import com.example.project.Function.RequestLocationPermission
+import com.example.project.Navigation.LocalNavGraphViewModelStoreOwner
 import com.example.project.R
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -62,6 +62,9 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun MapScreen(navController: NavController) {
+    val navViewModel: NavViewModel =
+        viewModel(viewModelStoreOwner = LocalNavGraphViewModelStoreOwner.current)
+
     var search by remember{ mutableStateOf("") }
     val context = LocalContext.current
     val locationClient = remember{ LocationServices.getFusedLocationProviderClient(context) }
@@ -90,6 +93,11 @@ fun MapScreen(navController: NavController) {
         focusedContainerColor = colorResource(id = R.color.kuhighlightgreen),
         unfocusedContainerColor = colorResource(id = R.color.kuhighlightgreen)
     )
+
+    locationNow.value?.let {
+        navViewModel.userData.locationNowLat = it.latitude
+        navViewModel.userData.locationNowLng = it.longitude
+    }
 
     RequestLocationPermission(
         onPermissionGranted = {
@@ -227,6 +235,7 @@ fun MapScreen(navController: NavController) {
             elevation = FloatingActionButtonDefaults.elevation(0.dp),
             onClick = {
                 /*인스타그램,카카오톡,위치공유,기타앱공유*/
+                onClickShareButton(navController)
             }) {
             Icon(imageVector = Icons.Default.Share,
                 contentDescription = null,
@@ -246,4 +255,8 @@ fun getLastKnownLocation(fusedLocationProviderClient: FusedLocationProviderClien
     } catch (e: SecurityException) {
         e.printStackTrace()  // 예외 처리
     }
+}
+
+fun onClickShareButton(navController: NavController) {
+    navController.navigate(Routes.Friend.route)
 }

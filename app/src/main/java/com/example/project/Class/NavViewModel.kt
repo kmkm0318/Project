@@ -14,9 +14,4 @@ class NavViewModel() : ViewModel(){
     var loginStatus = mutableStateOf( false )
 
     var friendData = FriendData()
-
-    fun updateUserData(readData: UserData){
-        userData.studentID = readData.studentID
-        userData.characterList = readData.characterList?.toMutableList()
-    }
 }
