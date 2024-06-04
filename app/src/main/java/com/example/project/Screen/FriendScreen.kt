@@ -50,6 +50,11 @@ import com.example.project.Function.getCharacterImage
 import com.example.project.Function.showNotification
 import com.example.project.Navigation.LocalNavGraphViewModelStoreOwner
 import com.example.project.R
+import com.google.firebase.Firebase
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.database
 
 @Composable
 fun FriendScreen(navController: NavController) {
@@ -346,7 +351,9 @@ fun friendRow(
                     Button(
 //                        modifier = Modifier.size(150.dp, 50.dp),
                         colors = buttonColor,
-                        onClick = { /*TODO*/ }) {
+                        onClick = {
+                            onClickLocationShareButton(navViewModel, friendData.studentID)
+                        }) {
                         val sendLocation = when (navViewModel.language.value) {
                             "kr" -> "위치 보내기"
                             else -> "Send\nLocation"
@@ -360,4 +367,22 @@ fun friendRow(
             }
         }
     }
+}
+
+fun onClickLocationShareButton(navViewModel: NavViewModel, friendID: String) {
+    val userRef = Firebase.database.getReference("users")
+    val friendRef = userRef.orderByChild("studentID").equalTo(friendID)
+
+    friendRef.addListenerForSingleValueEvent(object : ValueEventListener{
+        override fun onDataChange(snapshot: DataSnapshot) {
+            for(friend in snapshot.children){
+                friend.ref.child("friendLocationLat").setValue(navViewModel.userData.locationNowLat)
+                friend.ref.child("friendLocationLng").setValue(navViewModel.userData.locationNowLng)
+            }
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+            TODO("Not yet implemented")
+        }
+    })
 }
