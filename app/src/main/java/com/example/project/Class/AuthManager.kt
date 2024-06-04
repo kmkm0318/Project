@@ -1,7 +1,6 @@
 package com.example.project.Class
 
 import android.app.Activity
-import android.util.Log
 import android.widget.Toast
 import com.example.project.Function.showNotification
 import com.google.firebase.Firebase
@@ -17,6 +16,7 @@ class AuthManager(private val activity: Activity) {
 
     var preLat = 0.0
     var preLng = 0.0
+    var isFirstLoc = true
 
     fun signInWithEmail(
         email: String, password: String, onSuccess: () -> Unit, onFailure: () -> Unit
@@ -122,7 +122,6 @@ class AuthManager(private val activity: Activity) {
                 val user = snapshot.getValue(userData::class.java)
                 user?.let {
                     onSuccess(it)
-                    Log.i("1234read", it.studentID)
                 }
             }
 
@@ -148,7 +147,12 @@ class AuthManager(private val activity: Activity) {
                 val friendLng = snapshot.child("friendLocationLng").getValue(Double::class.java)
 
                 if(friendLat!=null && friendLng!=null){
-                    if(preLat != friendLat || preLng == friendLng){
+                    if(isFirstLoc){
+                        preLat = friendLat
+                        preLng = friendLng
+                        isFirstLoc = false
+                    }
+                    else if(preLat != friendLat || preLng != friendLng){
                         preLat = friendLat
                         preLng = friendLng
 
