@@ -1,5 +1,6 @@
 package com.example.project.Screen
 
+import Routes
 import android.app.Activity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -108,7 +109,7 @@ fun MenuScreenContent(navController: NavHostController, contentPadding: PaddingV
                         .fillMaxWidth()
                         .size(50.dp),
                     horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.Bottom
                 ) {
                     val dailyStep = when (navViewModel.language.value) {
                         "kr" -> "일일 걸음 수 : "
@@ -132,7 +133,7 @@ fun MenuScreenContent(navController: NavHostController, contentPadding: PaddingV
                         .fillMaxWidth()
                         .size(50.dp),
                     horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.Bottom
                 ) {
                     val wholeStep = when (navViewModel.language.value) {
                         "kr" -> "누적 걸음 수 : "
@@ -146,6 +147,30 @@ fun MenuScreenContent(navController: NavHostController, contentPadding: PaddingV
                     )
                     Text(
                         text = navViewModel.userData.steps_total.toString(),
+                        fontFamily = fontFamily,
+                        color = textColor,
+                        fontSize = 25.sp
+                    )
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .size(50.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.Bottom
+                ) {
+                    val calory = when (navViewModel.language.value) {
+                        "kr" -> "소모한 칼로리 : "
+                        else -> "Calories Burned  : "
+                    }
+                    Text(
+                        text = calory,
+                        fontFamily = fontFamily,
+                        color = textColor,
+                        fontSize = 20.sp
+                    )
+                    Text(
+                        text = (navViewModel.userData.steps_current * 0.57 * 80 / 1000).toString() + "kcal",
                         fontFamily = fontFamily,
                         color = textColor,
                         fontSize = 25.sp

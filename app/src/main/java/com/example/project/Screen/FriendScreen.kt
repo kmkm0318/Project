@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -22,6 +23,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -44,6 +46,7 @@ import androidx.navigation.NavController
 import com.example.project.Class.AuthManager
 import com.example.project.Class.FriendData
 import com.example.project.Class.NavViewModel
+import com.example.project.Compose.TopBar
 import com.example.project.Function.AddFriend
 import com.example.project.Function.UpdateFriendList
 import com.example.project.Function.getCharacterImage
@@ -58,6 +61,13 @@ import com.google.firebase.database.database
 
 @Composable
 fun FriendScreen(navController: NavController) {
+    Scaffold(topBar = { TopBar(navController = navController) }) { contentPadding ->
+        FriendScreenContent(navController, contentPadding)
+    }
+}
+
+@Composable
+fun FriendScreenContent(navController: NavController, contentPadding:PaddingValues) {
     val navViewModel: NavViewModel =
         viewModel(viewModelStoreOwner = LocalNavGraphViewModelStoreOwner.current)
 
@@ -106,7 +116,7 @@ fun FriendScreen(navController: NavController) {
     Column(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Top,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize().padding(contentPadding)
     ) {
         Row(
             modifier = Modifier
