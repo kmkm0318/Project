@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -102,7 +103,7 @@ fun LoginScreen(navController: NavHostController) {
         authManager.readFromDatabase(navViewModel.userData, {
             navViewModel.userData = it
             navViewModel.loginStatus.value = true
-            authManager.startValueChangeListener({lat, lng->
+            authManager.startValueChangeListener({ lat, lng ->
                 navViewModel.userData.friendLocationLat = lat
                 navViewModel.userData.friendLocationLng = lng
                 ShowFriendOnMap()
@@ -118,114 +119,122 @@ fun LoginScreen(navController: NavHostController) {
 
     }
 
-    Column(
+    LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = stringResource(id = R.string.title),
-            fontSize = 40.sp,
-            fontWeight = FontWeight.ExtraBold,
-            modifier = Modifier.padding(top = 100.dp, bottom = 40.dp),
-            color = textColor,
-            fontFamily = fontFamily
-        )
-        val emailID = when (navViewModel.language.value) {
-            "kr" -> "이메일 아이디"
-            else -> "Email ID"
-        }
-        OutlinedTextField(
-            colors = textFieldColors,
-            modifier = Modifier.padding(bottom = 10.dp),
-            shape = RoundedCornerShape(10.dp),
-            value = userID,
-            onValueChange = { userID = it },
-            label = {
+        item {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Text(
-                    text = emailID,
+                    text = stringResource(id = R.string.title),
+                    fontSize = 40.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    modifier = Modifier.padding(top = 100.dp, bottom = 40.dp),
                     color = textColor,
                     fontFamily = fontFamily
                 )
-            },
-            // 다음 텍스트 필드로 이동할 수 있도록 설정
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-            // Enter 키 이벤트 처리
-            keyboardActions = KeyboardActions(onNext = {
-                focusManager.moveFocus(FocusDirection.Down)
-            })
-        )
-        val passWord = when (navViewModel.language.value) {
-            "kr" -> "패스워드"
-            else -> "PassWord"
-        }
-        OutlinedTextField(
-            colors = textFieldColors,
-            modifier = Modifier.padding(bottom = 10.dp),
-            shape = RoundedCornerShape(10.dp),
-            value = userPasswd,
-            onValueChange = { userPasswd = it },
-            label = {
-                Text(
-                    text = passWord,
-                    color = textColor,
-                    fontFamily = fontFamily
-                )
-            },
-            visualTransformation = PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Password, imeAction = ImeAction.Done
-            ),
-            // Enter 키 이벤트 처리
-            keyboardActions = KeyboardActions(onDone = {
-                keyboardController?.hide()
-            })
-        )
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Button(colors = buttonColor, onClick = {
-                if (userID.isNullOrEmpty() || userPasswd.isNullOrEmpty()) {
-                    showNotification(activity, "Not all Text Fields are Filled")
-                } else {
-                    authManager.signInWithEmail(userID, userPasswd, onSuccess = {
-                        loginSuccess()
-                    }, onFailure = {})
+                val emailID = when (navViewModel.language.value) {
+                    "kr" -> "이메일 아이디"
+                    else -> "Email ID"
                 }
-
-
-            }) {
-                val login = when (navViewModel.language.value) {
-                    "kr" -> "로그인"
-                    else -> "Login"
-                }
-                Text(
-                    text = login,
-                    fontFamily = fontFamily,
-                    modifier = Modifier
-                        .wrapContentSize(Alignment.Center)
+                OutlinedTextField(
+                    colors = textFieldColors,
+                    modifier = Modifier.padding(bottom = 10.dp),
+                    shape = RoundedCornerShape(10.dp),
+                    value = userID,
+                    onValueChange = { userID = it },
+                    label = {
+                        Text(
+                            text = emailID,
+                            color = textColor,
+                            fontFamily = fontFamily
+                        )
+                    },
+                    // 다음 텍스트 필드로 이동할 수 있도록 설정
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                    // Enter 키 이벤트 처리
+                    keyboardActions = KeyboardActions(onNext = {
+                        focusManager.moveFocus(FocusDirection.Down)
+                    })
                 )
+                val passWord = when (navViewModel.language.value) {
+                    "kr" -> "패스워드"
+                    else -> "PassWord"
+                }
+                OutlinedTextField(
+                    colors = textFieldColors,
+                    modifier = Modifier.padding(bottom = 10.dp),
+                    shape = RoundedCornerShape(10.dp),
+                    value = userPasswd,
+                    onValueChange = { userPasswd = it },
+                    label = {
+                        Text(
+                            text = passWord,
+                            color = textColor,
+                            fontFamily = fontFamily
+                        )
+                    },
+                    visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Password, imeAction = ImeAction.Done
+                    ),
+                    // Enter 키 이벤트 처리
+                    keyboardActions = KeyboardActions(onDone = {
+                        keyboardController?.hide()
+                    })
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Button(colors = buttonColor, onClick = {
+                        if (userID.isNullOrEmpty() || userPasswd.isNullOrEmpty()) {
+                            showNotification(activity, "Not all Text Fields are Filled")
+                        } else {
+                            authManager.signInWithEmail(userID, userPasswd, onSuccess = {
+                                loginSuccess()
+                            }, onFailure = {})
+                        }
+
+
+                    }) {
+                        val login = when (navViewModel.language.value) {
+                            "kr" -> "로그인"
+                            else -> "Login"
+                        }
+                        Text(
+                            text = login,
+                            fontFamily = fontFamily,
+                            modifier = Modifier
+                                .wrapContentSize(Alignment.Center)
+                        )
+                    }
+                    Spacer(modifier = Modifier.size(width = 75.dp, height = 0.dp))
+                    Button(
+                        colors = buttonColor,
+                        onClick = { navController.navigate(Routes.Register.route) }) {
+                        val register = when (navViewModel.language.value) {
+                            "kr" -> "가입"
+                            else -> "Register"
+                        }
+                        Text(
+                            text = register,
+                            fontFamily = fontFamily,
+                            modifier = Modifier
+                                .wrapContentSize(Alignment.Center)
+                        )
+                    }
+                }
             }
-            Spacer(modifier = Modifier.size(width = 75.dp, height = 0.dp))
-            Button(
-                colors = buttonColor,
-                onClick = { navController.navigate(Routes.Register.route) }) {
-                val register = when (navViewModel.language.value) {
-                    "kr" -> "가입"
-                    else -> "Register"
-                }
-                Text(
-                    text = register,
-                    fontFamily = fontFamily,
-                    modifier = Modifier
-                        .wrapContentSize(Alignment.Center)
-                )
-            }
         }
-
-
     }
+
+
 }
