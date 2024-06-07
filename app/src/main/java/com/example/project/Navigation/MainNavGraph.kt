@@ -48,7 +48,7 @@ fun NavGraphBuilder.MainNavGraph(
         }
 
         composable(route = Routes.Kupet.route) {
-            KupetScreen(navController, viewModel, navViewModel)
+            KupetScreen(navController, viewModel)
         }
 
         composable(route = Routes.Friend.route) {

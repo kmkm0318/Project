@@ -15,8 +15,9 @@ class NavViewModel() : ViewModel(){
 
     var friendData = FriendData()
 
+
     fun updateUserData(readData: UserData){
         userData.studentID = readData.studentID
-        userData.characterList = readData.characterList?.toMutableList()
+        userData.characterList = readData.characterList.toMutableList()
     }
 }

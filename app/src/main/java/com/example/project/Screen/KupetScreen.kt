@@ -5,11 +5,15 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -19,8 +23,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBackIos
+import androidx.compose.material.icons.filled.ArrowForwardIos
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -35,6 +46,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -44,12 +56,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.project.Class.AuthManager
 import com.example.project.Class.NavViewModel
 import com.example.project.Class.StepCountViewModel
 import com.example.project.Class.UserData
 import com.example.project.Compose.TopBar
+import com.example.project.Navigation.LocalNavGraphViewModelStoreOwner
 import com.example.project.R
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
@@ -59,40 +73,43 @@ import com.google.accompanist.permissions.shouldShowRationale
 @Composable
 fun KupetScreen(
     navController: NavHostController,
-    viewModel: StepCountViewModel,
-    navViewModel: NavViewModel
+    viewModel: StepCountViewModel
 ) {
     Scaffold(
         topBar = { TopBar(navController = navController) }
     ) { contentPadding ->
-        KupetScreenContent(viewModel, navViewModel, contentPadding, navController)
+        KupetScreenContent(viewModel, contentPadding, navController)
     }
 }
+
+
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun KupetScreenContent(
     viewModel: StepCountViewModel,
-    navViewModel: NavViewModel,
     contentPadding: PaddingValues,
     navController: NavHostController
 ) {
     val activity = LocalContext.current as Activity
     val authManager = AuthManager(activity)
-    authManager.readFromDatabase(navViewModel.userData,{navViewModel.userData = it}, {})
+    val navViewModel: NavViewModel =
+        viewModel(viewModelStoreOwner = LocalNavGraphViewModelStoreOwner.current)
+    authManager.readFromDatabase(navViewModel.userData, { navViewModel.userData = it }, {})
 
     var userData by remember {
         mutableStateOf(UserData())
     }
 
-    userData = navViewModel.userData
+    if (navViewModel.userData.studentID != "default")
+        userData = navViewModel.userData
+
+    Log.w("userData", "$userData")
 
     var kupetIndex by remember {
         mutableIntStateOf(0)
     }
-    var selectedKupet by remember {
-        mutableIntStateOf(0)
-    }
+
 
     val petList: List<Int> = listOf(
         R.drawable.duri0, //0
@@ -145,41 +162,38 @@ fun KupetScreenContent(
     val stepCount by viewModel.stepCountFlow.collectAsState(initial = 0)
 
     var step by remember {
-        mutableIntStateOf(userData.steps_total)
+        //mutableIntStateOf(userData.steps_total)
+        mutableIntStateOf(userData.characterList[userData.characterIndex].steps_total)
     }
 
 
 
 
 
-    if (userData.steps_current == 0){
-        userData.steps_current = stepCount
+    if (userData.characterList[userData.characterIndex].steps_current == 0) {
+        userData.characterList[userData.characterIndex].steps_current = stepCount
         navViewModel.userData = userData
         authManager.writeToDatabase(navViewModel.userData)
-    }else if(userData.steps_current > stepCount && stepCount != 0){ // step_sensor 초기화 한 경우
-        userData.steps_current = stepCount
-        userData.prev_steps_total = userData.steps_total
+    } else if (userData.characterList[userData.characterIndex].steps_current > stepCount && stepCount != 0) { // step_sensor 초기화 한 경우
+        userData.characterList[userData.characterIndex].steps_current = stepCount
+        userData.characterList[userData.characterIndex].prev_steps_total = userData.characterList[userData.characterIndex].steps_total
         navViewModel.userData = userData
         authManager.writeToDatabase(navViewModel.userData)
     }
 
 
     if (stepCount != 0) {
-        if (userData.prev_steps_total == 0){
-            step = stepCount - userData.steps_current
-        }else{
-            step = stepCount - userData.steps_current + userData.prev_steps_total
-        }
+            step = stepCount - userData.characterList[userData.characterIndex].steps_current + userData.characterList[userData.characterIndex].prev_steps_total
     }
 
 
     if (step > 45000) {
-        kupetIndex = 4 * selectedKupet + 3
+        kupetIndex = 4 * userData.characterIndex + 3
     } else {
-        kupetIndex = (step / 15000) + 4 * selectedKupet
+        kupetIndex = (step / 15000) + 4 * userData.characterIndex
     }
 
-    leftOverStep = 15000 - step%15000
+    leftOverStep = 15000 - step % 15000
 
     LaunchedEffect(key1 = permissionState) {
         if (!permissionState.status.isGranted && !permissionState.status.shouldShowRationale) {
@@ -212,10 +226,12 @@ fun KupetScreenContent(
         }
     }
 
+    Log.w("userData", "$userData")
+    Log.w("kupetIndex", "$kupetIndex")
+
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(contentPadding),
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceAround
     ) {
@@ -239,7 +255,7 @@ fun KupetScreenContent(
                         verticalArrangement = Arrangement.Center
                     ) {
                         Text(
-                            text = petNameList[selectedKupet], //추후 선택한 캐릭터로 변수처리
+                            text = petNameList[userData.characterIndex], //추후 선택한 캐릭터로 변수처리
                             color = colorResource(id = R.color.kudarkgreen),
                             fontFamily = FontFamily.Monospace,
                             fontSize = 36.sp,
@@ -257,32 +273,67 @@ fun KupetScreenContent(
                                     bottom = 12.dp
                                 )
                         )
-                        //걸음 수에 따라 이미지 바뀌게 구현 -> 이미지 바뀔 때 이펙트(??),
-                        // 진화에 근접했을 때 알림보내기(진화까지 약 30걸음 남았을 때?)
-                        Image(
-                            painter = painterResource(id = petList[kupetIndex]),
-                            contentDescription = "두리0단계",
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .size(width = 360.dp, height = 360.dp)
-                                .padding(16.dp)
-                                .clip(RoundedCornerShape(12))
-                                .border(
-                                    width = 6.dp,
-                                    color = colorResource(id = R.color.kudarkgreen),
-                                    shape = RoundedCornerShape(12)
+
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Box {
+                                Icon(
+                                    imageVector = Icons.Default.ArrowBackIos,
+                                    contentDescription = "",
+                                    tint = colorResource(id = R.color.kumiddlegreen),
+                                    modifier = Modifier.clickable {
+                                        userData.characterList[userData.characterIndex].prev_steps_total += userData.characterList[userData.characterIndex].steps_total
+                                        userData.characterList[userData.characterIndex].steps_total = 0
+                                        if (userData.characterIndex <= 0) userData = userData.copy(characterIndex = petNameList.size-1)
+                                        else userData = userData.copy(characterIndex = userData.characterIndex - 1)
+                                        userData.characterList[userData.characterIndex].steps_current = stepCount
+                                        navViewModel.userData = userData
+                                    }
                                 )
-                        )
+
+                            }
+                            Image(
+                                painter = painterResource(id = petList[kupetIndex]),
+                                contentDescription = "두리0단계",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .size(width = 300.dp, height = 300.dp)
+                                    .padding(20.dp)
+                                    .clip(RoundedCornerShape(12))
+                                    .border(
+                                        width = 6.dp,
+                                        color = colorResource(id = R.color.kudarkgreen),
+                                        shape = RoundedCornerShape(12)
+                                    )
+                            )
+                            Box {
+                                Icon(
+                                    imageVector = Icons.Default.ArrowForwardIos,
+                                    contentDescription = "",
+                                    tint = colorResource(id = R.color.kumiddlegreen),
+                                    modifier = Modifier.clickable {
+                                        userData.characterList[userData.characterIndex].prev_steps_total += step
+                                        userData.characterList[userData.characterIndex].steps_total = 0
+                                        if (userData.characterIndex == petNameList.size-1) userData = userData.copy(characterIndex = 0)
+                                        else userData = userData.copy(characterIndex = userData.characterIndex + 1)
+                                        userData.characterList[userData.characterIndex].steps_current = stepCount
+                                        navViewModel.userData = userData
+                                    }
+                                )
+                            }
+                        }
+
 
                         LinearProgressIndicator(
                             modifier = Modifier
                                 .padding(6.dp),
                             color = colorResource(id = R.color.kudarkgreen),
                             trackColor = colorResource(id = R.color.kulightgreen),
-                            progress = ((step).toFloat() / 15000)//추후 변수처리
+                            progress = ((step%15000).toFloat() / 15000)//추후 변수처리
                         )
                         Text(
-                            text = "(${step}/15000)",//추후 변수처리
+                            text = "(${step%15000}/15000)",//추후 변수처리
                             color = colorResource(id = R.color.kudarkgreen),
                             fontFamily = FontFamily.Monospace,
                             fontSize = 12.sp,
@@ -308,18 +359,18 @@ fun KupetScreenContent(
                                 fontSize = 24.sp
                             )
                         }
-                        Text(
-                            text = petCommentList[selectedKupet],//추후 변수처리
-                            color = colorResource(id = R.color.kudarkgreen),
-                            fontFamily = FontFamily.Monospace,
-                            fontSize = 18.sp,
-                            modifier = Modifier.padding(
-                                top = 32.dp,
-                                start = 16.dp,
-                                end = 16.dp
-                            ),
-                            textAlign = TextAlign.Center
-                        )
+//                        Text(
+//                            text = petCommentList[selectedKupet],//추후 변수처리
+//                            color = colorResource(id = R.color.kudarkgreen),
+//                            fontFamily = FontFamily.Monospace,
+//                            fontSize = 18.sp,
+//                            modifier = Modifier.padding(
+//                                top = 32.dp,
+//                                start = 16.dp,
+//                                end = 16.dp
+//                            ),
+//                            textAlign = TextAlign.Center
+//                        )
                     }
 
                 }
@@ -327,7 +378,16 @@ fun KupetScreenContent(
         }
     }
 
-    userData.steps_total = step
+    var total:Int = 0
+    userData.characterList.forEach {
+        if (it.steps_total == 0){
+            total += it.prev_steps_total
+        }else{
+            total += it.steps_total
+        }
+    }
+    userData.characterList[userData.characterIndex].steps_total = step
+    userData.steps_total = total
     navViewModel.userData = userData
     authManager.writeToDatabase(navViewModel.userData)
 
@@ -358,3 +418,34 @@ fun ShowCallPermissionRationale(
         }
     )
 }
+
+//@Composable
+//fun ChangeButton(direction: Boolean, userData: UserData, clickable: (UserData) -> Unit) {
+//
+//    val activity = LocalContext.current as Activity
+//    val authManager = AuthManager(activity)
+//    val navViewModel: NavViewModel =
+//        viewModel(viewModelStoreOwner = LocalNavGraphViewModelStoreOwner.current)
+//
+//    Box() {
+//        if (direction) {//오른쪽
+//            Icon(
+//                imageVector = Icons.Default.ArrowForwardIos,
+//                contentDescription = "",
+//                tint = colorResource(id = R.color.kumiddlegreen),
+//                modifier = Modifier.clickable {
+//                    clickable
+//                }
+//            )
+//        } else {//왼쪽
+//            Icon(
+//                imageVector = Icons.Default.ArrowBackIos,
+//                contentDescription = "",
+//                tint = colorResource(id = R.color.kumiddlegreen),
+//                modifier = Modifier.clickable {
+//                    if (userData.characterIndex == 0) userData.characterIndex = petNameList.size-1
+//                }
+//            )
+//        }
+//    }
+//}

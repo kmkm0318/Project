@@ -6,7 +6,7 @@ data class UserData(
     var steps_total: Int = 0,
     var prev_steps_total: Int = 0,
     var characterIndex: Int = 0,
-    var characterList: List<CharacterData>? = listOf(),
+    var characterList: List<CharacterData> = listOf(),
     var friendList: List<FriendData>? = listOf()
 ) {
     constructor() : this("default", 0, 0, 0, 0, listOf(), listOf())
