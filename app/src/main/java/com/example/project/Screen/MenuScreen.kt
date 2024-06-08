@@ -115,18 +115,18 @@ fun MenuScreenContent(navController: NavHostController, contentPadding: PaddingV
                         "kr" -> "일일 걸음 수 : "
                         else -> "Daily Step Count : "
                     }
-                    Text(
-                        text = dailyStep,
-                        fontFamily = fontFamily,
-                        color = textColor,
-                        fontSize = 20.sp
-                    )
-                    Text(
-                        text = navViewModel.userData.steps_current.toString(),
-                        fontFamily = fontFamily,
-                        color = textColor,
-                        fontSize = 25.sp
-                    )
+//                    Text(
+//                        text = dailyStep,
+//                        fontFamily = fontFamily,
+//                        color = textColor,
+//                        fontSize = 20.sp
+//                    )
+//                    Text(
+//                        text = navViewModel.userData.steps_current.toString(),
+//                        fontFamily = fontFamily,
+//                        color = textColor,
+//                        fontSize = 25.sp
+//                    )
                 }
                 Row(
                     modifier = Modifier
@@ -169,8 +169,9 @@ fun MenuScreenContent(navController: NavHostController, contentPadding: PaddingV
                         color = textColor,
                         fontSize = 20.sp
                     )
+                    val total ="%.2f".format(navViewModel.userData.steps_total * 0.57 * 80 / 1000)
                     Text(
-                        text = (navViewModel.userData.steps_current * 0.57 * 80 / 1000).toString() + "kcal",
+                        text = total + "kcal",
                         fontFamily = fontFamily,
                         color = textColor,
                         fontSize = 25.sp
