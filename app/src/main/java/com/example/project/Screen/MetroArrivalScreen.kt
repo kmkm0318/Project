@@ -1,10 +1,8 @@
 package com.example.project.Screen
 
-import android.content.Intent
-import android.net.Uri
+import Routes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -107,7 +105,7 @@ fun MetroScreenContent(navController: NavController, contentPadding: PaddingValu
 
 @Composable
 fun StationList(list: List<StationData>) {
-    LazyColumn {
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(list) { item ->
             StationItem(item)
         }
