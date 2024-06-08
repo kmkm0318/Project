@@ -110,9 +110,6 @@ fun StationList(list: List<StationData>) {
     LazyColumn {
         items(list) { item ->
             StationItem(item)
-
-//            Divider(color = colorResource(id = R.color.kudarkgreen), thickness = 1.dp)
-
         }
     }
 }
@@ -138,12 +135,32 @@ fun StationItem(stationData: StationData) {
             Column(verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.padding(8.dp)) {
-                Text(stationData.arrivalMsg1, fontSize = 16.sp,
-                    fontFamily=fontFamily, color = colorResource(id = R.color.kudarkgreen))
-                Text(stationData.arrivalMsg2, fontSize = 16.sp,
-                    fontFamily=fontFamily, color = colorResource(id = R.color.kudarkgreen))
-                Text(stationData.line, fontSize = 16.sp,
-                    fontFamily=fontFamily, color = colorResource(id = R.color.kudarkgreen))
+                Row(verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center) {
+                    Text(stationData.arrivalMsg1, fontSize = 16.sp,
+                        fontFamily=fontFamily, color = colorResource(id = R.color.kudarkgreen))
+                    if(!stationData.arrivalMsg1.contains("도착") &&
+                        !stationData.arrivalMsg1.contains("출발")&&
+                        !stationData.arrivalMsg1.contains("진입")){
+                        Text(" 도착예정", fontSize = 16.sp,
+                            fontFamily=fontFamily, color = colorResource(id = R.color.kudarkgreen))
+                    }
+
+                }
+                Row(verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center) {
+                    Text("열차 현재 위치 : ", fontSize = 16.sp,
+                        fontFamily=fontFamily, color = colorResource(id = R.color.kudarkgreen))
+                    Text(stationData.arrivalMsg2, fontSize = 16.sp,
+                        fontFamily=fontFamily, color = colorResource(id = R.color.kudarkgreen))
+                }
+                Row(verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center) {
+                    Text(stationData.line, fontSize = 16.sp,
+                        fontFamily=fontFamily, color = colorResource(id = R.color.kudarkgreen))
+                    Text("호선", fontSize = 16.sp,
+                        fontFamily=fontFamily, color = colorResource(id = R.color.kudarkgreen))
+                }
                 Text(stationData.trainLineName, fontSize = 16.sp,
                     fontFamily=fontFamily, color = colorResource(id = R.color.kudarkgreen))
                 Text(stationData.upDnLine, fontSize = 16.sp,
