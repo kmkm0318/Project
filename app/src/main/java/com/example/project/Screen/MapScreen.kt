@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
@@ -26,14 +24,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -60,7 +56,6 @@ import com.google.android.gms.location.Priority
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.play.integrity.internal.s
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.rememberCameraPositionState
@@ -252,8 +247,14 @@ fun MapScreen(navController: NavController) {
             containerColor = colorResource(id = R.color.kulightgreen),
             elevation = FloatingActionButtonDefaults.elevation(0.dp),
             onClick = {
-                /*인스타그램,카카오톡,위치공유,기타앱공유*/
-                onClickShareButton(navController)
+                navController.navigate(Routes.Friend.route) {
+                    popUpTo(Routes.Map.route) {
+                        saveState = true
+                        inclusive = false
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
             }) {
             Icon(imageVector = Icons.Default.Share,
                 contentDescription = null,
@@ -273,8 +274,4 @@ fun getLastKnownLocation(fusedLocationProviderClient: FusedLocationProviderClien
     } catch (e: SecurityException) {
         e.printStackTrace()  // 예외 처리
     }
-}
-
-fun onClickShareButton(navController: NavController) {
-    navController.navigate(Routes.Friend.route)
 }

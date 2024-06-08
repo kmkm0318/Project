@@ -121,11 +121,11 @@ fun FriendScreenContent(navController: NavController, contentPadding:PaddingValu
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .size(100.dp),
+                .size(75.dp),
             contentAlignment = Alignment.Center
         ) {
             val title = when (navViewModel.language.value) {
-                "kr" -> "친구 리스트"
+                "kr" -> "친구 목록"
                 else -> "Friend List"
             }
             Text(text = title, fontSize = 40.sp, fontFamily = fontFamily, color = textColor)
@@ -164,18 +164,18 @@ fun FriendScreenContent(navController: NavController, contentPadding:PaddingValu
                         }
                         showNotification(activity, studentID)
                     }
-                    studentID.value?.let {
-                        AddFriend(activity, navViewModel.userData, it, { friendData ->
-                            val list = navViewModel.userData.friendList?.toMutableList()
-                            list?.add(friendData)
-                            navViewModel.userData.friendList = list?.toList()
-                            authManager.writeToDatabase(navViewModel.userData, onSuccess = {
-                                studentID.value = ""
-                            })
-                        }, {})
+                    else{
+                        studentID.value?.let {
+                            AddFriend(activity, navViewModel.userData, it, { friendData ->
+                                val list = navViewModel.userData.friendList?.toMutableList()
+                                list?.add(friendData)
+                                navViewModel.userData.friendList = list?.toList()
+                                authManager.writeToDatabase(navViewModel.userData, onSuccess = {
+                                    studentID.value = ""
+                                })
+                            }, {})
+                        }
                     }
-
-
                 },
                 modifier = Modifier
                     .padding(end = 25.dp)

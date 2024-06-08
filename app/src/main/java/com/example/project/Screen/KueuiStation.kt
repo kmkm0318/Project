@@ -1,5 +1,6 @@
 package com.example.project.Screen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -52,6 +53,7 @@ fun KueuiStationContent(stationViewModel: StationViewModel, contentPadding:Paddi
             Font(R.font.gmarket_sans_ttf_light, FontWeight.Light)
         )
     )
+    Log.i("testtest", stationList.toString())
     val pullRefreshState = rememberPullRefreshState(
         refreshing = isLoading,
         onRefresh = { stationViewModel.fetchStation(url) }
