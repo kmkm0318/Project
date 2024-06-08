@@ -16,6 +16,7 @@ sealed class Routes (val route: String) {
     object Quiz : Routes("Quiz")
     object CorrectAns : Routes("CorrectAns")
     object WrongAns : Routes("WrongAns")
+    object ChangeKupet : Routes("ChangeKupet")
 
     object Metro : Routes("Metro")
     object KonkukUnivStation : Routes("KonkukStation")

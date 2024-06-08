@@ -1,6 +1,8 @@
 package com.example.project.Screen
 
 import android.util.Log
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,8 +11,11 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,16 +38,24 @@ import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 
 
-data class Quiz(val question:String = "", val ans1:String= "", val ans2:String= "", val ans3:String= "", val ans4:String= "", val correctAns:String= "")
+data class Quiz(
+    val question: String = "",
+    val ans1: String = "",
+    val ans2: String = "",
+    val ans3: String = "",
+    val ans4: String = "",
+    val correctAns: String = ""
+)
 
 @Composable
 fun QuizScreen(navController: NavController) {
-    Scaffold(topBar = { TopBar(navController = navController)}) { contentPadding ->
+    Scaffold(topBar = { TopBar(navController = navController) }) { contentPadding ->
         QuizScreenContent(navController, contentPadding)
     }
 }
+
 @Composable
-fun QuizScreenContent(navController: NavController, contentPadding:PaddingValues) {
+fun QuizScreenContent(navController: NavController, contentPadding: PaddingValues) {
 
     var Quiz by remember {
         mutableStateOf<Quiz>(Quiz())
@@ -50,19 +63,28 @@ fun QuizScreenContent(navController: NavController, contentPadding:PaddingValues
 
     val QuizList = mutableListOf<Quiz>()
 
+    val textColor = if(androidx.compose.material.MaterialTheme.colors.onBackground == Color.White) Color.Black else Color.White
+
     val db = Firebase.firestore
     db.collection("Quiz")
         .get()
-        .addOnSuccessListener {result ->
-            for (document in result){
+        .addOnSuccessListener { result ->
+            for (document in result) {
                 val dataMap = document.data
                 Log.d("db", "${document.id} => ${dataMap["question"].toString()}")
-                Quiz = Quiz(dataMap["question"].toString(), dataMap["ans1"].toString(), dataMap["ans2"].toString(), dataMap["ans3"].toString(), dataMap["ans4"].toString(), dataMap["correct_ans"].toString())
+                Quiz = Quiz(
+                    dataMap["question"].toString(),
+                    dataMap["ans1"].toString(),
+                    dataMap["ans2"].toString(),
+                    dataMap["ans3"].toString(),
+                    dataMap["ans4"].toString(),
+                    dataMap["correct_ans"].toString()
+                )
                 QuizList.add(Quiz)
                 Log.w("quizList", "$QuizList")
             }
         }
-        .addOnFailureListener {exception ->
+        .addOnFailureListener { exception ->
             Log.w("db", "Error getting documents.", exception)
         }
 
@@ -71,11 +93,12 @@ fun QuizScreenContent(navController: NavController, contentPadding:PaddingValues
             .padding(contentPadding)
             .fillMaxSize()
     ) {
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(0.75f),
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.75f),
             verticalArrangement = Arrangement.Center
-        ){
+        ) {
             Text(
                 fontSize = 40.sp,
                 modifier = Modifier.fillMaxWidth(),
@@ -98,39 +121,56 @@ fun QuizScreenContent(navController: NavController, contentPadding:PaddingValues
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            Button(modifier = Modifier.padding(20.dp), colors = ButtonDefaults.buttonColors(
-                containerColor = colorResource(id = R.color.kumiddlegreen), contentColor = Color.White), onClick = { checkAns(1, Quiz.correctAns.toInt(), navController) }) {
-                Text(modifier = Modifier.padding(10.dp), fontSize = 20.sp, text = Quiz.ans1)
+            OutlinedButton(
+                modifier = Modifier
+                    .fillMaxWidth(0.5F)
+                    .fillMaxHeight(),
+                border = BorderStroke(2.dp, colorResource(id = R.color.kumiddlegreen)),
+                shape = RoundedCornerShape(0),
+                onClick = { checkAns(1, Quiz.correctAns.toInt(), navController) }) {
+                Text(fontSize = 20.sp, text = Quiz.ans1)
             }
-            Button(modifier = Modifier.padding(20.dp), colors = ButtonDefaults.buttonColors(
-                colorResource(id = R.color.kumiddlegreen)),onClick = { checkAns(2, Quiz.correctAns.toInt(), navController) }) {
-                Text(modifier = Modifier.padding(10.dp),fontSize = 20.sp,text = Quiz.ans2)
+            OutlinedButton(modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+                border = BorderStroke(2.dp, colorResource(id = R.color.kumiddlegreen)),
+                shape = RoundedCornerShape(0),
+                onClick = { checkAns(2, Quiz.correctAns.toInt(), navController) }) {
+                Text(fontSize = 20.sp, text = Quiz.ans2)
             }
         }
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(),
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            Button(modifier = Modifier.padding(20.dp), colors = ButtonDefaults.buttonColors(
-                colorResource(id = R.color.kumiddlegreen)),onClick = { checkAns(3, Quiz.correctAns.toInt(), navController) }) {
-                Text(modifier = Modifier.padding(10.dp),fontSize = 20.sp,text = Quiz.ans3)
+            OutlinedButton(modifier = Modifier
+                .fillMaxWidth(0.5F)
+                .fillMaxHeight(),
+                border = BorderStroke(2.dp, colorResource(id = R.color.kumiddlegreen)),
+                shape = RoundedCornerShape(0),
+                onClick = { checkAns(3, Quiz.correctAns.toInt(), navController) }) {
+                Text(fontSize = 20.sp, text = Quiz.ans3)
             }
-            Button(modifier = Modifier.padding(20.dp), colors = ButtonDefaults.buttonColors(
-                colorResource(id = R.color.kumiddlegreen)),onClick = { checkAns(4, Quiz.correctAns.toInt(), navController) }) {
-                Text(modifier = Modifier.padding(10.dp),fontSize = 20.sp,text = Quiz.ans4)
+            OutlinedButton(modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+                border = BorderStroke(2.dp, colorResource(id = R.color.kumiddlegreen)),
+                shape = RoundedCornerShape(0),
+                onClick = { checkAns(4, Quiz.correctAns.toInt(), navController) }) {
+                Text(fontSize = 20.sp, text = Quiz.ans4)
             }
         }
     }
 }
 
-fun checkAns(input:Int, ans:Int, navController: NavController){
-    if(input == ans){
+fun checkAns(input: Int, ans: Int, navController: NavController) {
+    if (input == ans) {
         Log.d("quiz", "correct answer")
         navController.navigate(Routes.CorrectAns.route)
-    }
-    else{
+    } else {
         Log.d("quiz", "wrong answer")
         navController.navigate(Routes.WrongAns.route)
     }

@@ -114,12 +114,12 @@ fun MenuScreenContent(navController: NavHostController, contentPadding: PaddingV
                         "kr" -> "일일 걸음 수 : "
                         else -> "Daily Step Count : "
                     }
-                    Text(
-                        text = dailyStep,
-                        fontFamily = fontFamily,
-                        color = textColor,
-                        fontSize = 20.sp
-                    )
+//                    Text(
+//                        text = dailyStep,
+//                        fontFamily = fontFamily,
+//                        color = textColor,
+//                        fontSize = 20.sp
+//                    )
                     Text(
                         text = navViewModel.userData.steps_current.toString(),
                         fontFamily = fontFamily,
