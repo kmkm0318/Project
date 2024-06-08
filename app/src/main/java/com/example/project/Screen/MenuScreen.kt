@@ -111,30 +111,6 @@ fun MenuScreenContent(navController: NavHostController, contentPadding: PaddingV
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.Bottom
                 ) {
-                    val dailyStep = when (navViewModel.language.value) {
-                        "kr" -> "일일 걸음 수 : "
-                        else -> "Daily Step Count : "
-                    }
-//                    Text(
-//                        text = dailyStep,
-//                        fontFamily = fontFamily,
-//                        color = textColor,
-//                        fontSize = 20.sp
-//                    )
-//                    Text(
-//                        text = navViewModel.userData.steps_current.toString(),
-//                        fontFamily = fontFamily,
-//                        color = textColor,
-//                        fontSize = 25.sp
-//                    )
-                }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .size(50.dp),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.Bottom
-                ) {
                     val wholeStep = when (navViewModel.language.value) {
                         "kr" -> "누적 걸음 수 : "
                         else -> "Whole Step Count : "

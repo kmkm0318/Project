@@ -80,8 +80,7 @@ fun CharacterDictionaryScreen(navController: NavController) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .size(100.dp),
-            contentAlignment = Alignment.Center
+                .size(100.dp), contentAlignment = Alignment.Center
         ) {
             val title = when (navViewModel.language.value) {
                 "kr" -> "캐릭터 도감"
@@ -97,7 +96,7 @@ fun CharacterDictionaryScreen(navController: NavController) {
                 "kr" -> "캐릭터가 없습니다"
                 else -> "There is no character"
             }
-            Text(text = "캐릭터가 없습니다", fontSize = 20.sp, fontFamily = fontFamily, color = textColor)
+            Text(text = error, fontSize = 20.sp, fontFamily = fontFamily, color = textColor)
             return@Column
         }
         LazyRow(
@@ -153,23 +152,17 @@ fun CharacterDictionaryScreen(navController: NavController) {
             }
             item {
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center
+                    modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
                 ) {
                     val doc = when (characterIndex.value) {
-                        0 -> {
-                            when (characterList[characterIndex.value].level) {
-                                0 -> "둘리는 아직 알 속에 있으며, 완전히 부화하지 않았습니다.\n" +
-                                        "그의 알껍질은 흰색과 연한 분홍색 그라데이션 색상으로, 매우 아름답고 신비로운 느낌을 줍니다."
+                        0 -> when (characterList[characterIndex.value].level) {
+                            0 -> "둘리는 아직 알 속에 있으며, 완전히 부화하지 않았습니다.\n" + "그의 알껍질은 흰색과 연한 분홍색 그라데이션 색상으로, 매우 아름답고 신비로운 느낌을 줍니다."
 
-                                1 -> "둘리는 알에서 태어난 귀여운 아기 드래곤입니다. 모험가의 도움을 받아 강력한 드래곤으로 진화할 날을 손꼽아 기다리고 있습니다."
-                                2 -> "2단계로 진화하면서 더욱 강해지고, 드래곤의 특징이 더 두드러지게 나타납니다"
-                                3 -> "둘리는 세 번째 단계로 진화하면서 드래곤으로서의 위엄을 완전히 드러냅니다.\n" +
-                                        "강력한 날개를 가지게 되어 비행할 수 있으며, 더욱 강력한 드래곤의 숨결을 내뿜어 진정한 용 전사가 됩니다."
+                            1 -> "둘리는 알에서 태어난 귀여운 아기 드래곤입니다. 모험가의 도움을 받아 강력한 드래곤으로 진화할 날을 손꼽아 기다리고 있습니다."
+                            2 -> "2단계로 진화하면서 더욱 강해지고, 드래곤의 특징이 더 두드러지게 나타납니다"
+                            3 -> "둘리는 세 번째 단계로 진화하면서 드래곤으로서의 위엄을 완전히 드러냅니다.\n" + "강력한 날개를 가지게 되어 비행할 수 있으며, 더욱 강력한 드래곤의 숨결을 내뿜어 진정한 용 전사가 됩니다."
 
-                                else -> ""
-                            }
+                            else -> ""
                         }
 
                         1 -> when (characterList[characterIndex.value].level) {
@@ -182,11 +175,9 @@ fun CharacterDictionaryScreen(navController: NavController) {
 
                         2 -> when (characterList[characterIndex.value].level) {
                             0 -> "모모의 알껍질은 아래쪽이 파란색이고 위쪽이 흰색으로 매우 신선해 보입니다."
-                            1 -> "모모는 알에서 태어난 귀여운 강아지입니다.\n" +
-                                    "항상 모험가 곁을 따르며 더 강력한 형태로 진화할 준비를 하고 있습니다."
+                            1 -> "모모는 알에서 태어난 귀여운 강아지입니다.\n" + "항상 모험가 곁을 따르며 더 강력한 형태로 진화할 준비를 하고 있습니다."
 
-                            2 -> "모모는 두 번째 단계로 진화하면서 더 활발해지고, 경계심과 보호 능력이 강해지기\n" +
-                                    "시작합니다. 사랑하는 사람을 보호할 준비가 되어 있습니다"
+                            2 -> "모모는 두 번째 단계로 진화하면서 더 활발해지고, 경계심과 보호 능력이 강해지기\n" + "시작합니다. 사랑하는 사람을 보호할 준비가 되어 있습니다"
 
                             3 -> "모모는 세 번째 단계로 진화하면서 날개가 더 커지고, 더 오랜 시간 동안 비행할 수 있습니다. 힘과 속도가 크게 향상됩니다."
                             else -> ""

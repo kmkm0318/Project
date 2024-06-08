@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
@@ -23,12 +24,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.project.Class.StationViewModel
 import com.example.project.Compose.MetroTopBar
 import com.example.project.R
-import kotlinx.coroutines.launch
 
 
 @Composable
@@ -69,7 +68,7 @@ fun KueuiStationContent(stationViewModel: StationViewModel, contentPadding:Paddi
             modifier = Modifier.padding(12.dp))
         Box (modifier = Modifier
             .pullRefresh(pullRefreshState)
-            .fillMaxWidth(),
+            .fillMaxSize(),
             contentAlignment = Alignment.TopCenter
         ){
             Text("\n\n화면을 아래로 당기면\n\n실시간 정보를\n\n확인할 수 있어요", fontSize = 32.sp,
