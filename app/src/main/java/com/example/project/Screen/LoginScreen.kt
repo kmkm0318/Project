@@ -114,8 +114,10 @@ fun LoginScreen(navController: NavHostController) {
             authManager.startValueChangeListener({ lat, lng ->
                 navViewModel.userData.friendLocationLat = lat
                 navViewModel.userData.friendLocationLng = lng
-                ShowFriendOnMap()
+                ShowFriendOnMap(lat, lng)
             })
+
+
         }, {
 
         })
