@@ -118,6 +118,20 @@ fun FriendScreenContent(navController: NavController, contentPadding:PaddingValu
         verticalArrangement = Arrangement.Top,
         modifier = Modifier.fillMaxSize().padding(contentPadding)
     ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .size(100.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            val title = when (navViewModel.language.value) {
+                "kr" -> "친구 리스트"
+                else -> "Friend List"
+            }
+            Text(text = title, fontSize = 40.sp, fontFamily = fontFamily, color = textColor)
+
+        }
+        Divider()
         Row(
             modifier = Modifier
                 .fillMaxWidth()
