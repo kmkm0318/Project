@@ -37,11 +37,11 @@ class StationViewModel : ViewModel() {
         val infoRow = doc.select("row")
         infoRow.map {stationInfo->
             StationData(
-                line = stationInfo.select("subwayId").text(),
+                line = stationInfo.select("subwayId").text().substring(3),
                 upDnLine = stationInfo.select("updnLine").text(),
                 trainLineName = stationInfo.select("trainLineNm").text(),
                 stationName = stationInfo.select("statnNm").text(),
-                arrivalMsg1 = stationInfo.select("arvlMsg2").text(),
+                arrivalMsg1 = stationInfo.select("arvlMsg2").text().split('(')[0],
                 arrivalMsg2 = stationInfo.select("arvlMsg3").text()
             )
         }

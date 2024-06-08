@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
@@ -24,12 +26,14 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -44,6 +48,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.project.Class.NavViewModel
+import com.example.project.Class.SearchViewModel
+import com.example.project.Compose.SearchRecommend
 import com.example.project.Function.FindBuilding
 import com.example.project.Function.RequestLocationPermission
 import com.example.project.Navigation.LocalNavGraphViewModelStoreOwner
@@ -54,6 +60,7 @@ import com.google.android.gms.location.Priority
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.play.integrity.internal.s
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.rememberCameraPositionState
@@ -66,11 +73,13 @@ fun MapScreen(navController: NavController) {
         viewModel(viewModelStoreOwner = LocalNavGraphViewModelStoreOwner.current)
 
     var search by remember{ mutableStateOf("") }
+    val searchViewModel = SearchViewModel()
     val context = LocalContext.current
     val locationClient = remember{ LocationServices.getFusedLocationProviderClient(context) }
     var locationNow = remember{ mutableStateOf<LatLng?>(null) }
     val focusManager = LocalFocusManager.current
     var followCurrentLocation by remember{ mutableStateOf(true) }
+    var trackingEnabled by remember { mutableStateOf(true) }
     val findBuilding = remember { FindBuilding() }
 
     val cameraPositionState = rememberCameraPositionState{
@@ -113,15 +122,11 @@ fun MapScreen(navController: NavController) {
         }
     )
 
-    fun clearText(){
-        search = ""
-    }
-
     Box(modifier = Modifier
         .fillMaxWidth(),
     ){
-        LaunchedEffect(followCurrentLocation){
-            while(followCurrentLocation){
+        LaunchedEffect(trackingEnabled){
+            while(trackingEnabled){
                 getLastKnownLocation(locationClient) { latLng ->
                     locationNow.value = latLng
                     cameraPositionState.move(CameraUpdateFactory.newLatLngZoom(latLng, 18f))
@@ -137,45 +142,57 @@ fun MapScreen(navController: NavController) {
                 zoomControlsEnabled = false
             )
         )
-        OutlinedTextField(
-            value = search,
-            textStyle = TextStyle(colorResource(id = R.color.kudarkgreen),
-                fontFamily=fontFamily,
-                fontSize = 20.sp),
-            onValueChange = {search = it},
-            keyboardActions = KeyboardActions(onDone = {focusManager.clearFocus()}),
-            modifier = Modifier
-                .padding(16.dp)
-                .height(60.dp)
-                .border(
-                    3.dp,
-                    color = colorResource(id = R.color.kudarkgreen),
-                    shape = RoundedCornerShape(12)
-                )
-                .fillMaxWidth(),
-            colors = textFieldColors,
-            placeholder = { Text(text="찾고 싶은 강의실을 검색하세요!", fontFamily=fontFamily, fontSize = 20.sp) },
-            trailingIcon = {
-                IconButton(onClick = {
-                    //검색기능
-                    findBuilding.buildingSearch(search,cameraPositionState)
-                    focusManager.clearFocus()
-                    clearText()
-                    followCurrentLocation = false
-                }) {
-                    Icon(
-                        modifier = Modifier
-                            .size(40.dp)
-                            .padding(end = 6.dp),
-                        imageVector = Icons.Default.Search,
-                        contentDescription = null,
-                        tint = colorResource(id = R.color.kudarkgreen),
+        Column(modifier = Modifier.fillMaxSize()) {
+            OutlinedTextField(
+                value = search,
+                textStyle = TextStyle(colorResource(id = R.color.kudarkgreen),
+                    fontFamily=fontFamily,
+                    fontSize = 20.sp),
+                onValueChange = { search = it },
+                keyboardActions = KeyboardActions(onDone = {focusManager.clearFocus()}),
+                modifier = Modifier
+                    .padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                    .height(60.dp)
+                    .border(
+                        3.dp,
+                        color = colorResource(id = R.color.kudarkgreen),
+                        shape = RoundedCornerShape(12)
                     )
-                }
-            },
-            singleLine = true
-        )
-
+                    .fillMaxWidth(),
+                colors = textFieldColors,
+                placeholder = { Text(text="찾고 싶은 강의실을 검색하세요!", fontFamily=fontFamily, fontSize = 20.sp) },
+                trailingIcon = {
+                    IconButton(onClick = {
+                        //검색기능
+                        findBuilding.buildingSearch(search,cameraPositionState)
+                        focusManager.clearFocus()
+                        search = ""
+                        followCurrentLocation = false
+                        trackingEnabled = false
+                    }) {
+                        Icon(
+                            modifier = Modifier
+                                .size(40.dp)
+                                .padding(end = 6.dp),
+                            imageVector = Icons.Default.Search,
+                            contentDescription = null,
+                            tint = colorResource(id = R.color.kudarkgreen),
+                        )
+                    }
+                },
+                singleLine = true
+            )
+            if(search != ""){
+                SearchRecommend(search,
+                    searchViewModel,
+                    cameraPositionState,
+                    onSearchCleared = {
+                        search = ""
+                        trackingEnabled=false
+                        focusManager.clearFocus()
+                    })
+            }
+        }
     }
 
     Column(modifier= Modifier
@@ -195,6 +212,7 @@ fun MapScreen(navController: NavController) {
                     locationNow.value = latLng
                     cameraPositionState.move(CameraUpdateFactory.newLatLngZoom(latLng, 18f))
                     followCurrentLocation = true
+                    trackingEnabled=true
                 }
             }
         ) {

@@ -10,6 +10,7 @@ import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.firestore
 import com.google.maps.android.compose.CameraPositionState
 import kotlinx.coroutines.tasks.await
+import java.util.Collections.addAll
 
 class FindBuilding{
     private var buildingInfoCache: Map<String, Any>? = null
@@ -45,12 +46,8 @@ class FindBuilding{
         cameraPositionState: CameraPositionState,
         buildingInfo: Map<String, Any>
     ) {
-        val searchBuildingResult = buildingInfo.keys.filter { it.contains(search) }
-//        val searchRoomResult = buildingInfo.values.filter{ it. }
-
         val building = buildingInfo[search] as? List<Any> ?: return
         val buildingLatLng = building[0] as GeoPoint
-        val roomNumbers = building.subList(1, building.size - 1).map { it.toString() }
         val latLng = LatLng(buildingLatLng.latitude, buildingLatLng.longitude)
         cameraPositionState.move(CameraUpdateFactory.newLatLngZoom(latLng, 18f))
 
