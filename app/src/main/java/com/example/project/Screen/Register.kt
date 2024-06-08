@@ -1,11 +1,13 @@
 package com.example.project.Screen
 
+import Routes
 import android.app.Activity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -89,117 +91,127 @@ fun Register(navController: NavHostController) {
         disabledContentColor = Color.Green
     )
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        val register = when (navViewModel.language.value) {
-            "kr" -> "가입하기"
-            else -> "Register"
-        }
-        Text(
-            text = register,
-            fontSize = 40.sp,
-            fontWeight = FontWeight.ExtraBold,
-            modifier = Modifier.padding(top = 100.dp, bottom = 40.dp),
-            color = textColor,
-            fontFamily = fontFamily
-        )
-
-
-
-        OutlinedTextField(
-            colors = textFieldColors,
-            modifier = Modifier.padding(bottom = 10.dp),
-            value = userID ?: "",
-            onValueChange = { userID = it },
-            label = {
-                val emailID = when (navViewModel.language.value) {
-                    "kr" -> "이메일 아이디"
-                    else -> "Email ID"
+    LazyColumn {
+        item {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                val register = when (navViewModel.language.value) {
+                    "kr" -> "가입하기"
+                    else -> "Register"
                 }
                 Text(
-                    text = emailID, color = textColor, fontFamily = fontFamily
+                    text = register,
+                    fontSize = 40.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    modifier = Modifier.padding(top = 100.dp, bottom = 40.dp),
+                    color = textColor,
+                    fontFamily = fontFamily
                 )
-            },
-            // 다음 텍스트 필드로 이동할 수 있도록 설정
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-            // Enter 키 이벤트 처리
-            keyboardActions = KeyboardActions(onNext = {
-                focusManager.moveFocus(FocusDirection.Down)
-            })
-        )
 
-        OutlinedTextField(
-            colors = textFieldColors,
-            modifier = Modifier.padding(bottom = 10.dp),
-            value = userPasswd ?: "",
-            onValueChange = { userPasswd = it },
-            label = {
-                val passWord = when (navViewModel.language.value) {
-                    "kr" -> "패스워드"
-                    else -> "PassWord"
+
+
+                OutlinedTextField(
+                    colors = textFieldColors,
+                    modifier = Modifier.padding(bottom = 10.dp),
+                    value = userID ?: "",
+                    onValueChange = { userID = it },
+                    label = {
+                        val emailID = when (navViewModel.language.value) {
+                            "kr" -> "이메일 아이디"
+                            else -> "Email ID"
+                        }
+                        Text(
+                            text = emailID, color = textColor, fontFamily = fontFamily
+                        )
+                    },
+                    // 다음 텍스트 필드로 이동할 수 있도록 설정
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                    // Enter 키 이벤트 처리
+                    keyboardActions = KeyboardActions(onNext = {
+                        focusManager.moveFocus(FocusDirection.Down)
+                    })
+                )
+
+                OutlinedTextField(
+                    colors = textFieldColors,
+                    modifier = Modifier.padding(bottom = 10.dp),
+                    value = userPasswd ?: "",
+                    onValueChange = { userPasswd = it },
+                    label = {
+                        val passWord = when (navViewModel.language.value) {
+                            "kr" -> "패스워드"
+                            else -> "PassWord"
+                        }
+                        Text(
+                            text = passWord, color = textColor, fontFamily = fontFamily
+                        )
+                    },
+                    visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Password, imeAction = ImeAction.Next
+                    ),
+                    // Enter 키 이벤트 처리
+                    keyboardActions = KeyboardActions(onNext = {
+                        focusManager.moveFocus(FocusDirection.Down)
+                    })
+                )
+
+                OutlinedTextField(
+                    colors = textFieldColors,
+                    modifier = Modifier.padding(bottom = 10.dp),
+                    value = studentID ?: "",
+                    onValueChange = { studentID = it },
+                    label = {
+                        val studentID = when (navViewModel.language.value) {
+                            "kr" -> "학번"
+                            else -> "Student ID"
+                        }
+                        Text(
+                            text = studentID, color = textColor, fontFamily = fontFamily
+                        )
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Password, imeAction = ImeAction.Done
+                    ),
+                    // Enter 키 이벤트 처리
+                    keyboardActions = KeyboardActions(onDone = {
+                        keyboardController?.hide()
+                    })
+                )
+
+                Button(colors = buttonColor, onClick = {
+                    if (userID.isNullOrEmpty() || userPasswd.isNullOrEmpty() || studentID.isNullOrEmpty()) {
+                        showNotification(activity, "Not all Text Fields are Filled")
+                    } else {
+                        authManager.signUpWithEmail(
+                            userID!!,
+                            userPasswd!!,
+                            studentID!!,
+                            onSuccess = {
+                                navController.navigate(Routes.Login.route)
+                            },
+                            onFailure = {
+
+                            })
+                    }
+
+
+                }) {
+                    val register = when (navViewModel.language.value) {
+                        "kr" -> "가입"
+                        else -> "Register"
+                    }
+                    Text(
+                        text = register,
+                        fontFamily = fontFamily,
+                        modifier = Modifier.wrapContentSize(Alignment.Center)
+                    )
                 }
-                Text(
-                    text = passWord, color = textColor, fontFamily = fontFamily
-                )
-            },
-            visualTransformation = PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Password, imeAction = ImeAction.Next
-            ),
-            // Enter 키 이벤트 처리
-            keyboardActions = KeyboardActions(onNext = {
-                focusManager.moveFocus(FocusDirection.Down)
-            })
-        )
-
-        OutlinedTextField(
-            colors = textFieldColors,
-            modifier = Modifier.padding(bottom = 10.dp),
-            value = studentID ?: "",
-            onValueChange = { studentID = it },
-            label = {
-                val studentID = when (navViewModel.language.value) {
-                    "kr" -> "학번"
-                    else -> "Student ID"
-                }
-                Text(
-                    text = studentID, color = textColor, fontFamily = fontFamily
-                )
-            },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Password, imeAction = ImeAction.Done
-            ),
-            // Enter 키 이벤트 처리
-            keyboardActions = KeyboardActions(onDone = {
-                keyboardController?.hide()
-            })
-        )
-
-        Button(colors = buttonColor, onClick = {
-            if (userID.isNullOrEmpty() || userPasswd.isNullOrEmpty() || studentID.isNullOrEmpty()) {
-                showNotification(activity, "Not all Text Fields are Filled")
-            } else {
-                authManager.signUpWithEmail(userID!!, userPasswd!!, studentID!!, onSuccess = {
-                    navController.navigate(Routes.Login.route)
-                }, onFailure = {
-
-                })
             }
-
-
-        }) {
-            val register = when (navViewModel.language.value) {
-                "kr" -> "가입"
-                else -> "Register"
-            }
-            Text(
-                text = register,
-                fontFamily = fontFamily,
-                modifier = Modifier.wrapContentSize(Alignment.Center)
-            )
         }
     }
+
 }

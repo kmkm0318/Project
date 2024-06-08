@@ -10,7 +10,7 @@ data class UserData(
     var locationNowLng: Double = 0.0,
     var friendLocationLat: Double = 0.0,
     var friendLocationLng: Double = 0.0,
-    var characterList: List<CharacterData>? = listOf(),
+    var characterList: List<CharacterData> = listOf(),
     var friendList: List<FriendData>? = listOf()
 ) {
     constructor() : this(
