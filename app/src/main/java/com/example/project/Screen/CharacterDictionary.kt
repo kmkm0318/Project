@@ -1,6 +1,7 @@
 package com.example.project.Screen
 
 import android.app.Activity
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.Font
@@ -101,15 +103,22 @@ fun CharacterDictionaryScreen(navController: NavController) {
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .size(200.dp),
+                .size(200.dp)
+                .background(Color(225, 225, 225)),
             verticalAlignment = Alignment.CenterVertically
         ) {
             itemsIndexed(characterList) { idx, it ->
+                var alphaVal = 0.5f
+                if(characterIndex.value==idx){
+                    alphaVal = 1f
+                }
                 Box(
                     modifier = Modifier
 //                        .fillMaxHeight()
                         .size(200.dp)
                         .padding(15.dp, end = 20.dp)
+//                        .border(1.dp, Color.White, RoundedCornerShape(4.dp))
+                        .graphicsLayer {alpha = alphaVal}
                         .clickable { characterIndex.value = idx },
                     contentAlignment = Alignment.BottomCenter
                 ) {
@@ -128,7 +137,7 @@ fun CharacterDictionaryScreen(navController: NavController) {
                 ) {
                     val name = when(characterIndex.value){
                         0->"둘리"
-                        1->"프로리"
+                        1->"쿠롱이"
                         2->"모모"
                         else->"정보가 없습니다"
                     }
@@ -155,12 +164,10 @@ fun CharacterDictionaryScreen(navController: NavController) {
                             }
                         }
                         1->when(characterList[characterIndex.value].level){
-                            0->"프로리의 알껍질은 분홍색과 보라색의 그라데이션으로 매우 몽환적이고 신비로운 느낌을 줍니다"
-                            1->"프로리는 알에서 태어난 귀여운 아기 개구리입니다.\n" +
-                                    "모험가의 도움을 받아 성숙한 개구리가 될 날을 손꼽아 기다리고 있습니다."
-                            2->"프로리는 두 번째 단계로 진화하면서 더 커지고 강해졌습니다.\n" +
-                                    "몸 색깔이 더욱 선명해져 생기와 활력이 넘칩니다."
-                            3->"프로리는 세 번째 단계로 진화하면서 개구리의 위엄을 완전히 드러냅니다."
+                            0->"쿠롱이의 알껍질은 녹색과 파란색 반점으로 이루어져 있으며, 그 강인함과 생명력을 보여줍니다. 쿠롱이는 알 속에서 힘을 모으며 새로운 모험을 준비하고 있습니다.\n"
+                            1->"쿠롱이는 막 부화한 상태로, 작은 몸집에 녹색 몸과 갈색 거북등딱지를 가지고 있습니다. 천진난만하고 세상에 대한 호기심이 많아 주변 환경을 탐험하는 것을 좋아합니다."
+                            2->"쿠롱이는 진화하면서 체형이 커지고 단단한 뿔과 더 두꺼운 거북등딱지를 가지게 되었습니다. 더 강력해져 방어 능력이 크게 향상되었으며, 자신을 더 잘 보호할 수 있습니다"
+                            3->"쿠롱이는 날개와 더 큰 뿔이 자라났으며, 몸이 더 튼튼해졌습니다. 이제 지상에서 걷는 ㅏ것뿐만 아니라 하늘을 날 수 있어 진정한 공중 수호자가 되었습니다."
                             else->""
                         }
                         2->when(characterList[characterIndex.value].level){

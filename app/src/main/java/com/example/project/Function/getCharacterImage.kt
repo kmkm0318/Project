@@ -4,12 +4,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import com.example.project.Class.CharacterData
 
 @Composable
-fun getCharacterImage(characterData: CharacterData) {
+fun getCharacterImage(characterData: CharacterData, modifier: Modifier = Modifier) {
     val characterName = characterData.name
     val characterLevel = characterData.level.toString()
 
@@ -20,5 +21,6 @@ fun getCharacterImage(characterData: CharacterData) {
         LocalContext.current.packageName
     )
 
-    Image(painter = painterResource(id = fileID), contentDescription = "", Modifier.fillMaxWidth())
+    Image(painter = painterResource(id = fileID), contentDescription = "", modifier.fillMaxWidth(),
+        contentScale = ContentScale.FillWidth)
 }
