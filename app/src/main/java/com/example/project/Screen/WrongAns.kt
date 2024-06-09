@@ -20,13 +20,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.project.Class.NavViewModel
+import com.example.project.Navigation.LocalNavGraphViewModelStoreOwner
 import com.example.project.R
 
 @Composable
 fun WrongAns(navController: NavController) {
+    val navViewModel: NavViewModel =
+        viewModel(viewModelStoreOwner = LocalNavGraphViewModelStoreOwner.current)
     val buttonColor = ButtonColors(
         containerColor = colorResource(id = R.color.kusemidarkgreen),
         contentColor = colorResource(id = R.color.white),
@@ -45,18 +51,57 @@ fun WrongAns(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(fontSize = 100.sp, text = "오답", fontFamily = fontFamily,
-            color = colorResource(id = R.color.kusemidarkgreen),
-            fontWeight = FontWeight.ExtraBold,
-            modifier = Modifier.padding(60.dp))
-        Image(painter = painterResource(id = R.drawable.saddog), contentDescription = "ㅠㅠ",
-            modifier = Modifier.width(360.dp).height(360.dp).padding(20.dp))
-        Text(text = "다시 도전할 수 있어요!\n\n정답을 맞출 때까지 파이팅!",fontSize = 24.sp,
-            fontWeight = FontWeight.Medium,fontFamily = fontFamily,
-            color = colorResource(id = R.color.kumiddlegreen))
-        Button(onClick = { navController.navigate(Routes.Quiz.route)},
-            colors = buttonColor, modifier = Modifier.padding(32.dp)) {
-            Text(text = "다시 풀기")
+        if(navViewModel.language.value == "kr") {
+            Text(
+                fontSize = 60.sp, text = "오답", fontFamily = fontFamily,
+                color = colorResource(id = R.color.kusemidarkgreen),
+                fontWeight = FontWeight.ExtraBold,
+                modifier = Modifier.padding(top = 40.dp)
+            )
+            Image(
+                painter = painterResource(id = R.drawable.saddog), contentDescription = "ㅠㅠ",
+                modifier = Modifier.width(320.dp).height(320.dp).padding(20.dp)
+            )
+            Text(
+                text = "다시 도전할 수 있어요!\n\n정답을 맞출 때까지 파이팅!",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Medium,
+                fontFamily = fontFamily,
+                textAlign = TextAlign.Center,
+                color = colorResource(id = R.color.kumiddlegreen)
+            )
+            Button(
+                onClick = { navController.navigate(Routes.Quiz.route) },
+                colors = buttonColor, modifier = Modifier.padding(12.dp)
+            ) {
+                Text(text = "다시 풀기")
+            }
+        }
+        else{
+            Text(
+                fontSize = 60.sp, text = "Wrong Answer...", fontFamily = fontFamily,
+                color = colorResource(id = R.color.kusemidarkgreen),
+                fontWeight = FontWeight.ExtraBold,
+                modifier = Modifier.padding(40.dp)
+            )
+            Image(
+                painter = painterResource(id = R.drawable.saddog), contentDescription = "ㅠㅠ",
+                modifier = Modifier.width(320.dp).height(320.dp).padding(20.dp)
+            )
+            Text(
+                text = "Cheer up!\n\nYou can try again!",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Medium,
+                fontFamily = fontFamily,
+                textAlign = TextAlign.Center,
+                color = colorResource(id = R.color.kumiddlegreen)
+            )
+            Button(
+                onClick = { navController.navigate(Routes.Quiz.route) },
+                colors = buttonColor, modifier = Modifier.padding(12.dp)
+            ) {
+                Text(text = "Try Again")
+            }
         }
     }
 }

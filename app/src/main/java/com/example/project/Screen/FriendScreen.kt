@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -151,12 +152,11 @@ fun FriendScreenContent(navController: NavController, contentPadding:PaddingValu
                     Text(text = studentID, color = textColor, fontFamily = fontFamily)
                 },
                 modifier = Modifier
-                    .size(width = 275.dp, height = 60.dp)
+                    .weight(7f)
                     .padding(start = 20.dp, end = 10.dp)
             )
             Button(
                 onClick = {
-
                     if (studentID.value.isNullOrEmpty()) {
                         val studentID = when (navViewModel.language.value) {
                             "kr" -> "학번을 입력해주세요"
@@ -178,8 +178,9 @@ fun FriendScreenContent(navController: NavController, contentPadding:PaddingValu
                     }
                 },
                 modifier = Modifier
-                    .padding(end = 25.dp)
-                    .size(width = 125.dp, height = 50.dp)
+                    .padding(end = 20.dp)
+                    .weight(3f)
+                    .height(56.dp)
                     .align(Alignment.CenterVertically),
                 colors = buttonColor
             ) {
@@ -189,7 +190,7 @@ fun FriendScreenContent(navController: NavController, contentPadding:PaddingValu
                 }
                 Text(
                     text = add,
-                    fontSize = 25.sp,
+                    fontSize = 18.sp,
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentSize(Alignment.Center),
@@ -221,7 +222,7 @@ fun FriendScreenContent(navController: NavController, contentPadding:PaddingValu
                         Text(
                             text = noFriend,
                             color = textColor,
-                            fontSize = 25.sp,
+                            fontSize = 24.sp,
                             modifier = Modifier.align(Alignment.CenterVertically),
                             fontFamily = fontFamily
                         )

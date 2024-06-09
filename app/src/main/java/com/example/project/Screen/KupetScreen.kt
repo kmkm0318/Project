@@ -246,9 +246,30 @@ fun KupetScreenContent(
 
         } else {
             if (!viewModel.hasSensor()) {
-                Text(text = "이 기기에서는\n\n쿠펫을 이용할수 없어요..",fontSize = 32.sp, fontWeight = FontWeight.SemiBold,fontFamily = fontFamily, textAlign = TextAlign.Center)
-                Image(painter = painterResource(id = R.drawable.sadturtle), contentDescription = "ㅠㅠ",
-                    modifier = Modifier.width(320.dp).height(320.dp).padding(20.dp))
+                if(navViewModel.language.value == "kr"){
+                    Text(text = "이 기기에서는\n\n쿠펫을 이용할수 없어요..",fontSize = 32.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        fontFamily = fontFamily,
+                        textAlign = TextAlign.Center,
+                        color = colorResource(id = R.color.kusemidarkgreen))
+                    Image(painter = painterResource(id = R.drawable.sadturtle), contentDescription = "ㅠㅠ",
+                        modifier = Modifier
+                            .width(320.dp)
+                            .height(320.dp)
+                            .padding(20.dp))
+                }
+                else{
+                    Text(text = "KUPET is not available\n\nin this device...",fontSize = 32.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        fontFamily = fontFamily,
+                        textAlign = TextAlign.Center,
+                        color = colorResource(id = R.color.kusemidarkgreen))
+                    Image(painter = painterResource(id = R.drawable.sadturtle), contentDescription = "ㅠㅠ",
+                        modifier = Modifier
+                            .width(320.dp)
+                            .height(320.dp)
+                            .padding(20.dp))
+                }
             } else {
                 Scaffold(topBar = { })
                 { contentPadding ->

@@ -172,7 +172,7 @@ fun QuizScreenContent(navController: NavController, contentPadding: PaddingValue
                     fontSize = 20.sp,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 16.dp, end = 16.dp, bottom = 100.dp),
+                        .padding(start = 16.dp, end = 16.dp),
                     textAlign = TextAlign.Center,
                     text = Quiz.question,
                     fontWeight = FontWeight.Medium,
@@ -214,7 +214,7 @@ fun QuizScreenContent(navController: NavController, contentPadding: PaddingValue
                     }
                     OutlinedButton(modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 6.dp, bottom = 20.dp)
+                        .padding(top = 6.dp, start = 6.dp, end = 6.dp, bottom = 20.dp)
                         .height(60.dp),
                         border = BorderStroke(2.dp, colorResource(id = R.color.kumiddlegreen)),
                         colors = buttonColor,
