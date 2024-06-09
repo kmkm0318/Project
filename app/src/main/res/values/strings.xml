@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Project</string>
+    <string name="app_name">KUM</string>
     <string name="title">KUM</string>
     <string name="emailID">Email ID</string>
     <string name="password">PassWord</string>
