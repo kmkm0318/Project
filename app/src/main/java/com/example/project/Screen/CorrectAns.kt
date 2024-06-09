@@ -69,24 +69,48 @@ fun CorrectAns(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(fontSize = 80.sp, text = "정답",
-            fontFamily = fontFamily,
-            color = colorResource(id = R.color.kusemidarkgreen),
-            fontWeight = FontWeight.ExtraBold,
-            modifier = Modifier.padding(30.dp))
-        Text(fontSize = 32.sp, text = "보상으로\n\n보너스 발걸음을\n\n얻었습니다!",
-            fontFamily = fontFamily,
-            color = colorResource(id = R.color.kumiddlegreen),
-            fontWeight = FontWeight.ExtraBold,
-            textAlign = TextAlign.Center)
-        Image(painter = painterResource(id = R.drawable.happyturtle), contentDescription = "ㅋㅋ",
-            modifier = Modifier.width(360.dp).height(360.dp).padding(20.dp))
-        Text(text = "아쉽지만 오늘의 퀴즈는 끝이에요...\n\n내일 또 보상을 받을 수 있어요!",fontSize = 24.sp,
-            fontWeight = FontWeight.Medium,fontFamily = fontFamily,
-            color = colorResource(id = R.color.kumiddlegreen))
-        Button(onClick = { navController.navigate(Routes.Main.route) },
-            colors = buttonColor, modifier = Modifier.padding(24.dp)) {
-            Text(text = "홈으로")
+        if(navViewModel.language.value == "kr"){
+            Text(fontSize = 60.sp, text = "정답!",
+                fontFamily = fontFamily,
+                color = colorResource(id = R.color.kusemidarkgreen),
+                fontWeight = FontWeight.ExtraBold,
+                modifier = Modifier.padding(30.dp))
+            Text(fontSize = 20.sp, text = "보상으로 보너스 발걸음을\n얻었습니다!",
+                fontFamily = fontFamily,
+                color = colorResource(id = R.color.kumiddlegreen),
+                fontWeight = FontWeight.ExtraBold,
+                textAlign = TextAlign.Center)
+            Image(painter = painterResource(id = R.drawable.happyturtle), contentDescription = "ㅋㅋ",
+                modifier = Modifier.width(320.dp).height(320.dp).padding(12.dp))
+            Text(text = "아쉽지만 오늘의 퀴즈는 끝이에요...\n내일 또 보상을 받을 수 있어요!",fontSize = 24.sp,
+                fontWeight = FontWeight.Medium,fontFamily = fontFamily, textAlign = TextAlign.Center,
+                color = colorResource(id = R.color.kumiddlegreen))
+            Button(onClick = { navController.navigate(Routes.Main.route) },
+                colors = buttonColor, modifier = Modifier.padding(12.dp)) {
+                Text(text = "홈으로")
+            }
         }
+        else{
+            Text(fontSize = 60.sp, text = "Correct Answer!",
+                fontFamily = fontFamily,
+                color = colorResource(id = R.color.kusemidarkgreen),
+                fontWeight = FontWeight.ExtraBold,
+                modifier = Modifier.padding(30.dp))
+            Text(fontSize = 20.sp, text = "Bonus FootSteps\n\nFor You!",
+                fontFamily = fontFamily,
+                color = colorResource(id = R.color.kumiddlegreen),
+                fontWeight = FontWeight.ExtraBold,
+                textAlign = TextAlign.Center)
+            Image(painter = painterResource(id = R.drawable.happyturtle), contentDescription = "ㅋㅋ",
+                modifier = Modifier.width(320.dp).height(320.dp).padding(12.dp))
+            Text(text = "Today's quiz is over...\n\nYou can receive rewards again tomorrow!",fontSize = 24.sp,
+                fontWeight = FontWeight.Medium,fontFamily = fontFamily, textAlign = TextAlign.Center,
+                color = colorResource(id = R.color.kumiddlegreen))
+            Button(onClick = { navController.navigate(Routes.Main.route) },
+                colors = buttonColor, modifier = Modifier.padding(12.dp)) {
+                Text(text = "Home")
+            }
+        }
+
     }
 }

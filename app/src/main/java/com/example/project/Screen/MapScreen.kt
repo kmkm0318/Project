@@ -203,6 +203,17 @@ fun MapScreen(navController: NavController) {
 
         }
         Column(modifier = Modifier.fillMaxSize()) {
+            if(search != ""){
+                SearchRecommend(search,
+                    searchViewModel,
+                    cameraPositionState,
+                    onSearchCleared = {
+                        search = ""
+                        trackingEnabled=false
+                        focusManager.clearFocus()
+                    }
+                )
+            }
             OutlinedTextField(
                 value = search,
                 textStyle = TextStyle(colorResource(id = R.color.kudarkgreen),
@@ -248,32 +259,6 @@ fun MapScreen(navController: NavController) {
                 },
                 singleLine = true
             )
-            if(search != ""){
-                SearchRecommend(search,
-                    searchViewModel,
-                    cameraPositionState,
-                    onSearchCleared = {
-                        search = ""
-                        trackingEnabled=false
-                        focusManager.clearFocus()
-                    }
-                )
-            }
-        }
-        if(trackingEnabled){
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .align(Alignment.Center)){
-                Canvas(modifier = Modifier
-                    .fillMaxSize()
-                    .align(Alignment.Center)) {
-                    drawCircle(
-                        color = Color(160,220,100),
-                        radius = 20f,
-                        center = Offset(size.width*0.5f,size.height*0.5f)
-                    )
-                }
-            }
         }
     }
 
