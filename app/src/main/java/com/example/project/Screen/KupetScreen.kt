@@ -393,6 +393,13 @@ fun KupetScreenContent(
             total += it.steps_total + it.prev_steps_total
         }
     }
+
+    if (stepSum / 15000 > 3){
+        userData.characterList[userData.characterIndex].level = 3
+    }else{
+        userData.characterList[userData.characterIndex].level = (stepSum / 15000).toInt()
+    }
+
     userData.characterList[userData.characterIndex].steps_total = step
     userData.steps_total = total
     navViewModel.userData = userData
