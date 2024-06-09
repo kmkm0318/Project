@@ -96,8 +96,8 @@ fun LoginScreen(navController: NavHostController) {
     val buttonColor = ButtonColors(
         containerColor = colorResource(id = R.color.kumiddlegreen),
         contentColor = Color.White,
-        disabledContainerColor = Color.Green,
-        disabledContentColor = Color.Green
+        disabledContainerColor = colorResource(id = R.color.kumiddlegreen),
+        disabledContentColor = Color.White
     )
 
     navViewModel.language.value = loadLanguage(context)
@@ -121,7 +121,7 @@ fun LoginScreen(navController: NavHostController) {
 
         })
     }
-    
+
     LaunchedEffect(key1 = Unit) {
         val auth = Firebase.auth
         val user = auth.currentUser
@@ -146,7 +146,15 @@ fun LoginScreen(navController: NavHostController) {
                     text = stringResource(id = R.string.title),
                     fontSize = 40.sp,
                     fontWeight = FontWeight.ExtraBold,
-                    modifier = Modifier.padding(top = 100.dp, bottom = 40.dp),
+                    modifier = Modifier.padding(top = 200.dp, bottom = 20.dp),
+                    color = textColor,
+                    fontFamily = fontFamily
+                )
+                Text(
+                    text = "Campus KUMpass",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.padding(bottom = 50.dp),
                     color = textColor,
                     fontFamily = fontFamily
                 )
@@ -202,7 +210,7 @@ fun LoginScreen(navController: NavHostController) {
                 )
 
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().padding(20.dp),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -228,12 +236,12 @@ fun LoginScreen(navController: NavHostController) {
                                 .wrapContentSize(Alignment.Center)
                         )
                     }
-                    Spacer(modifier = Modifier.size(width = 75.dp, height = 0.dp))
+                    Spacer(modifier = Modifier.size(width = 40.dp, height = 0.dp))
                     Button(
                         colors = buttonColor,
                         onClick = { navController.navigate(Routes.Register.route) }) {
                         val register = when (navViewModel.language.value) {
-                            "kr" -> "가입"
+                            "kr" -> "회원가입"
                             else -> "Register"
                         }
                         Text(

@@ -165,32 +165,35 @@ fun MapScreen(navController: NavController) {
         ){
             if(navViewModel.receiveFriendLocation.value){
                 val transactingFriend = navViewModel.userData.friendList!!.filter{it.studentID == navViewModel.userData.transactingfriendname}
-                val tFriendCharacter = getCharacterImageAsInt(context,transactingFriend[0].characterData)
-                MarkerInfoWindow(
-                    state = MarkerState(position = LatLng(navViewModel.userData.friendLocationLat,navViewModel.userData.friendLocationLng)),
-                    title = navViewModel.userData.transactingfriendname,
-                    tag = transactingFriend[0].name,
-                    icon = BitmapDescriptorFactory.fromResource(R.drawable.markerimage)
-                ){
-                    Box(modifier = Modifier.width(140.dp)
-                        .height(140.dp)
-                        .background(colorResource(id = R.color.kuhighlightgreen))
-                        .border(3.dp, colorResource(id = R.color.kumiddlegreen),
-                            RoundedCornerShape(10.dp)
-                        )
-                        ,contentAlignment = Alignment.Center){
-                        Column(verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                        ){
-                            Text(transactingFriend[0].name, fontFamily = fontFamily,
-                                fontSize = 16.sp, color = colorResource(id = R.color.kudarkgreen))
-                            Image(painter = painterResource(id = tFriendCharacter),"",
-                                modifier = Modifier.size(80.dp))
+                if (transactingFriend.size != 0){
+                    val tFriendCharacter = getCharacterImageAsInt(context,transactingFriend[0].characterData)
+                    MarkerInfoWindow(
+                        state = MarkerState(position = LatLng(navViewModel.userData.friendLocationLat,navViewModel.userData.friendLocationLng)),
+                        title = navViewModel.userData.transactingfriendname,
+                        tag = transactingFriend[0].name,
+                        icon = BitmapDescriptorFactory.fromResource(R.drawable.markerimage)
+                    ){
+                        Box(modifier = Modifier.width(140.dp)
+                            .height(140.dp)
+                            .background(colorResource(id = R.color.kuhighlightgreen))
+                            .border(3.dp, colorResource(id = R.color.kumiddlegreen),
+                                RoundedCornerShape(10.dp)
+                            )
+                            ,contentAlignment = Alignment.Center){
+                            Column(verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                            ){
+                                Text(transactingFriend[0].name, fontFamily = fontFamily,
+                                    fontSize = 16.sp, color = colorResource(id = R.color.kudarkgreen))
+                                Image(painter = painterResource(id = tFriendCharacter),"",
+                                    modifier = Modifier.size(80.dp))
+                            }
                         }
+
+
                     }
-
-
                 }
+
                 LaunchedEffect(Unit){
                     Log.i("showFriendOnMap3", "${navViewModel.userData.transactingfriendname} lat : ${navViewModel.userData.friendLocationLat} , lng : ${navViewModel.userData.friendLocationLng}")
                     delay(5000L)
