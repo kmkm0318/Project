@@ -31,6 +31,8 @@ import com.example.project.Class.NavViewModel
 import com.example.project.Navigation.LocalNavGraphViewModelStoreOwner
 import com.example.project.R
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
@@ -55,7 +57,7 @@ fun CorrectAns(navController: NavController) {
     val activity = LocalContext.current as Activity
     val authManager = AuthManager(activity)
 
-    val currentDateTime = LocalDateTime.now()
+    val currentDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"))
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     val formattedDateTime = currentDateTime.format(formatter)
 
