@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -27,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -74,21 +76,21 @@ fun Register(navController: NavHostController) {
         )
     )
 
-    val textColor = Color(25, 200, 25)
+    val textColor = colorResource(id = R.color.kusemidarkgreen)
 
     val textFieldColors = OutlinedTextFieldDefaults.colors(
-        focusedBorderColor = Color.Green,
-        unfocusedBorderColor = Color(25, 200, 25),
-        cursorColor = Color(25, 200, 25),
+        focusedBorderColor = colorResource(id = R.color.kumiddlegreen),
+        unfocusedBorderColor = colorResource(id = R.color.kusemidarkgreen),
+        cursorColor = colorResource(id = R.color.kudarkgreen),
         focusedTextColor = textColor,
         unfocusedTextColor = textColor
     )
 
     val buttonColor = ButtonColors(
-        containerColor = Color(25, 200, 25),
+        containerColor = colorResource(id = R.color.kumiddlegreen),
         contentColor = Color.White,
-        disabledContainerColor = Color.Green,
-        disabledContentColor = Color.Green
+        disabledContainerColor = colorResource(id = R.color.kusemidarkgreen),
+        disabledContentColor = Color.White
     )
 
     LazyColumn {
@@ -106,7 +108,7 @@ fun Register(navController: NavHostController) {
                     text = register,
                     fontSize = 40.sp,
                     fontWeight = FontWeight.ExtraBold,
-                    modifier = Modifier.padding(top = 100.dp, bottom = 40.dp),
+                    modifier = Modifier.padding(top = 200.dp, bottom = 40.dp),
                     color = textColor,
                     fontFamily = fontFamily
                 )
@@ -116,6 +118,7 @@ fun Register(navController: NavHostController) {
                 OutlinedTextField(
                     colors = textFieldColors,
                     modifier = Modifier.padding(bottom = 10.dp),
+                    shape = RoundedCornerShape(10.dp),
                     value = userID ?: "",
                     onValueChange = { userID = it },
                     label = {
@@ -138,6 +141,7 @@ fun Register(navController: NavHostController) {
                 OutlinedTextField(
                     colors = textFieldColors,
                     modifier = Modifier.padding(bottom = 10.dp),
+                    shape = RoundedCornerShape(10.dp),
                     value = userPasswd ?: "",
                     onValueChange = { userPasswd = it },
                     label = {
@@ -162,6 +166,7 @@ fun Register(navController: NavHostController) {
                 OutlinedTextField(
                     colors = textFieldColors,
                     modifier = Modifier.padding(bottom = 10.dp),
+                    shape = RoundedCornerShape(10.dp),
                     value = studentID ?: "",
                     onValueChange = { studentID = it },
                     label = {
@@ -201,7 +206,7 @@ fun Register(navController: NavHostController) {
 
                 }) {
                     val register = when (navViewModel.language.value) {
-                        "kr" -> "가입"
+                        "kr" -> "회원가입"
                         else -> "Register"
                     }
                     Text(

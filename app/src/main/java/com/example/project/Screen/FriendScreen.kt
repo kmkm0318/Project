@@ -275,11 +275,13 @@ fun friendRow(
     val textColor = colorResource(id = R.color.kudarkgreen)
 
     val textFieldColors = OutlinedTextFieldDefaults.colors(
-        focusedBorderColor = colorResource(id = R.color.kudarkgreen),
-        unfocusedBorderColor = colorResource(id = R.color.kumiddlegreen),
+        focusedBorderColor = colorResource(id = R.color.kumiddlegreen),
+        unfocusedBorderColor = colorResource(id = R.color.kudarkgreen),
         cursorColor = colorResource(id = R.color.kudarkgreen),
-        focusedTextColor = textColor,
-        unfocusedTextColor = textColor
+        focusedTextColor = colorResource(id = R.color.kudarkgreen),
+        unfocusedTextColor = colorResource(id = R.color.kumiddlegreen),
+        focusedContainerColor = colorResource(id = R.color.kuhighlightgreen),
+        unfocusedContainerColor = colorResource(id = R.color.kuhighlightgreen)
     )
 
     val buttonColor = ButtonColors(
@@ -312,6 +314,7 @@ fun friendRow(
                 if (changeName.value) {
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
+                        colors = textFieldColors,
                         value = friendName.value,
                         onValueChange = {
                             friendName.value = it
