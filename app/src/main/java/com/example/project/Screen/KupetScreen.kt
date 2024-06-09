@@ -19,8 +19,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIos
@@ -46,8 +48,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -160,9 +164,13 @@ fun KupetScreenContent(
         mutableIntStateOf(0)
     }
 
-
-
-
+    val fontFamily = FontFamily(
+        fonts = listOf(
+            Font(R.font.gmarket_sans_ttf_medium, FontWeight.Medium),
+            Font(R.font.gmarket_sans_ttf_bold, FontWeight.Bold),
+            Font(R.font.gmarket_sans_ttf_light, FontWeight.Light)
+        )
+    )
 
     if (userData.characterList[userData.characterIndex].steps_current == 0) {
         userData.characterList[userData.characterIndex].steps_current = stepCount
@@ -238,7 +246,9 @@ fun KupetScreenContent(
 
         } else {
             if (!viewModel.hasSensor()) {
-                Text(text = "이 기기에서는 kupet을 이용할 수 없습니다")
+                Text(text = "이 기기에서는\n\n쿠펫을 이용할수 없어요..",fontSize = 32.sp, fontWeight = FontWeight.SemiBold,fontFamily = fontFamily, textAlign = TextAlign.Center)
+                Image(painter = painterResource(id = R.drawable.sadturtle), contentDescription = "ㅠㅠ",
+                    modifier = Modifier.width(320.dp).height(320.dp).padding(20.dp))
             } else {
                 Scaffold(topBar = { })
                 { contentPadding ->

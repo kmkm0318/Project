@@ -279,9 +279,9 @@ fun friendRow(
         unfocusedBorderColor = colorResource(id = R.color.kudarkgreen),
         cursorColor = colorResource(id = R.color.kudarkgreen),
         focusedTextColor = colorResource(id = R.color.kudarkgreen),
-        unfocusedTextColor = colorResource(id = R.color.kumiddlegreen),
-        focusedContainerColor = colorResource(id = R.color.kuhighlightgreen),
-        unfocusedContainerColor = colorResource(id = R.color.kuhighlightgreen)
+        unfocusedTextColor = colorResource(id = R.color.kudarkgreen),
+        focusedContainerColor = colorResource(id = R.color.white),
+        unfocusedContainerColor = colorResource(id = R.color.white)
     )
 
     val buttonColor = ButtonColors(
