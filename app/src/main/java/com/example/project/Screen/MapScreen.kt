@@ -34,7 +34,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -333,8 +332,16 @@ fun MapScreen(navController: NavController) {
             elevation = FloatingActionButtonDefaults.elevation(0.dp),
             onClick = {
                 /*인스타그램,카카오톡,위치공유,기타앱공유*/
-                openDialog = true
-                onClickShareButton(navController)
+                //openDialog = true
+                //onClickShareButton(navController)
+                navController.navigate(Routes.Friend.route) {
+                    popUpTo(Routes.Map.route) {
+                        saveState = true
+                        inclusive = false
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
             }) {
             Icon(imageVector = Icons.Default.Share,
                 contentDescription = null,
@@ -395,8 +402,4 @@ fun getLastKnownLocation(fusedLocationProviderClient: FusedLocationProviderClien
     } catch (e: SecurityException) {
         e.printStackTrace()  // 예외 처리
     }
-}
-
-fun onClickShareButton(navController: NavController) {
-    navController.navigate(Routes.Friend.route)
 }

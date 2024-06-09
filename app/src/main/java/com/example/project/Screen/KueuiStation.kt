@@ -1,9 +1,11 @@
 package com.example.project.Screen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
@@ -23,13 +25,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.project.Class.NavViewModel
 import com.example.project.Class.StationViewModel
 import com.example.project.Compose.MetroTopBar
 import com.example.project.R
-import kotlinx.coroutines.launch
 
 
 @Composable
@@ -54,6 +54,7 @@ fun KueuiStationContent(stationViewModel: StationViewModel, contentPadding:Paddi
             Font(R.font.gmarket_sans_ttf_light, FontWeight.Light)
         )
     )
+    Log.i("testtest", stationList.toString())
     val pullRefreshState = rememberPullRefreshState(
         refreshing = isLoading,
         onRefresh = { stationViewModel.fetchStation(url) }
@@ -77,7 +78,7 @@ fun KueuiStationContent(stationViewModel: StationViewModel, contentPadding:Paddi
         }
         Box (modifier = Modifier
             .pullRefresh(pullRefreshState)
-            .fillMaxWidth(),
+            .fillMaxSize(),
             contentAlignment = Alignment.TopCenter
         ){
             if(navViewModel.language.value == "kr"){

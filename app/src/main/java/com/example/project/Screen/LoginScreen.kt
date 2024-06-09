@@ -21,6 +21,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,6 +52,8 @@ import com.example.project.Function.loadLanguage
 import com.example.project.Function.showNotification
 import com.example.project.Navigation.LocalNavGraphViewModelStoreOwner
 import com.example.project.R
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 
 @Composable
 fun LoginScreen(navController: NavHostController) {
@@ -117,7 +120,15 @@ fun LoginScreen(navController: NavHostController) {
         }, {
 
         })
+    }
+    
+    LaunchedEffect(key1 = Unit) {
+        val auth = Firebase.auth
+        val user = auth.currentUser
 
+        if(user!=null){
+            loginSuccess()
+        }
     }
 
     LazyColumn(

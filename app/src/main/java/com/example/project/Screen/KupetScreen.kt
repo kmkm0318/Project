@@ -9,7 +9,6 @@ import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,13 +23,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material.icons.filled.ArrowForwardIos
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
@@ -46,14 +42,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -128,7 +122,7 @@ fun KupetScreenContent(
 
     val petNameList: List<String> = listOf(
         "두리",
-        "프롤",
+        "쿠롱이",
         "모모",
     )
 
@@ -163,7 +157,7 @@ fun KupetScreenContent(
 
     var step by remember {
         //mutableIntStateOf(userData.steps_total)
-        mutableIntStateOf(userData.characterList[userData.characterIndex].steps_total)
+        mutableIntStateOf(0)
     }
 
 
@@ -183,17 +177,18 @@ fun KupetScreenContent(
 
 
     if (stepCount != 0) {
-            step = stepCount - userData.characterList[userData.characterIndex].steps_current + userData.characterList[userData.characterIndex].prev_steps_total
+            step = stepCount - userData.characterList[userData.characterIndex].steps_current
     }
 
+    val stepSum = step + userData.characterList[userData.characterIndex].prev_steps_total
 
-    if (step > 45000) {
+    if (stepSum > 45000) {
         kupetIndex = 4 * userData.characterIndex + 3
     } else {
-        kupetIndex = (step / 15000) + 4 * userData.characterIndex
+        kupetIndex = (stepSum / 15000) + 4 * userData.characterIndex
     }
 
-    leftOverStep = 15000 - step % 15000
+    leftOverStep = 15000 - stepSum % 15000
 
     LaunchedEffect(key1 = permissionState) {
         if (!permissionState.status.isGranted && !permissionState.status.shouldShowRationale) {
@@ -289,6 +284,7 @@ fun KupetScreenContent(
                                         else userData = userData.copy(characterIndex = userData.characterIndex - 1)
                                         userData.characterList[userData.characterIndex].steps_current = stepCount
                                         navViewModel.userData = userData
+                                        authManager.writeToDatabase(navViewModel.userData)
                                     }
                                 )
 
@@ -313,12 +309,13 @@ fun KupetScreenContent(
                                     contentDescription = "",
                                     tint = colorResource(id = R.color.kumiddlegreen),
                                     modifier = Modifier.clickable {
-                                        userData.characterList[userData.characterIndex].prev_steps_total += step
+                                        userData.characterList[userData.characterIndex].prev_steps_total += userData.characterList[userData.characterIndex].steps_total
                                         userData.characterList[userData.characterIndex].steps_total = 0
                                         if (userData.characterIndex == petNameList.size-1) userData = userData.copy(characterIndex = 0)
                                         else userData = userData.copy(characterIndex = userData.characterIndex + 1)
                                         userData.characterList[userData.characterIndex].steps_current = stepCount
                                         navViewModel.userData = userData
+                                        authManager.writeToDatabase(navViewModel.userData)
                                     }
                                 )
                             }
@@ -330,10 +327,10 @@ fun KupetScreenContent(
                                 .padding(6.dp),
                             color = colorResource(id = R.color.kudarkgreen),
                             trackColor = colorResource(id = R.color.kulightgreen),
-                            progress = ((step%15000).toFloat() / 15000)//추후 변수처리
+                            progress = ((stepSum%15000).toFloat() / 15000)//추후 변수처리
                         )
                         Text(
-                            text = "(${step%15000}/15000)",//추후 변수처리
+                            text = "(${stepSum%15000}/15000)",//추후 변수처리
                             color = colorResource(id = R.color.kudarkgreen),
                             fontFamily = FontFamily.Monospace,
                             fontSize = 12.sp,
@@ -383,7 +380,7 @@ fun KupetScreenContent(
         if (it.steps_total == 0){
             total += it.prev_steps_total
         }else{
-            total += it.steps_total
+            total += it.steps_total + it.prev_steps_total
         }
     }
     userData.characterList[userData.characterIndex].steps_total = step

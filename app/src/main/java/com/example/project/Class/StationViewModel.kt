@@ -16,7 +16,7 @@ class StationViewModel : ViewModel() {
     val stationList: MutableState<List<StationData>> = _stationList
 
     private val _isLoading = mutableStateOf(false)
-    val isLoading: MutableState<Boolean> = _isLoading
+    var isLoading: MutableState<Boolean> = _isLoading
 
     fun fetchStation(url: String) {
         _isLoading.value = true
