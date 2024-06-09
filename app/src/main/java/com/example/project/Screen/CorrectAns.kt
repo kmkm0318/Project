@@ -33,7 +33,7 @@ fun CorrectAns(navController: NavController) {
     val formattedDateTime = currentDateTime.format(formatter)
 
     navViewModel.userData.lastQuizDate = formattedDateTime
-    navViewModel.userData.characterList[navViewModel.userData.characterIndex].prev_steps_total += 500
+    navViewModel.userData.characterList[navViewModel.userData.characterIndex].prev_steps_total += 100
 
     authManager.writeToDatabase(navViewModel.userData)
 
