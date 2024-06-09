@@ -12,7 +12,8 @@ data class UserData(
     var friendLocationLng: Double = 0.0,
     var characterList: List<CharacterData> = listOf(),
     var friendList: List<FriendData>? = listOf(),
-    var transactingfriendname: String = "default"
+    var transactingfriendname: String = "default",
+    var lastQuizDate: String = ""
 ) {
     constructor() : this(
         "default", 0, 0, 0, 0,
