@@ -2,6 +2,7 @@ package com.example.project.Class
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.example.project.R
 
 class NavViewModel() : ViewModel(){
     var userData = UserData("0000")
@@ -14,4 +15,7 @@ class NavViewModel() : ViewModel(){
     var loginStatus = mutableStateOf( false )
 
     var friendData = FriendData()
+
+    var receiveFriendLocation = mutableStateOf(false)
+
 }

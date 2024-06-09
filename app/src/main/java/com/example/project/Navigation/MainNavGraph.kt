@@ -71,19 +71,19 @@ fun NavGraphBuilder.MainNavGraph(
         }
         
         composable(route = Routes.Metro.route){
-            MetroArrivalScreen(navController, stationViewModel = StationViewModel())
+            MetroArrivalScreen(navController, navViewModel = navViewModel)
         }
 
         composable(route = Routes.KonkukUnivStation.route){
-            KonkukUnivStation(navController, stationViewModel = StationViewModel())
+            KonkukUnivStation(navController, stationViewModel = StationViewModel(),navViewModel)
         }
 
         composable(route = Routes.ChildrensGrandPark.route){
-            ChildrensGrandPark(navController, stationViewModel = StationViewModel())
+            ChildrensGrandPark(navController, stationViewModel = StationViewModel(),navViewModel)
         }
 
         composable(route = Routes.KueuiStation.route){
-            KueuiStation(navController, stationViewModel = StationViewModel())
+            KueuiStation(navController, stationViewModel = StationViewModel(),navViewModel)
         }
 
     }

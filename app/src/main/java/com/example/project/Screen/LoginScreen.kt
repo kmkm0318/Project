@@ -106,7 +106,8 @@ fun LoginScreen(navController: NavHostController) {
             authManager.startValueChangeListener({ lat, lng ->
                 navViewModel.userData.friendLocationLat = lat
                 navViewModel.userData.friendLocationLng = lng
-                ShowFriendOnMap()
+                navViewModel.receiveFriendLocation.value = true
+                ShowFriendOnMap(navViewModel, navViewModel.userData.transactingfriendname,lat, lng)
             })
             navController.navigate(Routes.Main.route) {
                 popUpTo(navController.graph.startDestinationId) {

@@ -388,6 +388,7 @@ fun onClickLocationShareButton(navViewModel: NavViewModel, friendID: String) {
             for(friend in snapshot.children){
                 friend.ref.child("friendLocationLat").setValue(navViewModel.userData.locationNowLat)
                 friend.ref.child("friendLocationLng").setValue(navViewModel.userData.locationNowLng)
+                friend.ref.child("transactingfriendname").setValue(navViewModel.userData.studentID)
             }
         }
 
