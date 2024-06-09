@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.example.project.Class.NavViewModel
 import com.example.project.Class.StationViewModel
 import com.example.project.Compose.MetroTopBar
 import com.example.project.Compose.TopBar
@@ -39,11 +40,11 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun KonkukUnivStation(navController: NavController, stationViewModel: StationViewModel) {
+fun KonkukUnivStation(navController: NavController, stationViewModel: StationViewModel,navViewModel: NavViewModel) {
     Scaffold(
         topBar = {MetroTopBar(navController = navController)}
     ) {
-        KonkukUnivStationContent(stationViewModel = stationViewModel, contentPadding = it)
+        KonkukUnivStationContent(stationViewModel = stationViewModel, contentPadding = it,navViewModel)
     }
 }
 
@@ -51,7 +52,7 @@ fun KonkukUnivStation(navController: NavController, stationViewModel: StationVie
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun KonkukUnivStationContent(stationViewModel: StationViewModel, contentPadding:PaddingValues) {
+fun KonkukUnivStationContent(stationViewModel: StationViewModel, contentPadding:PaddingValues,navViewModel: NavViewModel) {
     val url = "http://swopenAPI.seoul.go.kr/api/subway/426e4f7346776f6f393577474f4b51/xml/realtimeStationArrival/0/8/건대입구"
     val isLoading = stationViewModel.isLoading.value
     val stationList = stationViewModel.stationList.value
@@ -73,17 +74,30 @@ fun KonkukUnivStationContent(stationViewModel: StationViewModel, contentPadding:
         .fillMaxWidth().padding(contentPadding),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally) {
-        Text("건대입구역 실시간 지하철 정보", fontSize = 22.sp,
-            fontFamily=fontFamily, color = colorResource(id = R.color.kudarkgreen),
-            modifier = Modifier.padding(12.dp))
+        if(navViewModel.language.value == "kr"){
+            Text(text="건대입구역 실시간 지하철 정보", fontFamily=fontFamily, fontSize = 22.sp,
+                color = colorResource(id = R.color.kudarkgreen),textAlign = TextAlign.Center,
+                modifier = Modifier.padding(12.dp))
+        }
+        else{
+            Text(text="Real-Time Train Info\n\nIn KonkukUniversity Station", fontFamily=fontFamily, fontSize = 22.sp,
+                color = colorResource(id = R.color.kudarkgreen),textAlign = TextAlign.Center,
+                modifier = Modifier.padding(12.dp))
+        }
         Box (modifier = Modifier
             .pullRefresh(pullRefreshState)
             .fillMaxWidth(),
             contentAlignment = Alignment.TopCenter
         ){
-            Text("\n\n화면을 아래로 당기면\n\n실시간 정보를\n\n확인할 수 있어요", fontSize = 32.sp,
-                fontFamily=fontFamily, color = colorResource(id = R.color.kumiddlegreen),
-                textAlign = TextAlign.Center)
+            if(navViewModel.language.value == "kr"){
+                Text("\n\n화면을 아래로 당기면\n\n실시간 정보를\n\n확인할 수 있어요", fontSize = 32.sp,
+                    fontFamily=fontFamily, color = colorResource(id = R.color.kumiddlegreen),
+                    textAlign = TextAlign.Center)
+            }else{
+                Text("\n\nSwipe down\n\nTo Refresh", fontSize = 32.sp,
+                    fontFamily=fontFamily, color = colorResource(id = R.color.kumiddlegreen),
+                    textAlign = TextAlign.Center)
+            }
             StationList(list = stationList)
             PullRefreshIndicator(
                 refreshing = isLoading,

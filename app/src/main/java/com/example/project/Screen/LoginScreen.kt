@@ -106,18 +106,17 @@ fun LoginScreen(navController: NavHostController) {
         authManager.readFromDatabase(navViewModel.userData, {
             navViewModel.userData = it
             navViewModel.loginStatus.value = true
+            authManager.startValueChangeListener({ lat, lng ->
+                navViewModel.userData.friendLocationLat = lat
+                navViewModel.userData.friendLocationLng = lng
+                navViewModel.receiveFriendLocation.value = true
+                ShowFriendOnMap(navViewModel, navViewModel.userData.transactingfriendname,lat, lng)
+            })
             navController.navigate(Routes.Main.route) {
                 popUpTo(navController.graph.startDestinationId) {
                     inclusive = true
                 }
             }
-            authManager.startValueChangeListener({ lat, lng ->
-                navViewModel.userData.friendLocationLat = lat
-                navViewModel.userData.friendLocationLng = lng
-                ShowFriendOnMap(lat, lng)
-            })
-
-
         }, {
 
         })
